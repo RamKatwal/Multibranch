@@ -1,5 +1,11 @@
-import { ModulePage } from "@/components/dashboard/module-page"
+import { Suspense } from "react"
 
-export default function ProductsPage() {
-  return <ModulePage title="Products" />
+import { ProductsPage } from "@/components/products/products-page"
+
+export default function ProductsRoute() {
+  return (
+    <Suspense fallback={null}>
+      <ProductsPage />
+    </Suspense>
+  )
 }
