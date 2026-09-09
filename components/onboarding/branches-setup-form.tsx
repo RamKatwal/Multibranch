@@ -28,7 +28,7 @@ import {
   type QuickBranchRow,
 } from "@/lib/onboarding/branch-draft"
 import { loadCompanyDraft } from "@/lib/onboarding/company-storage"
-import { adminHomeAfterOrgCreated } from "@/lib/admin/organization-created"
+import { homeAfterOrgCreated } from "@/lib/organizations/home-after-created"
 import {
   apiJson,
   clearOnboardingDraftsClient,
@@ -126,7 +126,7 @@ export default function BranchesSetupForm() {
   const fromBranchManagement =
     searchParams.get("from")?.trim() === "branch-management"
   const branchManagementReturnPath =
-    "/admin/organizations/branch-management"
+    "/configurations/general/branch-management"
 
   const [companyPrefix, setCompanyPrefix] = React.useState("BRN")
   const [branchLimit, setBranchLimit] = React.useState(1)
@@ -210,7 +210,7 @@ export default function BranchesSetupForm() {
         router.push(branchManagementReturnPath)
         return
       }
-      const homePath = adminHomeAfterOrgCreated(res.session.companyId)
+      const homePath = homeAfterOrgCreated(res.session.companyId)
       setIsSettingUp(true)
       window.setTimeout(() => {
         router.push(homePath)
@@ -226,7 +226,7 @@ export default function BranchesSetupForm() {
       }
       setIsSettingUp(true)
       window.setTimeout(() => {
-        router.push(adminHomeAfterOrgCreated())
+        router.push(homeAfterOrgCreated())
       }, 2500)
     } finally {
       setIsLoading(false)

@@ -64,7 +64,7 @@ export function middleware(req: NextRequest) {
     // Completed: allow company + plan so admin can add another organization.
     if (isOnboardingComplete(session.status)) {
       if (pathname.includes("/users")) {
-        return NextResponse.redirect(new URL("/admin", req.url))
+        return NextResponse.redirect(new URL("/", req.url))
       }
       return NextResponse.next()
     }
@@ -125,7 +125,7 @@ export function middleware(req: NextRequest) {
 export const config = {
   matcher: [
     "/onboarding/:path*",
-    "/admin/:path*",
+    "/",
     "/configurations/:path*",
     "/inventory/:path*",
     "/purchase/:path*",

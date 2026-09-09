@@ -46,10 +46,14 @@ import {
 } from "@/components/ui/tabs"
 import { formatLongDate } from "@/lib/format"
 import {
+  getActiveBranchContext,
+  getBranchProductStock,
   getProductBranchStock,
+  type ProductBranchStock,
+} from "@/lib/inventory/branch-stock"
+import {
   getProductDetailById,
   getProductTransactions,
-  type ProductBranchStock,
   type ProductTransaction,
 } from "@/lib/mock/products"
 import { cn } from "@/lib/utils"
@@ -400,12 +404,22 @@ export function ProductDetailPage({ productId }: { productId: string }) {
   )
   const [loadedId, setLoadedId] = React.useState(productId)
   const [activeTab, setActiveTab] = React.useState("overview")
+  const [activeBranch, setActiveBranch] = React.useState<{
+    id: string
+    name: string
+  } | null>(null)
 
   if (productId !== loadedId) {
     setLoadedId(productId)
     setProduct(getProductDetailById(productId))
     setActiveTab("overview")
   }
+
+  React.useEffect(() => {
+    const { branch } = getActiveBranchContext()
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setActiveBranch(branch ? { id: branch.id, name: branch.name } : null)
+  }, [])
 
   const transactions = React.useMemo(
     () => getProductTransactions(productId),
@@ -416,6 +430,10 @@ export function ProductDetailPage({ productId }: { productId: string }) {
     () => getProductBranchStock(productId),
     [productId]
   )
+
+  const branchOnHand = activeBranch
+    ? getBranchProductStock(activeBranch.id, productId)
+    : (product?.totalQuantity ?? 0)
 
   const notFound = (
     <div className="flex flex-col items-center gap-3 py-16 text-center">
@@ -678,18 +696,18 @@ export function ProductDetailPage({ productId }: { productId: string }) {
                   <div className="grid gap-3 sm:grid-cols-3">
                     <StatTile
                       icon={PackageIcon}
-                      label="Available Units"
-                      value={product.availableQuantity}
+                      label={`Available at ${activeBranch?.name ?? "branch"}`}
+                      value={branchOnHand}
+                      accent
                     />
                     <StatTile
                       icon={LayersIcon}
                       label="Hold Units"
                       value={product.holdQuantity}
-                      accent
                     />
                     <StatTile
                       icon={BoxesIcon}
-                      label="Total Units"
+                      label="Catalogue Total"
                       value={product.totalQuantity}
                     />
                   </div>

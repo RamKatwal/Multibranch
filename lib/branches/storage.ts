@@ -3,8 +3,8 @@ import { getBranchLocation } from "@/lib/branches/location"
 import { mockBranches } from "@/lib/mock/branches"
 import type { Branch } from "@/types/branch"
 
-const BRANCHES_STORAGE_KEY = "ibmerp-branches"
-const ACTIVE_BRANCH_STORAGE_KEY = "ibmerp-active-branch"
+const BRANCHES_STORAGE_KEY = "ibmerp-branches-v2"
+const ACTIVE_BRANCH_STORAGE_KEY = "ibmerp-active-branch-v2"
 
 function normalizeBranchAddresses(branches: Branch[]): Branch[] {
   return branches.map((b) => ({

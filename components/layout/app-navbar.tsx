@@ -1,25 +1,22 @@
 "use client"
 
 import * as React from "react"
-import { usePathname, useRouter } from "next/navigation"
+import { useRouter } from "next/navigation"
 import {
   Activity,
   BellIcon,
   Bot,
-  Building2,
   KeyRound,
   LogOut,
   Monitor,
   Moon,
   Palette,
   Settings,
-  Shield,
   Sun,
   User,
 } from "lucide-react"
 import { useTheme } from "next-themes"
 
-import { AdminGoToCompany } from "@/components/layout/admin-go-to-company"
 import { AppBreadcrumb } from "@/components/layout/app-breadcrumb"
 import { CommandSearch } from "@/components/layout/command-search"
 import { CreateDialog } from "@/components/layout/create-dialog"
@@ -41,28 +38,35 @@ import { Separator } from "@/components/ui/separator"
 import { useIsMac } from "@/hooks/use-is-mac"
 import { getCurrentUser, isMainAdmin } from "@/lib/auth/current-user"
 import { formatShortcutParts } from "@/lib/keyboard/utils"
-import { sampleNotifications } from "@/lib/mock/notifications"
+import {
+  getUnreadNotificationCount,
+  NOTIFICATIONS_CHANGED_EVENT,
+} from "@/lib/notifications/storage"
 import { cn } from "@/lib/utils"
 
 export function AppNavbar() {
   const router = useRouter()
-  const pathname = usePathname()
   const isMac = useIsMac()
   const { setTheme, theme } = useTheme()
   const [mounted, setMounted] = React.useState(false)
   const [notificationsOpen, setNotificationsOpen] = React.useState(false)
+  const [unreadCount, setUnreadCount] = React.useState(0)
   const { openSettings } = useSettingsModal()
   const currentUser = getCurrentUser()
-  const unreadCount = sampleNotifications.filter((item) => !item.read).length
-  const onAdminPortal = pathname.startsWith("/admin")
-  const canSwitchPortals = isMainAdmin(currentUser)
-  const switchPortalShortcut = formatShortcutParts(
-    ["Mod", "Shift", "A"],
-    isMac
-  )
 
   React.useEffect(() => {
     setMounted(true)
+  }, [])
+
+  React.useEffect(() => {
+    function refreshUnread() {
+      setUnreadCount(getUnreadNotificationCount())
+    }
+    refreshUnread()
+    window.addEventListener(NOTIFICATIONS_CHANGED_EVENT, refreshUnread)
+    return () => {
+      window.removeEventListener(NOTIFICATIONS_CHANGED_EVENT, refreshUnread)
+    }
   }, [])
 
   return (
@@ -72,7 +76,7 @@ export function AppNavbar() {
       </div>
 
       <div className="ml-auto flex shrink-0 items-center gap-2 px-4">
-        {onAdminPortal ? <AdminGoToCompany /> : <CreateDialog />}
+        <CreateDialog />
 
         <Separator orientation="vertical" className="mx-1 hidden self-stretch sm:block" />
 
@@ -208,25 +212,6 @@ export function AppNavbar() {
                 </div>
               </div>
               <DropdownMenuSeparator />
-              {canSwitchPortals ? (
-                onAdminPortal ? (
-                  <DropdownMenuItem onClick={() => router.push("/")}>
-                    <Building2 />
-                    Switch to Head Office
-                    <DropdownMenuShortcut>
-                      {switchPortalShortcut}
-                    </DropdownMenuShortcut>
-                  </DropdownMenuItem>
-                ) : (
-                  <DropdownMenuItem onClick={() => router.push("/admin")}>
-                    <Shield />
-                    Switch to Admin
-                    <DropdownMenuShortcut>
-                      {switchPortalShortcut}
-                    </DropdownMenuShortcut>
-                  </DropdownMenuItem>
-                )
-              ) : null}
               <DropdownMenuItem onClick={() => router.push("/signup")}>
                 <LogOut />
                 Sign Out

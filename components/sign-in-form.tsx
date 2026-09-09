@@ -124,7 +124,7 @@ export default function SignInForm() {
         })
         saveAuthSessionClient(res.auth)
         saveOnboardingSessionClient(res.session)
-        router.push("/admin")
+        router.push("/")
         return
       }
 
@@ -299,7 +299,7 @@ export default function SignInForm() {
       <DemoFillFab
         actions={[
           {
-            label: "Fill admin login",
+            label: "Fill demo login",
             onFill: fillDemoAdmin,
             shortcutKey: "d",
           },

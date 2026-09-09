@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation"
 
-import { InvoiceReceiptView } from "@/components/admin/subscriptions/invoice-receipt-view"
+import { InvoiceReceiptView } from "@/components/billing/invoice-receipt-view"
 import { getInvoiceReceiptById } from "@/lib/mock/invoice-receipt"
 
 type InvoiceDemoPageProps = {

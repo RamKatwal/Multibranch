@@ -30,7 +30,7 @@ export function EditStockTransferPage({ transferId }: { transferId: string }) {
 
   function handleSave(next: StockTransfer) {
     upsertStockTransfer(next)
-    toast.success(`Stock transfer "${next.id}" updated.`)
+    toast.success(`Stock request "${next.id}" updated.`)
     router.push(`/inventory/stock-transfer/${encodeURIComponent(next.id)}`)
   }
 
@@ -57,12 +57,14 @@ export function EditStockTransferPage({ transferId }: { transferId: string }) {
     )
   }
 
-  if (transfer.status !== "draft") {
+  if (transfer.status !== "requested") {
     return (
       <div className="flex flex-col items-center gap-3 py-16 text-center">
-        <h1 className="text-xl font-semibold">Only drafts can be edited</h1>
+        <h1 className="text-xl font-semibold">
+          Only pending requests can be edited
+        </h1>
         <p className="text-sm text-muted-foreground">
-          This transfer is already {transfer.status.replace("-", " ")}.
+          This request is already {transfer.status.replace("-", " ")}.
         </p>
         <Button
           variant="outline"
@@ -100,6 +102,10 @@ export function EditStockTransferPage({ transferId }: { transferId: string }) {
       />
 
       <StockTransferForm
+        fromBranch={transfer.fromBranch}
+        fromBranchId={transfer.fromBranchId}
+        toBranch={transfer.toBranch}
+        toBranchId={transfer.toBranchId}
         initialTransfer={transfer}
         submitLabel="Save changes"
         onSubmitTransfer={handleSave}

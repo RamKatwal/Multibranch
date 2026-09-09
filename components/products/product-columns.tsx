@@ -11,7 +11,7 @@ import {
 import {
   StackedAvatars,
   branchAvatarItemsFromIds,
-} from "@/components/admin/subscriptions/stacked-avatars"
+} from "@/components/shared/stacked-avatars"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { productTypeLabels, type Product } from "@/types/product"

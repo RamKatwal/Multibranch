@@ -10,10 +10,17 @@ import {
   PackageIcon,
   PencilIcon,
   TruckIcon,
+  Undo2Icon,
+  XIcon,
 } from "lucide-react"
 import { toast } from "sonner"
 
 import { PageHeader } from "@/components/layout/page-header"
+import {
+  StockTransferActionDialog,
+  type StockTransferAction,
+  type StockTransferActionConfirmPayload,
+} from "@/components/stock-transfer/stock-transfer-action-dialog"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -25,15 +32,17 @@ import {
 } from "@/components/ui/card"
 import { formatCurrency, formatDate } from "@/lib/format"
 import {
-  getStockTransferById,
-  upsertStockTransfer,
-} from "@/lib/stock-transfer/storage"
+  assertHeadOfficeHasStock,
+  getActiveBranchContext,
+} from "@/lib/inventory/branch-stock"
+import { ACTION_TOAST, runStockTransferAction } from "@/lib/stock-transfer/actions"
+import { getStockTransferById } from "@/lib/stock-transfer/storage"
 import { cn } from "@/lib/utils"
+import type { Branch } from "@/types/branch"
 import {
   stockTransferStatusBadgeClassName,
   stockTransferStatusLabels,
   type StockTransfer,
-  type StockTransferStatus,
 } from "@/types/stock-transfer"
 
 function formatEntryBy(value: string) {
@@ -67,23 +76,49 @@ export function StockTransferDetailPage({
   const router = useRouter()
   const [transfer, setTransfer] = React.useState<StockTransfer | null>(null)
   const [isLoading, setIsLoading] = React.useState(true)
+  const [activeBranch, setActiveBranch] = React.useState<Branch | null>(null)
+  const [isHeadOffice, setIsHeadOffice] = React.useState(false)
+
+  const [pendingAction, setPendingAction] = React.useState<{
+    action: StockTransferAction
+    blockedReason: string | null
+  } | null>(null)
 
   React.useEffect(() => {
     const decoded = decodeURIComponent(transferId)
-    const found = getStockTransferById(decoded)
+    const { branch, isHeadOffice: ho } = getActiveBranchContext()
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setTransfer(found ?? null)
+    setActiveBranch(branch)
+    setIsHeadOffice(ho)
+    setTransfer(getStockTransferById(decoded) ?? null)
     setIsLoading(false)
   }, [transferId])
 
-  function updateStatus(nextStatus: StockTransferStatus) {
+  function openAction(action: StockTransferAction) {
     if (!transfer) return
-    const next = { ...transfer, status: nextStatus }
-    upsertStockTransfer(next)
-    setTransfer(next)
-    toast.success(
-      `Transfer marked as ${stockTransferStatusLabels[nextStatus].toLowerCase()}.`
-    )
+    const blockedReason =
+      action === "approve" || action === "dispatch"
+        ? assertHeadOfficeHasStock(transfer)
+        : null
+    setPendingAction({ action, blockedReason })
+  }
+
+  function confirmAction(payload?: StockTransferActionConfirmPayload) {
+    if (!transfer || !pendingAction || pendingAction.blockedReason) return
+    try {
+      const next = runStockTransferAction(
+        transfer,
+        pendingAction.action,
+        payload
+      )
+      setTransfer(next)
+      toast.success(ACTION_TOAST[pendingAction.action])
+      setPendingAction(null)
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Could not update transfer."
+      )
+    }
   }
 
   if (isLoading) {
@@ -112,10 +147,12 @@ export function StockTransferDetailPage({
     )
   }
 
-  const canEdit = transfer.status === "draft"
-  const canMarkInTransit = transfer.status === "draft"
-  const canComplete =
-    transfer.status === "draft" || transfer.status === "in-transit"
+  const isRequestingBranch = activeBranch?.id === transfer.toBranchId
+  const canApprove = isHeadOffice && transfer.status === "requested"
+  const canDispatch = isHeadOffice && transfer.status === "approved"
+  const canEdit = isRequestingBranch && transfer.status === "requested"
+  const canReceive = isRequestingBranch && transfer.status === "in-transit"
+  const canReturn = isRequestingBranch && transfer.status === "completed"
 
   return (
     <div className="flex flex-col gap-4">
@@ -157,20 +194,42 @@ export function StockTransferDetailPage({
                 Edit
               </Button>
             ) : null}
-            {canMarkInTransit ? (
+            {canApprove ? (
+              <>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => openAction("reject")}
+                >
+                  <XIcon />
+                  Reject
+                </Button>
+                <Button size="sm" onClick={() => openAction("approve")}>
+                  <CheckIcon />
+                  Approve
+                </Button>
+              </>
+            ) : null}
+            {canDispatch ? (
+              <Button size="sm" onClick={() => openAction("dispatch")}>
+                <TruckIcon />
+                Dispatch
+              </Button>
+            ) : null}
+            {canReceive ? (
+              <Button size="sm" onClick={() => openAction("receive")}>
+                <CheckIcon />
+                Confirm receipt
+              </Button>
+            ) : null}
+            {canReturn ? (
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => updateStatus("in-transit")}
+                onClick={() => openAction("return")}
               >
-                <TruckIcon />
-                Mark in transit
-              </Button>
-            ) : null}
-            {canComplete ? (
-              <Button size="sm" onClick={() => updateStatus("completed")}>
-                <CheckIcon />
-                Complete
+                <Undo2Icon />
+                Return
               </Button>
             ) : null}
           </>
@@ -217,7 +276,7 @@ export function StockTransferDetailPage({
                   <PackageIcon className="size-3.5" />
                 </span>
                 <div>
-                  <CardTitle>Transferred items</CardTitle>
+                  <CardTitle>Requested items</CardTitle>
                   <CardDescription>
                     {transfer.items.length} line
                     {transfer.items.length === 1 ? "" : "s"} ·{" "}
@@ -292,6 +351,22 @@ export function StockTransferDetailPage({
               </CardContent>
             </Card>
           ) : null}
+
+          {transfer.status === "rejected" &&
+          transfer.rejectionReason?.trim() ? (
+            <Card size="sm" className="ring-destructive/20">
+              <CardHeader className="border-b pb-3">
+                <CardTitle className="text-destructive">
+                  Rejection reason
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-(--card-spacing)">
+                <p className="text-sm leading-relaxed whitespace-pre-wrap">
+                  {transfer.rejectionReason}
+                </p>
+              </CardContent>
+            </Card>
+          ) : null}
         </div>
 
         <aside className="lg:sticky lg:top-4 lg:self-start">
@@ -325,6 +400,17 @@ export function StockTransferDetailPage({
           </Card>
         </aside>
       </div>
+
+      <StockTransferActionDialog
+        open={Boolean(pendingAction)}
+        onOpenChange={(open) => {
+          if (!open) setPendingAction(null)
+        }}
+        action={pendingAction?.action ?? "approve"}
+        transfer={transfer}
+        blockedReason={pendingAction?.blockedReason}
+        onConfirm={confirmAction}
+      />
     </div>
   )
 }

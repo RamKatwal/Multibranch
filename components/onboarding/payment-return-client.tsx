@@ -4,7 +4,7 @@ import * as React from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 
 import { Spinner } from "@/components/ui/spinner"
-import { adminHomeAfterOrgCreated } from "@/lib/admin/organization-created"
+import { homeAfterOrgCreated } from "@/lib/organizations/home-after-created"
 import {
   apiJson,
   saveOnboardingSessionClient,
@@ -48,7 +48,7 @@ export default function PaymentReturnClient() {
         if (cancelled) return
         saveOnboardingSessionClient(confirmed.session)
         if (outcome === "success" && isOnboardingComplete(confirmed.session.status)) {
-          router.replace(adminHomeAfterOrgCreated(confirmed.session.companyId))
+          router.replace(homeAfterOrgCreated(confirmed.session.companyId))
           return
         }
         const path = resumePathForStatus(

@@ -12,7 +12,7 @@ import {
 import {
   locationFromCompanyDraft,
   upsertHomeOrganizationFromSubscription,
-} from "@/lib/admin/home-organizations"
+} from "@/lib/organizations/home-organizations"
 import {
   entitlementToSubscription,
   loadEntitlementClient,

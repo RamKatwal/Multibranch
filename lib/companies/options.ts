@@ -72,7 +72,7 @@ export function getAllCompanyAccess() {
   }
 }
 
-/** Companies and their branches from subscription seed data (admin mock). */
+/** Companies and their branches from subscription seed data. */
 export function getCompanyOptions(): CompanyOption[] {
   return mockSubscriptions.map((subscription) => ({
     id: subscription.companyId,

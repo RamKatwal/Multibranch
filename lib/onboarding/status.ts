@@ -136,10 +136,10 @@ export function resumePathForStatus(
       return `/onboarding/company${q}`
     case "branches_pending":
       // Legacy: skip quick branch setup in onboarding
-      return "/admin"
+      return "/"
     case "users_pending":
     case "complete":
-      return "/admin"
+      return "/"
     default:
       return `/onboarding/company${q}`
   }
@@ -162,7 +162,7 @@ export function isOnboardingPath(pathname: string): boolean {
 
 export function isAppShellPath(pathname: string): boolean {
   return (
-    pathname.startsWith("/admin") ||
+    pathname === "/" ||
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/inventory") ||
     pathname.startsWith("/purchase") ||

@@ -9,7 +9,7 @@ const SETUP_MESSAGES = [
   "Creating your workspace…",
   "Saving company details…",
   "Configuring branches…",
-  "Preparing your admin portal…",
+  "Preparing your workspace…",
 ] as const
 
 type SettingUpScreenProps = {

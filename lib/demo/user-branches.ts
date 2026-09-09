@@ -23,13 +23,11 @@ export function getDemoUserBranchAccess(): UserBranchAccess[] {
   const lastLoggedInByBranch: Record<string, string | null> = {
     [`${HIMALAYAN_TRADERS_ID}-head-office`]: "2026-08-25T09:42:00.000Z",
     br_ht_01: "2026-08-22T14:18:00.000Z",
-    br_ht_02: "2026-08-18T11:05:00.000Z",
   }
 
   const roleByBranch: Record<string, string> = {
     [`${HIMALAYAN_TRADERS_ID}-head-office`]: "Branch Manager",
     br_ht_01: "Inventory Officer",
-    br_ht_02: "Sales Executive",
   }
 
   return company.branches

@@ -1,7 +1,6 @@
-import {
-  getProductDetailById,
-  mockProducts,
-} from "@/lib/mock/products"
+import { isHeadOfficeBranch } from "@/lib/branches/head-office"
+import { readBranches } from "@/lib/branches/storage"
+import { getProductDetailById, mockProducts } from "@/lib/mock/products"
 import type {
   StockTransfer,
   StockTransferItem,
@@ -34,40 +33,53 @@ export function getTransferableProducts(): TransferableProduct[] {
     })
 }
 
-/** Branch options offered in the From / To branch selectors. */
-export const stockTransferBranches = [
-  "Head Office",
-  "Kathmandu Branch",
-  "Pokhara Branch",
-  "Biratnagar Branch",
-  "Butwal Branch",
-  "Birgunj Branch",
-] as const
+type TransferBranch = { id: string; name: string }
 
-/** Item catalog offered when adding rows to a stock transfer. */
-export const stockTransferItemCatalog = [
-  "Iphone 15",
-  "Samsung Galaxy S24",
-  "MacBook Air M3",
-  "Dell XPS 13",
-  "Logitech MX Master 3",
-  "USB-C Cable 2m",
-  "Office Chair",
-  "A4 Paper Ream",
-  "Ballpoint Pen (Box)",
-  "HDMI Cable",
-] as const
+/**
+ * The current demo runs with a single Head Office and a single branch. Every
+ * stock transfer is a request the branch raises against Head Office. The two
+ * branches are resolved from the live branch list so the demo works whichever
+ * company/branch set the user is signed into.
+ */
+export function getTransferBranchPair(): {
+  headOffice: TransferBranch
+  branch: TransferBranch
+} {
+  const active = readBranches().filter((b) => b.status === "active")
+  const headOffice =
+    active.find((b) => isHeadOfficeBranch(b)) ?? active[0] ?? null
+  const branch =
+    active.find((b) => !headOffice || b.id !== headOffice.id) ?? null
 
-const statuses: StockTransferStatus[] = ["completed", "in-transit", "draft"]
+  return {
+    headOffice: headOffice
+      ? { id: headOffice.id, name: headOffice.name }
+      : { id: "br-hq", name: "Head Office" },
+    branch: branch
+      ? { id: branch.id, name: branch.name }
+      : { id: "br-ktm-hub", name: "Kathmandu Hub" },
+  }
+}
 
-const entryUsers = ["ram", "admin", "farah", "gopal", "laxman", "kabita"]
+const statuses: StockTransferStatus[] = [
+  "requested",
+  "requested",
+  "approved",
+  "in-transit",
+  "completed",
+  "completed",
+  "returned",
+  "rejected",
+]
+
+const entryUsers = ["ram", "farah", "gopal", "laxman", "kabita"]
 
 const remarksPool = [
   "Restocking retail floor",
-  "Damaged units pulled for return",
-  "Seasonal demand rebalance",
-  "New branch opening stock",
-  "Warehouse consolidation",
+  "Weekend demand top-up",
+  "New display units required",
+  "Counter stock running low",
+  "Customer pre-orders pending",
   "",
 ]
 
@@ -77,23 +89,24 @@ function pad(value: number, length = 4) {
 
 function dateForIndex(index: number) {
   const base = new Date(Date.UTC(2026, 0, 1))
-  base.setUTCDate(base.getUTCDate() + ((index * 3) % 240))
+  base.setUTCDate(base.getUTCDate() + index * 6)
   const year = base.getUTCFullYear()
   const month = String(base.getUTCMonth() + 1).padStart(2, "0")
   const day = String(base.getUTCDate()).padStart(2, "0")
   return `${year}-${month}-${day}`
 }
 
-function buildItems(index: number): StockTransferItem[] {
+function buildItems(index: number, products: TransferableProduct[]): StockTransferItem[] {
+  if (products.length === 0) return []
   const count = (index % 3) + 1
   return Array.from({ length: count }, (_, itemIdx) => {
-    const name =
-      stockTransferItemCatalog[(index + itemIdx) % stockTransferItemCatalog.length]
-    const quantity = ((index + itemIdx) % 8) + 1
-    const rate = 500 + (((index + itemIdx) * 375) % 45000)
+    const product = products[(index * 2 + itemIdx) % products.length]
+    const quantity = ((index + itemIdx) % 4) + 1
+    const rate = product.rate || 500 + (((index + itemIdx) * 375) % 45000)
     return {
       id: `ITM-${pad(index + 1)}-${itemIdx + 1}`,
-      name,
+      productId: product.id,
+      name: product.name,
       quantity,
       rate,
       totalPrice: quantity * rate,
@@ -102,27 +115,37 @@ function buildItems(index: number): StockTransferItem[] {
 }
 
 function buildMockStockTransfers(count: number): StockTransfer[] {
+  const products = getTransferableProducts()
+  const { headOffice, branch } = getTransferBranchPair()
+
   return Array.from({ length: count }, (_, index) => {
     const n = index + 1
-    const items = buildItems(index)
-    const fromBranch =
-      stockTransferBranches[index % stockTransferBranches.length]
-    const toBranch =
-      stockTransferBranches[(index + 2) % stockTransferBranches.length]
+    const items = buildItems(index, products)
+
+    const status = statuses[index % statuses.length]
 
     return {
       id: `TRF-${pad(n)}-2082-83`,
-      fromBranch,
-      toBranch,
+      fromBranch: headOffice.name,
+      fromBranchId: headOffice.id,
+      toBranch: branch.name,
+      toBranchId: branch.id,
       date: dateForIndex(index),
       remarks: remarksPool[index % remarksPool.length],
+      rejectionReason:
+        status === "rejected"
+          ? "Insufficient Head Office stock for the requested quantities."
+          : undefined,
       items,
       totalQuantity: items.reduce((sum, item) => sum + item.quantity, 0),
       totalAmount: items.reduce((sum, item) => sum + item.totalPrice, 0),
       entryBy: entryUsers[index % entryUsers.length],
-      status: statuses[index % statuses.length],
+      status,
     }
   })
 }
 
-export const mockStockTransfers: StockTransfer[] = buildMockStockTransfers(48)
+/** Rebuilt on each call so the branch pair reflects the current sign-in. */
+export function getMockStockTransfers(): StockTransfer[] {
+  return buildMockStockTransfers(12)
+}

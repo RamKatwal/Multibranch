@@ -1,5 +1,17 @@
-import { mockStockTransfers } from "@/lib/mock/stock-transfers"
-import type { StockTransfer } from "@/types/stock-transfer"
+import { getMockStockTransfers } from "@/lib/mock/stock-transfers"
+import {
+  STOCK_TRANSFER_STATUSES,
+  type StockTransfer,
+} from "@/types/stock-transfer"
+
+/** Drop records written under an older schema (no branch ids / retired status). */
+function isCurrentSchema(transfer: StockTransfer): boolean {
+  return (
+    Boolean(transfer.fromBranchId) &&
+    Boolean(transfer.toBranchId) &&
+    STOCK_TRANSFER_STATUSES.includes(transfer.status)
+  )
+}
 
 const STOCK_TRANSFERS_STORAGE_KEY = "ibmerp-stock-transfers"
 
@@ -41,11 +53,11 @@ export function upsertStockTransfer(transfer: StockTransfer) {
 
 /** Custom transfers override mock records with the same id. */
 export function getAllStockTransfers(): StockTransfer[] {
-  const custom = readCustomStockTransfers()
+  const custom = readCustomStockTransfers().filter(isCurrentSchema)
   const customIds = new Set(custom.map((item) => item.id))
   return [
     ...custom,
-    ...mockStockTransfers.filter((item) => !customIds.has(item.id)),
+    ...getMockStockTransfers().filter((item) => !customIds.has(item.id)),
   ]
 }
 

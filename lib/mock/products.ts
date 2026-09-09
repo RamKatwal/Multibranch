@@ -1,4 +1,3 @@
-import { getBranchesByIds } from "@/lib/companies/options"
 import type {
   Product,
   ProductDetail,
@@ -407,83 +406,6 @@ export function getProductTransactions(id: string): ProductTransaction[] {
       reference: `${flow.prefix}-${String(1000 + seed * 3 + idx)}/2083-84`,
       type: flow.type,
       quantity: flow.sign * magnitude,
-    }
-  })
-}
-
-export type ProductBranchStock = {
-  branchId: string
-  branchName: string
-  branchCode: string
-  availableQuantity: number
-  stockIn: number
-  stockOut: number
-  totalQuantity: number
-}
-
-/**
- * Per-branch stock breakdown for a product. Quantities are split across the
- * product's assigned branches and stay deterministic for a given product id.
- */
-export function getProductBranchStock(id: string): ProductBranchStock[] {
-  const product = getProductById(id)
-  if (!product || product.type === "service") return []
-
-  const branchIds =
-    product.addedBranchIds?.length
-      ? product.addedBranchIds
-      : product.createdBranchId
-        ? [product.createdBranchId]
-        : []
-
-  if (!branchIds.length) return []
-
-  const detail = getProductDetailById(id)
-  const seed = Number(id.replace(/\D/g, "")) || 1
-  const resolved = getBranchesByIds(branchIds)
-  const branchCount = resolved.length || branchIds.length
-
-  const totalAvailable = detail?.availableQuantity ?? product.totalQuantity
-  const totalUnits = detail?.totalQuantity ?? product.totalQuantity
-
-  let remainingAvailable = totalAvailable
-  let remainingTotal = totalUnits
-
-  return (resolved.length
-    ? resolved
-    : branchIds.map((branchId) => ({
-        id: branchId,
-        name: branchId,
-        code: branchId.slice(0, 3).toUpperCase(),
-        status: "active",
-        isHeadOffice: false,
-        companyId: "",
-        companyName: "",
-      }))
-  ).map((branch, idx) => {
-    const isLast = idx === branchCount - 1
-    const share = branchCount - idx
-    const availableQuantity = isLast
-      ? remainingAvailable
-      : Math.floor(remainingAvailable / share)
-    const totalQuantity = isLast
-      ? remainingTotal
-      : Math.floor(remainingTotal / share)
-
-    remainingAvailable -= availableQuantity
-    remainingTotal -= totalQuantity
-
-    const stockOut = ((seed + idx * 5) % 8) + 1
-    const stockIn = availableQuantity + stockOut
-
-    return {
-      branchId: branch.id,
-      branchName: branch.name,
-      branchCode: branch.code,
-      availableQuantity,
-      stockIn,
-      stockOut,
-      totalQuantity,
     }
   })
 }

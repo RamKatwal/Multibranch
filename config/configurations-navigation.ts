@@ -16,6 +16,11 @@ export const configurationsNavigation: ConfigurationsNavItem[] = [
         description: "View and update your company profile information.",
       },
       {
+        title: "Branch Management",
+        href: "/configurations/general/branch-management",
+        description: "Add and manage branches for your company.",
+      },
+      {
         title: "Product Configuration",
         href: "/configurations/general/product-configuration",
         description: "Configure product defaults and catalog options.",

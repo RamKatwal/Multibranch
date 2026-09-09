@@ -2,7 +2,8 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
-import { DownloadIcon, PlusIcon } from "lucide-react"
+import { InfoIcon, PlusIcon } from "lucide-react"
+import { toast } from "sonner"
 
 import {
   type DataTableRowSize,
@@ -11,10 +12,25 @@ import {
   useDataTableFullscreen,
 } from "@/components/data-table/data-table"
 import { PageHeader } from "@/components/layout/page-header"
-import { createStockTransferColumns } from "@/components/stock-transfer/stock-transfer-columns"
+import {
+  StockTransferActionDialog,
+  type StockTransferAction,
+  type StockTransferActionConfirmPayload,
+} from "@/components/stock-transfer/stock-transfer-action-dialog"
+import {
+  createStockTransferColumns,
+  type StockTransferRole,
+} from "@/components/stock-transfer/stock-transfer-columns"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
 import { Tabs } from "@/components/ui/tabs"
+import {
+  assertHeadOfficeHasStock,
+  getActiveBranchContext,
+} from "@/lib/inventory/branch-stock"
+import { ACTION_TOAST, runStockTransferAction } from "@/lib/stock-transfer/actions"
 import { getAllStockTransfers } from "@/lib/stock-transfer/storage"
+import type { Branch } from "@/types/branch"
 import {
   STOCK_TRANSFER_STATUSES,
   stockTransferStatusLabels,
@@ -25,20 +41,45 @@ import {
 export function StockTransferPage() {
   const router = useRouter()
   const [transfers, setTransfers] = React.useState<StockTransfer[]>([])
-  const [statusTab, setStatusTab] = React.useState<StockTransferStatus>(
-    "completed"
-  )
+  const [activeBranch, setActiveBranch] = React.useState<Branch | null>(null)
+  const [isHeadOffice, setIsHeadOffice] = React.useState(false)
+  const [statusTab, setStatusTab] =
+    React.useState<StockTransferStatus>("requested")
   const [rowSize, setRowSize] = React.useState<DataTableRowSize>("md")
   const { isFullscreen, toggleFullscreen } = useDataTableFullscreen()
 
-  React.useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+  const [pendingAction, setPendingAction] = React.useState<{
+    action: StockTransferAction
+    transfer: StockTransfer
+    blockedReason: string | null
+  } | null>(null)
+
+  const refresh = React.useCallback(() => {
     setTransfers(getAllStockTransfers())
   }, [])
 
+  React.useEffect(() => {
+    const { branch, isHeadOffice: ho } = getActiveBranchContext()
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setActiveBranch(branch)
+    setIsHeadOffice(ho)
+    refresh()
+  }, [refresh])
+
+  const role: StockTransferRole = isHeadOffice ? "head-office" : "branch"
+
+  const scopedTransfers = React.useMemo(() => {
+    if (!activeBranch) return []
+    return transfers.filter((item) =>
+      isHeadOffice
+        ? item.fromBranchId === activeBranch.id
+        : item.toBranchId === activeBranch.id
+    )
+  }, [transfers, activeBranch, isHeadOffice])
+
   const filteredData = React.useMemo(
-    () => transfers.filter((item) => item.status === statusTab),
-    [transfers, statusTab]
+    () => scopedTransfers.filter((item) => item.status === statusTab),
+    [scopedTransfers, statusTab]
   )
 
   const statusTabItems = React.useMemo(
@@ -46,32 +87,50 @@ export function StockTransferPage() {
       STOCK_TRANSFER_STATUSES.map((status) => ({
         value: status,
         label: stockTransferStatusLabels[status],
-        count: transfers.filter((item) => item.status === status).length,
+        count: scopedTransfers.filter((item) => item.status === status).length,
       })),
-    [transfers]
+    [scopedTransfers]
   )
+
+  function openAction(action: StockTransferAction, transfer: StockTransfer) {
+    const blockedReason =
+      action === "approve" || action === "dispatch"
+        ? assertHeadOfficeHasStock(transfer)
+        : null
+    setPendingAction({ action, transfer, blockedReason })
+  }
+
+  function confirmAction(payload?: StockTransferActionConfirmPayload) {
+    if (!pendingAction || pendingAction.blockedReason) return
+    try {
+      runStockTransferAction(
+        pendingAction.transfer,
+        pendingAction.action,
+        payload
+      )
+      toast.success(ACTION_TOAST[pendingAction.action])
+      setPendingAction(null)
+      refresh()
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Could not update transfer."
+      )
+    }
+  }
 
   const columns = React.useMemo(
     () =>
       createStockTransferColumns({
-        onView: (transfer) => {
+        role,
+        onEdit: (transfer) =>
           router.push(
-            `/inventory/stock-transfer/${encodeURIComponent(transfer.id)}`
-          )
-        },
-        onEdit: (transfer) => {
-          if (transfer.status === "draft") {
-            router.push(
-              `/inventory/stock-transfer/${encodeURIComponent(transfer.id)}/edit`
-            )
-            return
-          }
-          router.push(
-            `/inventory/stock-transfer/${encodeURIComponent(transfer.id)}`
-          )
-        },
+            `/inventory/stock-transfer/${encodeURIComponent(transfer.id)}/edit`
+          ),
+        onDispatch: (transfer) => openAction("dispatch", transfer),
+        onReceive: (transfer) => openAction("receive", transfer),
+        onReturn: (transfer) => openAction("return", transfer),
       }),
-    [router]
+    [role, router]
   )
 
   const table = useDataTable({
@@ -98,23 +157,49 @@ export function StockTransferPage() {
     <div className="flex flex-col gap-4">
       <PageHeader
         title="Stock Transfer"
-        count={`${transfers.length} transfers`}
+        count={`${scopedTransfers.length} transfers`}
         actions={
-          <>
-            <Button variant="outline" size="sm">
-              <DownloadIcon />
-              Export
-            </Button>
+          isHeadOffice ? null : (
             <Button
               size="sm"
               onClick={() => router.push("/inventory/stock-transfer/create")}
             >
               <PlusIcon />
-              Create Stock Transfer
+              New Stock Request
             </Button>
-          </>
+          )
         }
       />
+
+      <Card size="sm" className="ring-foreground/10">
+        <CardContent className="flex items-start gap-3 pt-(--card-spacing) text-sm">
+          <InfoIcon className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
+          <div className="text-muted-foreground">
+            {isHeadOffice ? (
+              <>
+                You are acting as{" "}
+                <span className="font-medium text-foreground">
+                  {activeBranch?.name ?? "Head Office"}
+                </span>
+                . Review incoming stock requests — approve (status becomes{" "}
+                <em>Approved</em>, eligible for dispatch) or reject with a
+                reason. Dispatch releases stock from Head Office inventory; the
+                branch confirms receipt once goods arrive.
+              </>
+            ) : (
+              <>
+                You are acting as{" "}
+                <span className="font-medium text-foreground">
+                  {activeBranch?.name ?? "your branch"}
+                </span>
+                . Raise a request to pull stock from Head Office. After approval
+                and dispatch (status becomes <em>In transit</em>), confirm
+                receipt when the goods arrive.
+              </>
+            )}
+          </div>
+        </CardContent>
+      </Card>
 
       <DataTableCard
         table={table}
@@ -126,7 +211,12 @@ export function StockTransferPage() {
         onToggleFullscreen={toggleFullscreen}
         emptyMessage={`No ${stockTransferStatusLabels[
           statusTab
-        ].toLowerCase()} transfers found.`}
+        ].toLowerCase()} transfers.`}
+        onRowClick={(transfer) =>
+          router.push(
+            `/inventory/stock-transfer/${encodeURIComponent(transfer.id)}`
+          )
+        }
         leading={
           <Tabs
             items={statusTabItems}
@@ -138,6 +228,17 @@ export function StockTransferPage() {
             }}
           />
         }
+      />
+
+      <StockTransferActionDialog
+        open={Boolean(pendingAction)}
+        onOpenChange={(open) => {
+          if (!open) setPendingAction(null)
+        }}
+        action={pendingAction?.action ?? "approve"}
+        transfer={pendingAction?.transfer ?? null}
+        blockedReason={pendingAction?.blockedReason}
+        onConfirm={confirmAction}
       />
     </div>
   )

@@ -1,17 +1,34 @@
 "use client"
 
 import type { ColumnDef } from "@tanstack/react-table"
-import { ArrowRightIcon, EyeIcon, PencilIcon } from "lucide-react"
+import {
+  ArrowRightIcon,
+  CheckIcon,
+  PencilIcon,
+  TruckIcon,
+  Undo2Icon,
+} from "lucide-react"
 
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { formatCurrency, formatDate } from "@/lib/format"
-import type { StockTransfer } from "@/types/stock-transfer"
+import { cn } from "@/lib/utils"
+import {
+  stockTransferStatusBadgeClassName,
+  stockTransferStatusLabels,
+  type StockTransfer,
+} from "@/types/stock-transfer"
+
+export type StockTransferRole = "head-office" | "branch"
 
 type StockTransferColumnActions = {
-  onView: (transfer: StockTransfer) => void
+  role: StockTransferRole
   onEdit: (transfer: StockTransfer) => void
+  onDispatch: (transfer: StockTransfer) => void
+  onReceive: (transfer: StockTransfer) => void
+  onReturn: (transfer: StockTransfer) => void
 }
 
 function displayValue(value: string) {
@@ -25,8 +42,11 @@ function formatEntryBy(value: string) {
 }
 
 export function createStockTransferColumns({
-  onView,
+  role,
   onEdit,
+  onDispatch,
+  onReceive,
+  onReturn,
 }: StockTransferColumnActions): ColumnDef<StockTransfer>[] {
   return [
     {
@@ -79,6 +99,20 @@ export function createStockTransferColumns({
           <ArrowRightIcon className="size-3.5 text-muted-foreground" />
           <span className="font-medium">{row.original.toBranch}</span>
         </div>
+      ),
+    },
+    {
+      accessorKey: "status",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Status" />
+      ),
+      cell: ({ row }) => (
+        <Badge
+          variant="outline"
+          className={cn(stockTransferStatusBadgeClassName[row.original.status])}
+        >
+          {stockTransferStatusLabels[row.original.status]}
+        </Badge>
       ),
     },
     {
@@ -145,26 +179,57 @@ export function createStockTransferColumns({
       header: () => <span className="sr-only">Actions</span>,
       cell: ({ row }) => {
         const transfer = row.original
+        const status = transfer.status
+
         return (
           <div className="flex items-center justify-end gap-1">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-7 px-2 text-xs font-normal text-muted-foreground hover:text-foreground"
-              onClick={() => onView(transfer)}
-            >
-              <EyeIcon className="size-3.5" />
-              View
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-7 px-2 text-xs font-normal text-muted-foreground hover:text-foreground"
-              onClick={() => onEdit(transfer)}
-            >
-              <PencilIcon className="size-3.5" />
-              Edit
-            </Button>
+            {role === "head-office" && status === "approved" ? (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-7 px-2 text-xs font-normal text-muted-foreground hover:bg-info/10 hover:text-info"
+                onClick={() => onDispatch(transfer)}
+              >
+                <TruckIcon className="size-3.5" />
+                Dispatch
+              </Button>
+            ) : null}
+
+            {role === "branch" && status === "requested" ? (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-7 px-2 text-xs font-normal text-muted-foreground hover:text-foreground"
+                onClick={() => onEdit(transfer)}
+              >
+                <PencilIcon className="size-3.5" />
+                Edit
+              </Button>
+            ) : null}
+
+            {role === "branch" && status === "in-transit" ? (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-7 px-2 text-xs font-normal text-muted-foreground hover:bg-success/10 hover:text-success"
+                onClick={() => onReceive(transfer)}
+              >
+                <CheckIcon className="size-3.5" />
+                Confirm receipt
+              </Button>
+            ) : null}
+
+            {role === "branch" && status === "completed" ? (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-7 px-2 text-xs font-normal text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                onClick={() => onReturn(transfer)}
+              >
+                <Undo2Icon className="size-3.5" />
+                Return
+              </Button>
+            ) : null}
           </div>
         )
       },

@@ -36,7 +36,7 @@ import {
   type PaymentPeriod,
   type PlanId,
 } from "@/lib/onboarding/plans"
-import { adminHomeAfterOrgCreated } from "@/lib/admin/organization-created"
+import { homeAfterOrgCreated } from "@/lib/organizations/home-after-created"
 import {
   apiJson,
   restoreOnboardingSessionFromClient,
@@ -247,7 +247,7 @@ export default function PlanSelectionForm() {
 
       if (!planRes.checkoutRequired) {
         setPaymentSubStatus("active")
-        router.push(adminHomeAfterOrgCreated(planRes.session.companyId))
+        router.push(homeAfterOrgCreated(planRes.session.companyId))
         return
       }
 
@@ -263,7 +263,7 @@ export default function PlanSelectionForm() {
 
       if (payRes.alreadyActive) {
         setPaymentSubStatus("active")
-        router.push(adminHomeAfterOrgCreated(payRes.session.companyId))
+        router.push(homeAfterOrgCreated(payRes.session.companyId))
         return
       }
 

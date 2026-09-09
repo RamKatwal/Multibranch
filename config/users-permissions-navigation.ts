@@ -7,12 +7,12 @@ export type UsersPermissionsNavItem = {
 export const usersPermissionsNavigation: UsersPermissionsNavItem[] = [
   {
     title: "User Roles",
-    href: "/admin/settings/users-permissions/groups",
+    href: "/configurations/users/group-management",
     description: "Create user roles used for permission assignment.",
   },
   {
     title: "User Management",
-    href: "/admin/settings/users-permissions/users",
+    href: "/configurations/users/user-management",
     description: "Invite users and assign them to entities with a role.",
   },
 ]
@@ -24,5 +24,8 @@ export function getUsersPermissionsItemByHref(
 }
 
 export function getDefaultUsersPermissionsHref() {
-  return usersPermissionsNavigation[0]?.href ?? "/admin/settings/users-permissions/groups"
+  return (
+    usersPermissionsNavigation[0]?.href ??
+    "/configurations/users/group-management"
+  )
 }

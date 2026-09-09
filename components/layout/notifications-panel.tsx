@@ -22,8 +22,12 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer"
-import { sampleNotifications } from "@/lib/mock/notifications"
 import { useSettingsModal } from "@/components/settings/settings-modal-provider"
+import {
+  getAllNotifications,
+  markAllNotificationsRead,
+  NOTIFICATIONS_CHANGED_EVENT,
+} from "@/lib/notifications/storage"
 import { cn } from "@/lib/utils"
 import type {
   AppNotification,
@@ -260,13 +264,31 @@ export function NotificationsPanel({
   open,
   onOpenChange,
 }: NotificationsPanelProps) {
-  const [notifications, setNotifications] = React.useState(sampleNotifications)
+  const [notifications, setNotifications] = React.useState<AppNotification[]>(
+    []
+  )
   const { openSettings } = useSettingsModal()
+
+  const refresh = React.useCallback(() => {
+    setNotifications(getAllNotifications())
+  }, [])
+
+  React.useEffect(() => {
+    refresh()
+    window.addEventListener(NOTIFICATIONS_CHANGED_EVENT, refresh)
+    return () => {
+      window.removeEventListener(NOTIFICATIONS_CHANGED_EVENT, refresh)
+    }
+  }, [refresh])
+
+  React.useEffect(() => {
+    if (open) refresh()
+  }, [open, refresh])
 
   const unreadCount = notifications.filter((item) => !item.read).length
 
   function markAllAsRead() {
-    setNotifications((prev) => prev.map((item) => ({ ...item, read: true })))
+    setNotifications(markAllNotificationsRead())
   }
 
   return (

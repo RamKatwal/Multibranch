@@ -17,7 +17,7 @@ const organizationLocations: Record<string, string> = {
 const ADDED_ORGS_KEY = "providhy_added_home_organizations"
 const ADDED_ORGS_EVENT = "providhy-added-home-organizations"
 
-/** Static seed orgs shown on admin home. */
+/** Static seed orgs (subscriptions with location). */
 export const homeOrganizations: HomeOrganization[] = mockSubscriptions.map(
   (subscription) => ({
     ...subscription,

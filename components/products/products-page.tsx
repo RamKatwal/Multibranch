@@ -32,6 +32,10 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Tabs } from "@/components/ui/tabs"
 import { getBranchesByIds } from "@/lib/companies/options"
+import {
+  getActiveBranchContext,
+  getBranchStockMap,
+} from "@/lib/inventory/branch-stock"
 import { mockProducts, productCategories } from "@/lib/mock/products"
 import { cn } from "@/lib/utils"
 import type { Product, ProductStatus } from "@/types/product"
@@ -46,7 +50,16 @@ export function ProductsPage() {
   const [typeFilter, setTypeFilter] = React.useState<TypeFilter>("all")
   const [categoryFilter, setCategoryFilter] = React.useState("All")
   const [rowSize, setRowSize] = React.useState<DataTableRowSize>("md")
+  const [stockMap, setStockMap] = React.useState<Record<string, number> | null>(
+    null
+  )
   const { isFullscreen, toggleFullscreen } = useDataTableFullscreen()
+
+  React.useEffect(() => {
+    const { branch } = getActiveBranchContext()
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setStockMap(branch ? getBranchStockMap(branch.id) : null)
+  }, [])
 
   const activeCount = products.filter((item) => item.status === "active").length
   const inactiveCount = products.filter(
@@ -61,19 +74,26 @@ export function ProductsPage() {
     return getBranchesByIds(Array.from(branchSet))
   }, [products])
 
-  // Multi-filtered data: status + branch + type + category
+  // Multi-filtered data: status + branch + type + category. Quantity shown is
+  // the on-hand stock for the branch the user is currently acting as.
   const filteredData = React.useMemo(
     () =>
-      products.filter((item) => {
-        if (item.status !== statusTab) return false
-        if (branchFilter !== "all" && item.createdBranchId !== branchFilter)
-          return false
-        if (typeFilter !== "all" && item.type !== typeFilter) return false
-        if (categoryFilter !== "All" && item.category !== categoryFilter)
-          return false
-        return true
-      }),
-    [products, statusTab, branchFilter, typeFilter, categoryFilter]
+      products
+        .filter((item) => {
+          if (item.status !== statusTab) return false
+          if (branchFilter !== "all" && item.createdBranchId !== branchFilter)
+            return false
+          if (typeFilter !== "all" && item.type !== typeFilter) return false
+          if (categoryFilter !== "All" && item.category !== categoryFilter)
+            return false
+          return true
+        })
+        .map((item) =>
+          stockMap
+            ? { ...item, totalQuantity: stockMap[item.id] ?? item.totalQuantity }
+            : item
+        ),
+    [products, statusTab, branchFilter, typeFilter, categoryFilter, stockMap]
   )
 
   const isAnyFilterActive =

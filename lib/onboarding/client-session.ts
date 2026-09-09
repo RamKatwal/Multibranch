@@ -25,7 +25,7 @@ import { persistBranchLimit } from "@/lib/branches/subscription"
 import {
   locationFromCompanyDraft,
   upsertHomeOrganizationFromSubscription,
-} from "@/lib/admin/home-organizations"
+} from "@/lib/organizations/home-organizations"
 
 /** Mirror server cookie session into localStorage for resume + optimistic UX. */
 export function saveOnboardingSessionClient(

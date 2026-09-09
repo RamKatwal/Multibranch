@@ -1,9 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { usePathname, useRouter } from "next/navigation"
+import { useRouter } from "next/navigation"
 
-import { isMainAdmin } from "@/lib/auth/current-user"
 import {
   goToShortcuts,
   quickCreateShortcuts,
@@ -40,7 +39,6 @@ export function KeyboardShortcutsProvider({
   children: React.ReactNode
 }) {
   const router = useRouter()
-  const pathname = usePathname()
   const [commandOpen, setCommandOpen] = React.useState(false)
   const [createOpen, setCreateOpen] = React.useState(false)
   const [helpOpen, setHelpOpen] = React.useState(false)
@@ -119,15 +117,6 @@ export function KeyboardShortcutsProvider({
         return
       }
 
-      // Mod+Shift+A → switch Head Office ↔ Admin (main admin only)
-      if (mod && event.shiftKey && lower === "a") {
-        if (!isMainAdmin()) return
-        event.preventDefault()
-        clearSequence()
-        router.push(pathname.startsWith("/admin") ? "/" : "/admin")
-        return
-      }
-
       // Mod+F → page search (don't steal browser find when no page search)
       if (mod && !event.shiftKey && lower === "f") {
         if (typing) return
@@ -201,7 +190,6 @@ export function KeyboardShortcutsProvider({
     openCommandPalette,
     openQuickCreate,
     openShortcutsHelp,
-    pathname,
     router,
   ])
 

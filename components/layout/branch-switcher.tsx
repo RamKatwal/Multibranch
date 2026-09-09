@@ -11,7 +11,7 @@ import { AnimatePresence, m } from "framer-motion"
 import { toast } from "sonner"
 
 import { IconStack } from "@/components/reui/icon-stack"
-import { SetupProgressBar } from "@/components/admin/setup/setup-progress-bar"
+import { SetupProgressBar } from "@/components/shared/setup-progress-bar"
 import { Badge } from "@/components/ui/badge"
 import {
   Dialog,

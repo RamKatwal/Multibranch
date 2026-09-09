@@ -1,14 +1,25 @@
 export const STOCK_TRANSFER_STATUSES = [
-  "completed",
+  "requested",
+  "approved",
   "in-transit",
-  "draft",
+  "completed",
+  "returned",
+  "rejected",
 ] as const
 
 export type StockTransferStatus = (typeof STOCK_TRANSFER_STATUSES)[number]
 
+/** Workflow actions that move a transfer between statuses. */
+export type StockTransferAction =
+  | "approve"
+  | "reject"
+  | "dispatch"
+  | "receive"
+  | "return"
+
 export type StockTransferItem = {
   id: string
-  productId?: string
+  productId: string
   name: string
   quantity: number
   rate: number
@@ -19,17 +30,24 @@ export const stockTransferStatusBadgeClassName: Record<
   StockTransferStatus,
   string
 > = {
-  completed: "border-transparent bg-success/15 text-success",
+  requested: "border-transparent bg-amber-500/15 text-amber-600 dark:text-amber-400",
+  approved: "border-transparent bg-emerald-500/15 text-emerald-600 dark:text-emerald-400",
   "in-transit": "border-transparent bg-info/15 text-info",
-  draft: "border-border text-muted-foreground",
+  completed: "border-transparent bg-success/15 text-success",
+  returned: "border-border text-muted-foreground",
+  rejected: "border-transparent bg-destructive/15 text-destructive",
 }
 
 export type StockTransfer = {
   id: string
   fromBranch: string
+  fromBranchId: string
   toBranch: string
+  toBranchId: string
   date: string
   remarks: string
+  /** Required when status is `rejected`. */
+  rejectionReason?: string
   items: StockTransferItem[]
   totalQuantity: number
   totalAmount: number
@@ -38,7 +56,10 @@ export type StockTransfer = {
 }
 
 export const stockTransferStatusLabels: Record<StockTransferStatus, string> = {
-  completed: "Completed",
+  requested: "Requested",
+  approved: "Approved",
   "in-transit": "In Transit",
-  draft: "Draft",
+  completed: "Completed",
+  returned: "Returned",
+  rejected: "Rejected",
 }
