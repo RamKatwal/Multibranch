@@ -1,5 +1,5 @@
-import { PageHeader } from "@/components/layout/page-header"
+import { ReportsPage } from "@/components/reports/reports-page"
 
-export default function ReportsPage() {
-  return <PageHeader title="Reports" />
+export default function ReportsRoute() {
+  return <ReportsPage />
 }
