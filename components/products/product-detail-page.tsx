@@ -20,6 +20,11 @@ import {
 } from "lucide-react"
 import { toast } from "sonner"
 
+import {
+  dataTableClassNames,
+  getDataTableBodyCellClass,
+  getDataTableHeaderCellClass,
+} from "@/components/data-table/data-table-styles"
 import { PageHeader } from "@/components/layout/page-header"
 import { ProductListPanel } from "@/components/products/product-list-panel"
 import { Badge } from "@/components/ui/badge"
@@ -49,7 +54,9 @@ import {
   getActiveBranchContext,
   getBranchProductStock,
   getProductBranchStock,
+  getProductStockTransferHistory,
   type ProductBranchStock,
+  type ProductStockTransferRecord,
 } from "@/lib/inventory/branch-stock"
 import {
   getProductDetailById,
@@ -63,6 +70,10 @@ import {
   type ProductDetail,
   type ProductStatus,
 } from "@/types/product"
+import {
+  stockTransferStatusBadgeClassName,
+  stockTransferStatusLabels,
+} from "@/types/stock-transfer"
 
 function statusBadgeClassName(status: ProductStatus) {
   return status === "active"
@@ -146,7 +157,7 @@ function StatTile({
   return (
     <div
       className={cn(
-        "flex items-center gap-3 rounded-lg border p-3",
+        "flex items-center gap-3 rounded-lg border bg-card p-3",
         accent && "border-primary/30 bg-primary/5"
       )}
     >
@@ -187,57 +198,69 @@ function TransactionsCard({
   limit,
   ledgerHref,
 }: {
-  title: string
+  title?: string
   transactions: ProductTransaction[]
   limit?: number
   ledgerHref?: string
 }) {
   const rows = limit ? transactions.slice(0, limit) : transactions
+  const showHeader = Boolean(title || ledgerHref)
 
   return (
-    <div className="overflow-hidden rounded-lg bg-card ring-1 ring-foreground/10">
-      <div className="flex items-center justify-between gap-3 border-b px-4 py-3">
-        <div className="flex items-center gap-2">
-          <h3 className="text-sm font-medium">{title}</h3>
-          <span className="rounded-md bg-muted px-1.5 py-0.5 text-xs font-medium tabular-nums text-muted-foreground">
-            {transactions.length}
-          </span>
+    <div className="overflow-hidden rounded-xl bg-card ring-1 ring-foreground/10">
+      {showHeader ? (
+        <div className="flex items-center justify-between gap-3 border-b px-3 py-2.5">
+          <div className="flex items-center gap-2">
+            {title ? <h3 className="text-sm font-medium">{title}</h3> : null}
+            <span className="rounded-md bg-muted px-1.5 py-0.5 text-xs font-medium tabular-nums text-muted-foreground">
+              {transactions.length}
+            </span>
+          </div>
+          {ledgerHref ? (
+            <Button
+              variant="link"
+              size="sm"
+              className="h-auto gap-1 px-0 text-xs"
+              nativeButton={false}
+              render={<Link href={ledgerHref} />}
+            >
+              Product ledger
+              <ArrowRightIcon className="size-3.5" />
+            </Button>
+          ) : null}
         </div>
-        {ledgerHref ? (
-          <Button
-            variant="link"
-            size="sm"
-            className="h-auto gap-1 px-0 text-xs"
-            nativeButton={false}
-            render={<Link href={ledgerHref} />}
-          >
-            Product ledger
-            <ArrowRightIcon className="size-3.5" />
-          </Button>
-        ) : null}
-      </div>
+      ) : null}
 
       {rows.length ? (
-        <div className="thin-scrollbar overflow-x-auto">
-          <table className="w-full text-sm">
+        <div className="thin-scrollbar overflow-x-auto" data-slot="data-table">
+          <table className={dataTableClassNames.table}>
             <thead>
-              <tr className="border-b text-[11px] uppercase tracking-wide text-muted-foreground">
-                <th className="px-4 py-2 text-left font-medium">Date</th>
-                <th className="px-4 py-2 text-left font-medium">Reference</th>
-                <th className="px-4 py-2 text-left font-medium">Type</th>
-                <th className="px-4 py-2 text-right font-medium">Quantity</th>
+              <tr className={dataTableClassNames.headerRow}>
+                <th className={getDataTableHeaderCellClass()}>Date</th>
+                <th className={getDataTableHeaderCellClass()}>Reference</th>
+                <th className={getDataTableHeaderCellClass()}>Type</th>
+                <th
+                  className={cn(getDataTableHeaderCellClass(), "text-right")}
+                >
+                  Quantity
+                </th>
               </tr>
             </thead>
             <tbody>
               {rows.map((txn) => (
-                <tr key={txn.id} className="border-b last:border-0">
-                  <td className="px-4 py-2.5 whitespace-nowrap text-muted-foreground tabular-nums">
+                <tr key={txn.id} className={dataTableClassNames.bodyRow}>
+                  <td
+                    className={cn(
+                      getDataTableBodyCellClass(),
+                      "text-muted-foreground tabular-nums"
+                    )}
+                  >
                     {formatLongDate(txn.date)}
                   </td>
-                  <td className="px-4 py-2.5 font-medium">
+                  <td className={cn(getDataTableBodyCellClass(), "font-medium")}>
                     <span className="font-mono text-xs">{txn.reference}</span>
                   </td>
-                  <td className="px-4 py-2.5">
+                  <td className={getDataTableBodyCellClass()}>
                     <Badge
                       variant="outline"
                       className={transactionTypeBadgeClassName(txn.type)}
@@ -247,7 +270,8 @@ function TransactionsCard({
                   </td>
                   <td
                     className={cn(
-                      "px-4 py-2.5 text-right font-medium tabular-nums",
+                      getDataTableBodyCellClass(),
+                      "text-right font-medium tabular-nums",
                       txn.quantity >= 0 ? "text-success" : "text-destructive"
                     )}
                   >
@@ -261,6 +285,103 @@ function TransactionsCard({
       ) : (
         <div className="px-4 py-10 text-center text-sm text-muted-foreground">
           No transactions recorded for this product yet.
+        </div>
+      )}
+    </div>
+  )
+}
+
+function stockTransferTypeBadgeClassName(type: ProductStockTransferRecord["type"]) {
+  return type === "in"
+    ? "border-transparent bg-success/15 text-success"
+    : "border-transparent bg-destructive/15 text-destructive"
+}
+
+function StockTransfersCard({
+  transfers,
+}: {
+  transfers: ProductStockTransferRecord[]
+}) {
+  return (
+    <div className="overflow-hidden rounded-xl bg-card ring-1 ring-foreground/10">
+      <div className="flex items-center justify-between gap-3 border-b px-3 py-2.5">
+        <div className="flex items-center gap-2">
+          <h3 className="text-sm font-medium">Stock Transfer</h3>
+          <span className="rounded-md bg-muted px-1.5 py-0.5 text-xs font-medium tabular-nums text-muted-foreground">
+            {transfers.length}
+          </span>
+        </div>
+      </div>
+
+      {transfers.length ? (
+        <div className="thin-scrollbar overflow-x-auto" data-slot="data-table">
+          <table className={dataTableClassNames.table}>
+            <thead>
+              <tr className={dataTableClassNames.headerRow}>
+                <th className={getDataTableHeaderCellClass()}>Date</th>
+                <th className={getDataTableHeaderCellClass()}>From</th>
+                <th className={getDataTableHeaderCellClass()}>To</th>
+                <th className={getDataTableHeaderCellClass()}>Type</th>
+                <th
+                  className={cn(getDataTableHeaderCellClass(), "text-right")}
+                >
+                  Number
+                </th>
+                <th className={getDataTableHeaderCellClass()}>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {transfers.map((transfer) => (
+                <tr key={transfer.id} className={dataTableClassNames.bodyRow}>
+                  <td
+                    className={cn(
+                      getDataTableBodyCellClass(),
+                      "text-muted-foreground tabular-nums"
+                    )}
+                  >
+                    {formatLongDate(transfer.date)}
+                  </td>
+                  <td className={getDataTableBodyCellClass()}>
+                    {transfer.fromBranch}
+                  </td>
+                  <td className={getDataTableBodyCellClass()}>
+                    {transfer.toBranch}
+                  </td>
+                  <td className={getDataTableBodyCellClass()}>
+                    <Badge
+                      variant="outline"
+                      className={stockTransferTypeBadgeClassName(transfer.type)}
+                    >
+                      {transfer.type === "in" ? "Stock In" : "Stock Out"}
+                    </Badge>
+                  </td>
+                  <td
+                    className={cn(
+                      getDataTableBodyCellClass(),
+                      "text-right font-medium tabular-nums",
+                      transfer.quantity >= 0 ? "text-success" : "text-destructive"
+                    )}
+                  >
+                    {transfer.quantity >= 0
+                      ? `+${transfer.quantity}`
+                      : transfer.quantity}
+                  </td>
+                  <td className={getDataTableBodyCellClass()}>
+                    <Badge
+                      variant="outline"
+                      className={stockTransferStatusBadgeClassName[transfer.status]}
+                    >
+                      {stockTransferStatusLabels[transfer.status]}
+                    </Badge>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div className="px-4 py-10 text-center text-sm text-muted-foreground">
+          No stock transfers recorded for this product yet.
         </div>
       )}
     </div>
@@ -313,32 +434,42 @@ function BranchesStockCard({
         />
       </div>
 
-      <div className="overflow-hidden rounded-lg bg-card ring-1 ring-foreground/10">
-        <div className="flex items-center justify-between gap-3 border-b px-4 py-3">
-          <div className="flex items-center gap-2">
-            <h3 className="text-sm font-medium">Branch Stock</h3>
-            <span className="rounded-md bg-muted px-1.5 py-0.5 text-xs font-medium tabular-nums text-muted-foreground">
-              {branches.length}
-            </span>
-          </div>
-        </div>
-
+      <div className="overflow-hidden rounded-xl bg-card ring-1 ring-foreground/10">
         {branches.length ? (
-          <div className="thin-scrollbar overflow-x-auto">
-            <table className="w-full text-sm">
+          <div className="thin-scrollbar overflow-x-auto" data-slot="data-table">
+            <table className={dataTableClassNames.table}>
               <thead>
-                <tr className="border-b text-[11px] uppercase tracking-wide text-muted-foreground">
-                  <th className="px-4 py-2 text-left font-medium">Branch</th>
-                  <th className="px-4 py-2 text-right font-medium">Available</th>
-                  <th className="px-4 py-2 text-right font-medium">Stock In</th>
-                  <th className="px-4 py-2 text-right font-medium">Stock Out</th>
-                  <th className="px-4 py-2 text-right font-medium">Total</th>
+                <tr className={dataTableClassNames.headerRow}>
+                  <th className={getDataTableHeaderCellClass()}>Branch</th>
+                  <th
+                    className={cn(getDataTableHeaderCellClass(), "text-right")}
+                  >
+                    Available
+                  </th>
+                  <th
+                    className={cn(getDataTableHeaderCellClass(), "text-right")}
+                  >
+                    Stock In
+                  </th>
+                  <th
+                    className={cn(getDataTableHeaderCellClass(), "text-right")}
+                  >
+                    Stock Out
+                  </th>
+                  <th
+                    className={cn(getDataTableHeaderCellClass(), "text-right")}
+                  >
+                    Total
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {branches.map((row) => (
-                  <tr key={row.branchId} className="border-b last:border-0">
-                    <td className="px-4 py-2.5">
+                  <tr
+                    key={row.branchId}
+                    className={dataTableClassNames.bodyRow}
+                  >
+                    <td className={getDataTableBodyCellClass("md", true)}>
                       <div className="flex min-w-0 flex-col">
                         <span className="font-medium">{row.branchName}</span>
                         <span className="font-mono text-[11px] text-muted-foreground">
@@ -346,34 +477,74 @@ function BranchesStockCard({
                         </span>
                       </div>
                     </td>
-                    <td className="px-4 py-2.5 text-right font-medium tabular-nums">
+                    <td
+                      className={cn(
+                        getDataTableBodyCellClass(),
+                        "text-right font-medium tabular-nums"
+                      )}
+                    >
                       {row.availableQuantity}
                     </td>
-                    <td className="px-4 py-2.5 text-right font-medium tabular-nums text-success">
+                    <td
+                      className={cn(
+                        getDataTableBodyCellClass(),
+                        "text-right font-medium tabular-nums text-success"
+                      )}
+                    >
                       +{row.stockIn}
                     </td>
-                    <td className="px-4 py-2.5 text-right font-medium tabular-nums text-destructive">
+                    <td
+                      className={cn(
+                        getDataTableBodyCellClass(),
+                        "text-right font-medium tabular-nums text-destructive"
+                      )}
+                    >
                       -{row.stockOut}
                     </td>
-                    <td className="px-4 py-2.5 text-right font-medium tabular-nums">
+                    <td
+                      className={cn(
+                        getDataTableBodyCellClass(),
+                        "text-right font-medium tabular-nums"
+                      )}
+                    >
                       {row.totalQuantity}
                     </td>
                   </tr>
                 ))}
               </tbody>
               <tfoot>
-                <tr className="border-t bg-muted/40 text-sm font-semibold">
-                  <td className="px-4 py-2.5">Overall</td>
-                  <td className="px-4 py-2.5 text-right tabular-nums">
+                <tr className="border-t border-border bg-muted/40 font-medium">
+                  <td className={getDataTableBodyCellClass()}>Overall</td>
+                  <td
+                    className={cn(
+                      getDataTableBodyCellClass(),
+                      "text-right tabular-nums"
+                    )}
+                  >
                     {totals.availableQuantity}
                   </td>
-                  <td className="px-4 py-2.5 text-right tabular-nums text-success">
+                  <td
+                    className={cn(
+                      getDataTableBodyCellClass(),
+                      "text-right tabular-nums text-success"
+                    )}
+                  >
                     +{totals.stockIn}
                   </td>
-                  <td className="px-4 py-2.5 text-right tabular-nums text-destructive">
+                  <td
+                    className={cn(
+                      getDataTableBodyCellClass(),
+                      "text-right tabular-nums text-destructive"
+                    )}
+                  >
                     -{totals.stockOut}
                   </td>
-                  <td className="px-4 py-2.5 text-right tabular-nums">
+                  <td
+                    className={cn(
+                      getDataTableBodyCellClass(),
+                      "text-right tabular-nums"
+                    )}
+                  >
                     {totals.totalQuantity}
                   </td>
                 </tr>
@@ -408,6 +579,7 @@ export function ProductDetailPage({ productId }: { productId: string }) {
     id: string
     name: string
   } | null>(null)
+  const [isHeadOffice, setIsHeadOffice] = React.useState(false)
 
   if (productId !== loadedId) {
     setLoadedId(productId)
@@ -416,9 +588,10 @@ export function ProductDetailPage({ productId }: { productId: string }) {
   }
 
   React.useEffect(() => {
-    const { branch } = getActiveBranchContext()
+    const { branch, isHeadOffice: ho } = getActiveBranchContext()
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setActiveBranch(branch ? { id: branch.id, name: branch.name } : null)
+    setIsHeadOffice(ho)
   }, [])
 
   const transactions = React.useMemo(
@@ -429,6 +602,14 @@ export function ProductDetailPage({ productId }: { productId: string }) {
   const branchStock = React.useMemo(
     () => getProductBranchStock(productId),
     [productId]
+  )
+
+  const stockTransferHistory = React.useMemo(
+    () =>
+      activeBranch
+        ? getProductStockTransferHistory(productId, activeBranch.id)
+        : [],
+    [productId, activeBranch]
   )
 
   const branchOnHand = activeBranch
@@ -579,12 +760,16 @@ export function ProductDetailPage({ productId }: { productId: string }) {
         />
 
         <Tabs
-          value={activeTab}
+          value={
+            !isHeadOffice && activeTab === "branches" ? "overview" : activeTab
+          }
           onValueChange={(value) => setActiveTab(String(value))}
         >
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="branches">Branches</TabsTrigger>
+            {isHeadOffice ? (
+              <TabsTrigger value="branches">Branches</TabsTrigger>
+            ) : null}
             <TabsTrigger value="transactions">
               Transaction History
             </TabsTrigger>
@@ -723,15 +908,20 @@ export function ProductDetailPage({ productId }: { productId: string }) {
             </div>
           </TabsContent>
 
-          <TabsContent value="branches" className="mt-1">
-            <BranchesStockCard branches={branchStock} />
-          </TabsContent>
+          {isHeadOffice ? (
+            <TabsContent value="branches" className="mt-1">
+              <BranchesStockCard branches={branchStock} />
+            </TabsContent>
+          ) : null}
 
           <TabsContent value="transactions" className="mt-1">
-            <TransactionsCard
-              title="Transaction History"
-              transactions={transactions}
-            />
+            <div className="flex flex-col gap-4">
+              <TransactionsCard
+                title="Transaction History"
+                transactions={transactions}
+              />
+              <StockTransfersCard transfers={stockTransferHistory} />
+            </div>
           </TabsContent>
 
           <TabsContent value="documents" className="mt-1">

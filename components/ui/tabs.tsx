@@ -102,7 +102,7 @@ function TabsTrigger({
       data-slot="tabs-trigger"
       className={cn(
         buttonVariants({ variant: "outline", size: "sm" }),
-        "group/tabs-trigger",
+        "group/tabs-trigger bg-card",
         "data-active:border-transparent data-active:bg-primary data-active:text-primary-foreground data-active:hover:bg-primary/80",
         "dark:data-active:border-transparent dark:data-active:bg-primary dark:data-active:text-primary-foreground",
         className

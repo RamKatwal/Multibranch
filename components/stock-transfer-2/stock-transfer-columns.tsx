@@ -16,16 +16,15 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { formatCurrency, formatDate } from "@/lib/format"
 import { cn } from "@/lib/utils"
 import {
-  isStockTransferDestination,
-  isStockTransferRequester,
-  isStockTransferSource,
   stockTransferStatusBadgeClassName,
   stockTransferStatusLabels,
   type StockTransfer,
 } from "@/types/stock-transfer"
 
+export type StockTransferRole = "head-office" | "branch"
+
 type StockTransferColumnActions = {
-  currentBranchId: string
+  role: StockTransferRole
   onEdit: (transfer: StockTransfer) => void
   onDispatch: (transfer: StockTransfer) => void
   onReceive: (transfer: StockTransfer) => void
@@ -43,7 +42,7 @@ function formatEntryBy(value: string) {
 }
 
 export function createStockTransferColumns({
-  currentBranchId,
+  role,
   onEdit,
   onDispatch,
   onReceive,
@@ -181,16 +180,10 @@ export function createStockTransferColumns({
       cell: ({ row }) => {
         const transfer = row.original
         const status = transfer.status
-        const isSource = isStockTransferSource(transfer, currentBranchId)
-        const isDestination = isStockTransferDestination(
-          transfer,
-          currentBranchId
-        )
-        const isRequester = isStockTransferRequester(transfer, currentBranchId)
 
         return (
           <div className="flex items-center justify-end gap-1">
-            {isSource && status === "approved" ? (
+            {role === "head-office" && status === "approved" ? (
               <Button
                 variant="ghost"
                 size="sm"
@@ -202,7 +195,7 @@ export function createStockTransferColumns({
               </Button>
             ) : null}
 
-            {isRequester && status === "requested" ? (
+            {role === "branch" && status === "requested" ? (
               <Button
                 variant="ghost"
                 size="sm"
@@ -214,7 +207,7 @@ export function createStockTransferColumns({
               </Button>
             ) : null}
 
-            {isDestination && status === "in-transit" ? (
+            {role === "branch" && status === "in-transit" ? (
               <Button
                 variant="ghost"
                 size="sm"
@@ -226,7 +219,7 @@ export function createStockTransferColumns({
               </Button>
             ) : null}
 
-            {isDestination && status === "completed" ? (
+            {role === "branch" && status === "completed" ? (
               <Button
                 variant="ghost"
                 size="sm"

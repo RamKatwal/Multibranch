@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { CheckIcon, ChevronsUpDownIcon, PackageIcon } from "lucide-react"
+import { SearchIcon } from "lucide-react"
 
 import {
   Command,
@@ -10,6 +10,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command"
+import { Input } from "@/components/ui/input"
 import {
   Popover,
   PopoverContent,
@@ -25,6 +26,7 @@ type ProductItemSelectProps = {
   excludeIds?: string[]
   disabled?: boolean
   placeholder?: string
+  emptyMessage?: string
   className?: string
   "aria-invalid"?: boolean
 }
@@ -36,6 +38,7 @@ export function ProductItemSelect({
   excludeIds = [],
   disabled,
   placeholder = "Select item…",
+  emptyMessage = "No item found.",
   className,
   "aria-invalid": ariaInvalid,
 }: ProductItemSelectProps) {
@@ -59,6 +62,12 @@ export function ProductItemSelect({
     )
   }, [available, query])
 
+  function handleOpenChange(next: boolean, eventDetails?: { reason?: string }) {
+    if (!next && eventDetails?.reason === "trigger-press") return
+    setOpen(next)
+    if (!next) setQuery("")
+  }
+
   function selectProduct(product: TransferableProduct) {
     onChange(product)
     setQuery("")
@@ -66,78 +75,58 @@ export function ProductItemSelect({
   }
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger
-        disabled={disabled}
-        render={
-          <button
-            type="button"
-            role="combobox"
-            aria-expanded={open}
-            aria-invalid={ariaInvalid}
-            disabled={disabled}
-            className={cn(
-              "flex h-9 w-full cursor-pointer items-center justify-between gap-2 rounded-md border border-input bg-transparent px-3 text-left text-sm shadow-xs outline-none transition-[color,box-shadow] select-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:bg-input/30",
-              !selected && "text-muted-foreground",
-              className
-            )}
-          />
-        }
-      >
-        <span className="flex min-w-0 items-center gap-2">
-          <PackageIcon className="size-3.5 shrink-0 text-muted-foreground" />
-          <span className="truncate">
-            {selected ? selected.name : placeholder}
-          </span>
-        </span>
-        <ChevronsUpDownIcon className="size-3.5 shrink-0 opacity-50" />
-      </PopoverTrigger>
-      <PopoverContent align="start" sideOffset={6} className="p-0">
-        <Command shouldFilter={false}>
-          <div className="border-b p-2">
-            <input
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search items…"
-              className="flex h-8 w-full rounded-md bg-transparent px-2 text-sm outline-none placeholder:text-muted-foreground"
-              autoFocus
+    <div className={cn("relative w-full", className)}>
+      <Popover open={open} onOpenChange={handleOpenChange}>
+        <PopoverTrigger
+          nativeButton={false}
+          disabled={disabled}
+          render={
+            <Input
+              role="combobox"
+              aria-expanded={open}
+              aria-autocomplete="list"
+              aria-invalid={ariaInvalid}
+              disabled={disabled}
+              autoComplete="off"
+              placeholder={open ? "Search items…" : placeholder}
+              className="cursor-pointer pr-9"
+              value={open ? query : (selected?.name ?? "")}
+              onChange={(event) => {
+                setQuery(event.target.value)
+                if (!open) setOpen(true)
+              }}
             />
-          </div>
-          <CommandList className="max-h-64">
-            <CommandEmpty>No item found.</CommandEmpty>
-            <CommandGroup>
-              {filtered.map((product) => (
-                <CommandItem
-                  key={product.id}
-                  value={product.name}
-                  data-checked={value === product.id ? "true" : undefined}
-                  onSelect={() => selectProduct(product)}
-                  className="items-start gap-2 py-2"
-                >
-                  <CheckIcon
-                    className={cn(
-                      "mt-0.5 size-3.5 shrink-0",
-                      value === product.id ? "opacity-100" : "opacity-0"
-                    )}
-                  />
-                  <span className="min-w-0 flex-1">
-                    <span className="block truncate font-medium">
-                      {product.name}
+          }
+        />
+        <PopoverContent
+          align="start"
+          sideOffset={6}
+          initialFocus={false}
+          className="w-(--anchor-width) min-w-72 p-0"
+        >
+          <Command shouldFilter={false}>
+            <CommandList className="max-h-64">
+              <CommandEmpty>{emptyMessage}</CommandEmpty>
+              <CommandGroup>
+                {filtered.map((product) => (
+                  <CommandItem
+                    key={product.id}
+                    value={product.name}
+                    data-checked={value === product.id ? "true" : undefined}
+                    onSelect={() => selectProduct(product)}
+                  >
+                    <span className="min-w-0 flex-1 truncate">{product.name}</span>
+                    <span className="shrink-0 tabular-nums text-muted-foreground">
+                      {product.availableQuantity} {product.unit}
                     </span>
-                    <span className="mt-0.5 flex items-center gap-2 text-[11px] text-muted-foreground">
-                      <span>{product.category}</span>
-                      <span aria-hidden>·</span>
-                      <span className="tabular-nums">
-                        {product.availableQuantity} {product.unit} avail.
-                      </span>
-                    </span>
-                  </span>
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+      <SearchIcon className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted-foreground opacity-50" />
+    </div>
   )
 }

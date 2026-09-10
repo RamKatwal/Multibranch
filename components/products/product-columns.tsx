@@ -1,7 +1,6 @@
 "use client"
 
 import type { ColumnDef } from "@tanstack/react-table"
-import { EyeIcon, EyeOffIcon, PencilIcon } from "lucide-react"
 
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header"
 import {
@@ -12,15 +11,8 @@ import {
   StackedAvatars,
   branchAvatarItemsFromIds,
 } from "@/components/shared/stacked-avatars"
-import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
-import { productTypeLabels, type Product } from "@/types/product"
-
-type ProductColumnActions = {
-  onEdit: (product: Product) => void
-  onDeactivate: (product: Product) => void
-  onActivate: (product: Product) => void
-}
+import type { Product } from "@/types/product"
 
 function formatEntryBy(value: string) {
   const trimmed = value.trim()
@@ -28,11 +20,7 @@ function formatEntryBy(value: string) {
   return trimmed.charAt(0).toUpperCase() + trimmed.slice(1)
 }
 
-export function createProductColumns({
-  onEdit,
-  onDeactivate,
-  onActivate,
-}: ProductColumnActions): ColumnDef<Product>[] {
+export function createProductColumns(): ColumnDef<Product>[] {
   return [
     {
       id: "select",
@@ -92,17 +80,6 @@ export function createProductColumns({
       ),
     },
     {
-      accessorKey: "type",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Type" />
-      ),
-      cell: ({ row }) => (
-        <span className="text-muted-foreground">
-          {productTypeLabels[row.original.type]}
-        </span>
-      ),
-    },
-    {
       id: "createdOn",
       accessorFn: (row) =>
         row.createdBranchId
@@ -147,51 +124,6 @@ export function createProductColumns({
           {formatEntryBy(row.getValue("entryBy"))}
         </span>
       ),
-    },
-    {
-      id: "actions",
-      header: () => <span className="sr-only">Actions</span>,
-      cell: ({ row }) => {
-        const product = row.original
-        const isActive = product.status === "active"
-
-        return (
-          <div className="flex items-center justify-end gap-1">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-7 px-2 text-xs font-normal text-muted-foreground hover:text-foreground"
-              onClick={() => onEdit(product)}
-            >
-              <PencilIcon className="size-3.5" />
-              Edit
-            </Button>
-            {isActive ? (
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-7 px-2 text-xs font-normal text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
-                onClick={() => onDeactivate(product)}
-              >
-                <EyeOffIcon className="size-3.5" />
-                Deactivate
-              </Button>
-            ) : (
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-7 px-2 text-xs font-normal text-muted-foreground hover:bg-success/10 hover:text-success"
-                onClick={() => onActivate(product)}
-              >
-                <EyeIcon className="size-3.5" />
-                Activate
-              </Button>
-            )}
-          </div>
-        )
-      },
-      enableSorting: false,
-      enableHiding: false,
     },
   ]
 }

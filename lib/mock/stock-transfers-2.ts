@@ -36,9 +36,10 @@ export function getTransferableProducts(): TransferableProduct[] {
 type TransferBranch = { id: string; name: string }
 
 /**
- * Head Office holds the universal inventory pool. Transfers run between Head
- * Office and a branch (not branch-to-branch). Counterparts are resolved from
- * the live branch list so the demo works whichever company the user is in.
+ * The current demo runs with a single Head Office and a single branch. Every
+ * stock transfer is a request the branch raises against Head Office. The two
+ * branches are resolved from the live branch list so the demo works whichever
+ * company/branch set the user is signed into.
  */
 export function getTransferBranchPair(): {
   headOffice: TransferBranch
@@ -60,24 +61,6 @@ export function getTransferBranchPair(): {
   }
 }
 
-/** Other party for a transfer: Head Office sees branches; a branch sees Head Office. */
-export function getStockTransferCounterparts(
-  currentBranchId: string,
-  isHeadOffice: boolean
-): TransferBranch[] {
-  const active = readBranches().filter(
-    (branch) => branch.status === "active" && branch.id !== currentBranchId
-  )
-
-  if (isHeadOffice) {
-    return active.map((branch) => ({ id: branch.id, name: branch.name }))
-  }
-
-  const { headOffice } = getTransferBranchPair()
-  if (headOffice.id === currentBranchId) return []
-  return [{ id: headOffice.id, name: headOffice.name }]
-}
-
 const statuses: StockTransferStatus[] = [
   "requested",
   "requested",
@@ -91,20 +74,12 @@ const statuses: StockTransferStatus[] = [
 
 const entryUsers = ["ram", "farah", "gopal", "laxman", "kabita"]
 
-const branchRequestRemarks = [
+const remarksPool = [
   "Restocking retail floor",
   "Weekend demand top-up",
   "New display units required",
   "Counter stock running low",
   "Customer pre-orders pending",
-  "",
-]
-
-const hoRequestRemarks = [
-  "Pull surplus back to Head Office",
-  "Consolidate slow movers into the pool",
-  "Head Office restock from branch",
-  "Rebalance after over-shipment",
   "",
 ]
 
@@ -147,37 +122,30 @@ function buildMockStockTransfers(count: number): StockTransfer[] {
     const n = index + 1
     const items = buildItems(index, products)
 
-    // Even: branch requests stock from HO (Stock Out at HO, Stock In at branch).
-    // Odd: HO requests stock from the branch (Stock In at HO, Stock Out at branch).
-    const status = statuses[Math.floor(index / 2) % statuses.length]
-    const hoRequesting = index % 2 === 1
-    const from = hoRequesting ? branch : headOffice
-    const to = hoRequesting ? headOffice : branch
-    const remarksPool = hoRequesting ? hoRequestRemarks : branchRequestRemarks
+    const status = statuses[index % statuses.length]
 
     return {
-      id: `TRF-${pad(n)}-2082-83`,
-      fromBranch: from.name,
-      fromBranchId: from.id,
-      toBranch: to.name,
-      toBranchId: to.id,
+      id: `TRF2-${pad(n)}-2082-83`,
+      fromBranch: headOffice.name,
+      fromBranchId: headOffice.id,
+      toBranch: branch.name,
+      toBranchId: branch.id,
       date: dateForIndex(index),
       remarks: remarksPool[index % remarksPool.length],
       rejectionReason:
         status === "rejected"
-          ? `Insufficient stock at ${from.name} for the requested quantities.`
+          ? "Insufficient Head Office stock for the requested quantities."
           : undefined,
       items,
       totalQuantity: items.reduce((sum, item) => sum + item.quantity, 0),
       totalAmount: items.reduce((sum, item) => sum + item.totalPrice, 0),
       entryBy: entryUsers[index % entryUsers.length],
       status,
-      requestedByBranchId: to.id,
     }
   })
 }
 
 /** Rebuilt on each call so the branch pair reflects the current sign-in. */
-export function getMockStockTransfers(): StockTransfer[] {
-  return buildMockStockTransfers(16)
+export function getMockStockTransfers2(): StockTransfer[] {
+  return buildMockStockTransfers(12)
 }

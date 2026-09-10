@@ -5,14 +5,22 @@ import {
   ArrowRight,
   Check,
   ChevronsUpDown,
-  MapPin,
 } from "lucide-react"
 import { AnimatePresence, m } from "framer-motion"
 import { toast } from "sonner"
 
+import { useKeyboardShortcutsOptional } from "@/components/layout/keyboard-shortcuts-provider"
 import { IconStack } from "@/components/reui/icon-stack"
 import { SetupProgressBar } from "@/components/shared/setup-progress-bar"
-import { Badge } from "@/components/ui/badge"
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandShortcut,
+} from "@/components/ui/command"
 import {
   Dialog,
   DialogContent,
@@ -22,16 +30,13 @@ import {
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
   SidebarMenuButton,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { useIsMac } from "@/hooks/use-is-mac"
 import {
   readActiveBranchId,
   readBranches,
@@ -39,6 +44,7 @@ import {
   saveActiveBranchId,
 } from "@/lib/branches/storage"
 import { getBranchLocation } from "@/lib/branches/location"
+import { formatShortcutLabel } from "@/lib/keyboard/utils"
 import { mockBranches } from "@/lib/mock/branches"
 import { cn } from "@/lib/utils"
 import type { Branch } from "@/types/branch"
@@ -90,11 +96,17 @@ function BranchAvatar({
 
 export function BranchSwitcher({ className }: { className?: string }) {
   const { isMobile } = useSidebar()
+  const isMac = useIsMac()
+  const shortcuts = useKeyboardShortcutsOptional()
   const [branches, setBranches] = React.useState<Branch[]>(mockBranches)
   const [activeBranchId, setActiveBranchId] = React.useState(
     () => mockBranches[0]?.id ?? ""
   )
-  const [isDropdownOpen, setIsDropdownOpen] = React.useState(false)
+  const [localOpen, setLocalOpen] = React.useState(false)
+  const [query, setQuery] = React.useState("")
+
+  const isDropdownOpen = shortcuts?.branchSwitcherOpen ?? localOpen
+  const setIsDropdownOpen = shortcuts?.setBranchSwitcherOpen ?? setLocalOpen
 
   // Switching modal state
   const [isSwitching, setIsSwitching] = React.useState(false)
@@ -165,15 +177,42 @@ export function BranchSwitcher({ className }: { className?: string }) {
   if (!activeBranch) return null
 
   const displayedModalBranch = hasAvatarReplaced ? switchingTo : switchingFrom
+  const switchShortcut = ["Alt", "Shift", "B"] as const
+
+  function onDropdownOpenChange(open: boolean) {
+    setIsDropdownOpen(open)
+    if (!open) setQuery("")
+  }
+
+  function onPickerKeyDown(event: React.KeyboardEvent) {
+    if (event.metaKey || event.ctrlKey || event.altKey || query.trim()) return
+    if (!/^[1-9]$/.test(event.key)) return
+    const branch = accessibleBranches[Number(event.key) - 1]
+    if (!branch) return
+    event.preventDefault()
+    handleBranchClick(branch)
+  }
 
   return (
     <>
-      <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
+      <DropdownMenu open={isDropdownOpen} onOpenChange={onDropdownOpenChange}>
         <DropdownMenuTrigger
           render={
             <SidebarMenuButton
               size="lg"
-              tooltip={activeBranch.name}
+              tooltip={{
+                children: (
+                  <>
+                    <span>{activeBranch.name}</span>
+                    <kbd
+                      data-slot="kbd"
+                      className="pointer-events-none ml-1 inline-flex h-5 items-center rounded border border-background/20 bg-background/15 px-1.5 font-mono text-[10px] font-medium text-background"
+                    >
+                      {formatShortcutLabel([...switchShortcut], isMac)}
+                    </kbd>
+                  </>
+                ),
+              }}
               className={cn(
                 "h-12 cursor-pointer gap-2.5 rounded-lg px-2 data-popup-open:bg-sidebar-accent",
                 className
@@ -196,30 +235,57 @@ export function BranchSwitcher({ className }: { className?: string }) {
         <DropdownMenuContent
           side={isMobile ? "bottom" : "right"}
           align="end"
-          className="w-64"
+          className="w-72 p-0"
         >
-          <DropdownMenuGroup>
-            <DropdownMenuLabel>Branches</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            {accessibleBranches.map((branch) => (
-              <DropdownMenuItem
-                key={branch.id}
-                onClick={() => handleBranchClick(branch)}
-                className="gap-2"
-              >
-                <BranchMark branch={branch} className="size-6 text-[10px] rounded-md" />
-                <span className="flex min-w-0 flex-1 flex-col gap-0.5 leading-none">
-                  <span className="truncate font-medium">{branch.name}</span>
-                  <span className="truncate text-xs text-muted-foreground">
-                    {getBranchLocation(branch)}
-                  </span>
-                </span>
-                {branch.id === activeBranch.id ? (
-                  <Check className="size-4 shrink-0 text-foreground" />
-                ) : null}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuGroup>
+          <Command onKeyDown={onPickerKeyDown}>
+            <div className="flex items-center justify-between gap-2 px-3 pt-2.5 pb-1">
+              <p className="text-xs font-medium text-muted-foreground">
+                Branches
+              </p>
+              <kbd className="pointer-events-none inline-flex h-5 items-center rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
+                {formatShortcutLabel([...switchShortcut], isMac)}
+              </kbd>
+            </div>
+            <CommandInput
+              placeholder="Search branches..."
+              value={query}
+              onValueChange={setQuery}
+              onKeyDown={(event) => {
+                event.stopPropagation()
+                onPickerKeyDown(event)
+              }}
+            />
+            <CommandList>
+              <CommandEmpty>No branch found.</CommandEmpty>
+              <CommandGroup>
+                {accessibleBranches.map((branch, index) => (
+                  <CommandItem
+                    key={branch.id}
+                    value={`${branch.name} ${branch.code} ${getBranchLocation(branch)}`}
+                    onSelect={() => handleBranchClick(branch)}
+                    className="gap-2"
+                  >
+                    <BranchMark
+                      branch={branch}
+                      className="size-6 rounded-md text-[10px]"
+                    />
+                    <span className="flex min-w-0 flex-1 flex-col gap-0.5 leading-none">
+                      <span className="truncate font-medium">{branch.name}</span>
+                      <span className="truncate text-xs text-muted-foreground">
+                        {getBranchLocation(branch)}
+                      </span>
+                    </span>
+                    {branch.id === activeBranch.id ? (
+                      <Check className="size-4 shrink-0 text-foreground" />
+                    ) : null}
+                    {index < 9 ? (
+                      <CommandShortcut>{index + 1}</CommandShortcut>
+                    ) : null}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
         </DropdownMenuContent>
       </DropdownMenu>
 

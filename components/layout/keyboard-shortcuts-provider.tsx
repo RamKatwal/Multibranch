@@ -16,9 +16,12 @@ type KeyboardShortcutsContextValue = {
   setCreateOpen: (open: boolean) => void
   helpOpen: boolean
   setHelpOpen: (open: boolean) => void
+  branchSwitcherOpen: boolean
+  setBranchSwitcherOpen: (open: boolean) => void
   openCommandPalette: () => void
   openQuickCreate: () => void
   openShortcutsHelp: () => void
+  openBranchSwitcher: () => void
 }
 
 const KeyboardShortcutsContext =
@@ -42,6 +45,7 @@ export function KeyboardShortcutsProvider({
   const [commandOpen, setCommandOpen] = React.useState(false)
   const [createOpen, setCreateOpen] = React.useState(false)
   const [helpOpen, setHelpOpen] = React.useState(false)
+  const [branchSwitcherOpen, setBranchSwitcherOpen] = React.useState(false)
   const pendingGoRef = React.useRef(false)
   const sequenceTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(
     null
@@ -58,19 +62,29 @@ export function KeyboardShortcutsProvider({
   const openCommandPalette = React.useCallback(() => {
     setCreateOpen(false)
     setHelpOpen(false)
+    setBranchSwitcherOpen(false)
     setCommandOpen(true)
   }, [])
 
   const openQuickCreate = React.useCallback(() => {
     setCommandOpen(false)
     setHelpOpen(false)
+    setBranchSwitcherOpen(false)
     setCreateOpen(true)
   }, [])
 
   const openShortcutsHelp = React.useCallback(() => {
     setCommandOpen(false)
     setCreateOpen(false)
+    setBranchSwitcherOpen(false)
     setHelpOpen(true)
+  }, [])
+
+  const openBranchSwitcher = React.useCallback(() => {
+    setCommandOpen(false)
+    setCreateOpen(false)
+    setHelpOpen(false)
+    setBranchSwitcherOpen((open) => !open)
   }, [])
 
   React.useEffect(() => {
@@ -96,6 +110,7 @@ export function KeyboardShortcutsProvider({
         event.preventDefault()
         setCreateOpen(false)
         setHelpOpen(false)
+        setBranchSwitcherOpen(false)
         setCommandOpen((open) => !open)
         clearSequence()
         return
@@ -128,6 +143,21 @@ export function KeyboardShortcutsProvider({
         return
       }
 
+      // Alt+Shift+B → branch switcher (works for any number of branches)
+      if (event.altKey && event.shiftKey && !mod && lower === "b") {
+        if (branchSwitcherOpen) {
+          event.preventDefault()
+          setBranchSwitcherOpen(false)
+          clearSequence()
+          return
+        }
+        if (typing) return
+        event.preventDefault()
+        openBranchSwitcher()
+        clearSequence()
+        return
+      }
+
       // Alt+N → quick create menu (avoids Chrome Ctrl+N new window)
       if (event.altKey && !mod && !event.shiftKey && lower === "n") {
         if (typing) return
@@ -152,6 +182,7 @@ export function KeyboardShortcutsProvider({
           setCreateOpen(false)
           setCommandOpen(false)
           setHelpOpen(false)
+          setBranchSwitcherOpen(false)
           router.push(href)
           clearSequence()
           return
@@ -190,6 +221,8 @@ export function KeyboardShortcutsProvider({
     openCommandPalette,
     openQuickCreate,
     openShortcutsHelp,
+    openBranchSwitcher,
+    branchSwitcherOpen,
     router,
   ])
 
@@ -201,17 +234,22 @@ export function KeyboardShortcutsProvider({
       setCreateOpen,
       helpOpen,
       setHelpOpen,
+      branchSwitcherOpen,
+      setBranchSwitcherOpen,
       openCommandPalette,
       openQuickCreate,
       openShortcutsHelp,
+      openBranchSwitcher,
     }),
     [
       commandOpen,
       createOpen,
       helpOpen,
+      branchSwitcherOpen,
       openCommandPalette,
       openQuickCreate,
       openShortcutsHelp,
+      openBranchSwitcher,
     ]
   )
 

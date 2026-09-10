@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import {
   BookOpenIcon,
   FileTextIcon,
+  GitBranchIcon,
   KeyboardIcon,
   LandmarkIcon,
   LayoutDashboardIcon,
@@ -239,7 +240,7 @@ const paletteItems = buildPaletteItems()
 export function CommandSearch({ className }: { className?: string }) {
   const router = useRouter()
   const isMac = useIsMac()
-  const { commandOpen, setCommandOpen, openShortcutsHelp, openQuickCreate } =
+  const { commandOpen, setCommandOpen, openShortcutsHelp, openQuickCreate, openBranchSwitcher } =
     useKeyboardShortcuts()
 
   function runCommand(command: () => void) {
@@ -304,6 +305,16 @@ export function CommandSearch({ className }: { className?: string }) {
                 <span>Quick Create</span>
                 <CommandShortcut>
                   {formatShortcutParts(["Alt", "N"], isMac)}
+                </CommandShortcut>
+              </CommandItem>
+              <CommandItem
+                value="switch branch location workspace"
+                onSelect={() => runCommand(() => openBranchSwitcher())}
+              >
+                <GitBranchIcon />
+                <span>Switch Branch</span>
+                <CommandShortcut>
+                  {formatShortcutParts(["Alt", "Shift", "B"], isMac)}
                 </CommandShortcut>
               </CommandItem>
               <CommandItem

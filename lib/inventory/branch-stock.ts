@@ -3,7 +3,7 @@ import { readBranches, resolveActiveBranch } from "@/lib/branches/storage"
 import { getProductById, mockProducts } from "@/lib/mock/products"
 import { getAllStockTransfers } from "@/lib/stock-transfer/storage"
 import type { Branch } from "@/types/branch"
-import type { StockTransfer } from "@/types/stock-transfer"
+import type { StockTransfer, StockTransferStatus } from "@/types/stock-transfer"
 
 /**
  * Branch inventory is derived, not stored. A branch's on-hand quantity for a
@@ -49,7 +49,7 @@ export function isHeadOfficeBranchId(branchId: string): boolean {
   return branch ? isHeadOfficeBranch(branch) : false
 }
 
-function transferDelta(
+export function transferDelta(
   transfer: StockTransfer,
   branchId: string,
   productId: string
@@ -167,4 +167,47 @@ export function getProductBranchStock(productId: string): ProductBranchStock[] {
       totalQuantity: onHand,
     }
   })
+}
+
+export type ProductStockTransferRecord = {
+  id: string
+  date: string
+  fromBranch: string
+  toBranch: string
+  type: "in" | "out"
+  quantity: number
+  status: StockTransferStatus
+}
+
+/**
+ * Stock-transfer-driven movement history for a product, from the perspective
+ * of a single branch. The same transfer shows as "out" for the source branch
+ * and "in" for the destination branch once it reaches `completed` (or just
+ * "out" for the source while `in-transit`) — see `transferDelta`.
+ */
+export function getProductStockTransferHistory(
+  productId: string,
+  branchId: string
+): ProductStockTransferRecord[] {
+  const transfers = getAllStockTransfers().filter((transfer) =>
+    transfer.items.some((item) => item.productId === productId)
+  )
+
+  const records: ProductStockTransferRecord[] = []
+  for (const transfer of transfers) {
+    const delta = transferDelta(transfer, branchId, productId)
+    if (delta === 0) continue
+
+    records.push({
+      id: transfer.id,
+      date: transfer.date,
+      fromBranch: transfer.fromBranch,
+      toBranch: transfer.toBranch,
+      type: delta > 0 ? "in" : "out",
+      quantity: delta,
+      status: transfer.status,
+    })
+  }
+
+  return records.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0))
 }

@@ -31,22 +31,66 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Tabs } from "@/components/ui/tabs"
-import { getBranchesByIds } from "@/lib/companies/options"
+import { isHeadOfficeBranch } from "@/lib/branches/head-office"
+import { readBranches } from "@/lib/branches/storage"
 import {
   getActiveBranchContext,
   getBranchStockMap,
 } from "@/lib/inventory/branch-stock"
 import { mockProducts, productCategories } from "@/lib/mock/products"
 import { cn } from "@/lib/utils"
-import type { Product, ProductStatus } from "@/types/product"
+import type { Branch } from "@/types/branch"
+import {
+  productBelongsToBranch,
+  type Product,
+  type ProductStatus,
+} from "@/types/product"
 
 type TypeFilter = "all" | "goods" | "service"
+
+/** Map seed branch ids onto the live Head Office / branch list. */
+function alignProductsToLiveBranches(
+  products: Product[],
+  branches: Branch[]
+): Product[] {
+  if (branches.length === 0) return products
+
+  const headOffice =
+    branches.find((branch) => isHeadOfficeBranch(branch)) ?? branches[0]
+  const secondary =
+    branches.find((branch) => branch.id !== headOffice.id) ?? headOffice
+
+  const remap = (id: string | undefined, fallbackIndex: number) => {
+    if (!id) {
+      return fallbackIndex % 2 === 0 ? headOffice.id : secondary.id
+    }
+    if (id === "br-hq" || id === headOffice.id) return headOffice.id
+    if (id === "br-ktm-hub" || id === secondary.id) return secondary.id
+    if (branches.some((branch) => branch.id === id)) return id
+    return fallbackIndex % 2 === 0 ? headOffice.id : secondary.id
+  }
+
+  return products.map((product, index) => {
+    const createdBranchId = remap(product.createdBranchId, index)
+    const added = (product.addedBranchIds ?? []).map((id, addedIndex) =>
+      remap(id, index + addedIndex)
+    )
+    return {
+      ...product,
+      createdBranchId,
+      addedBranchIds: [...new Set(added.length > 0 ? added : [createdBranchId])],
+    }
+  })
+}
 
 export function ProductsPage() {
   const router = useRouter()
   const [products, setProducts] = React.useState<Product[]>(mockProducts)
   const [statusTab, setStatusTab] = React.useState<ProductStatus>("active")
   const [branchFilter, setBranchFilter] = React.useState("all")
+  const [isHeadOffice, setIsHeadOffice] = React.useState(true)
+  const [activeBranchId, setActiveBranchId] = React.useState<string | null>(null)
+  const [liveBranches, setLiveBranches] = React.useState<Branch[]>([])
   const [typeFilter, setTypeFilter] = React.useState<TypeFilter>("all")
   const [categoryFilter, setCategoryFilter] = React.useState("All")
   const [rowSize, setRowSize] = React.useState<DataTableRowSize>("md")
@@ -56,33 +100,41 @@ export function ProductsPage() {
   const { isFullscreen, toggleFullscreen } = useDataTableFullscreen()
 
   React.useEffect(() => {
-    const { branch } = getActiveBranchContext()
+    const { branch, isHeadOffice: ho } = getActiveBranchContext()
+    const branches = readBranches().filter((item) => item.status === "active")
     // eslint-disable-next-line react-hooks/set-state-in-effect
+    setLiveBranches(branches)
+    setIsHeadOffice(ho)
+    setActiveBranchId(branch?.id ?? null)
     setStockMap(branch ? getBranchStockMap(branch.id) : null)
+    setProducts(alignProductsToLiveBranches(mockProducts, branches))
+    // Head Office defaults to All; a branch defaults to that branch.
+    setBranchFilter(ho ? "all" : (branch?.id ?? "all"))
   }, [])
 
-  const activeCount = products.filter((item) => item.status === "active").length
-  const inactiveCount = products.filter(
+  const scopedProducts = React.useMemo(() => {
+    if (branchFilter === "all") return products
+    return products.filter((item) => productBelongsToBranch(item, branchFilter))
+  }, [products, branchFilter])
+
+  const activeCount = scopedProducts.filter((item) => item.status === "active").length
+  const inactiveCount = scopedProducts.filter(
     (item) => item.status === "inactive"
   ).length
 
-  // Available unique branches for the branch multi-filter
-  const availableBranches = React.useMemo(() => {
-    const branchSet = new Set(
-      products.map((p) => p.createdBranchId).filter(Boolean) as string[]
-    )
-    return getBranchesByIds(Array.from(branchSet))
-  }, [products])
+  // Head Office: All + every live branch. A branch: All + that branch only.
+  const filterBranches = React.useMemo(() => {
+    if (isHeadOffice) return liveBranches
+    return liveBranches.filter((branch) => branch.id === activeBranchId)
+  }, [isHeadOffice, liveBranches, activeBranchId])
 
   // Multi-filtered data: status + branch + type + category. Quantity shown is
   // the on-hand stock for the branch the user is currently acting as.
   const filteredData = React.useMemo(
     () =>
-      products
+      scopedProducts
         .filter((item) => {
           if (item.status !== statusTab) return false
-          if (branchFilter !== "all" && item.createdBranchId !== branchFilter)
-            return false
           if (typeFilter !== "all" && item.type !== typeFilter) return false
           if (categoryFilter !== "All" && item.category !== categoryFilter)
             return false
@@ -93,42 +145,29 @@ export function ProductsPage() {
             ? { ...item, totalQuantity: stockMap[item.id] ?? item.totalQuantity }
             : item
         ),
-    [products, statusTab, branchFilter, typeFilter, categoryFilter, stockMap]
+    [scopedProducts, statusTab, typeFilter, categoryFilter, stockMap]
   )
 
+  // Head Office reset/default is All; branch reset/default is that branch.
+  const defaultBranchFilter = isHeadOffice ? "all" : (activeBranchId ?? "all")
   const isAnyFilterActive =
-    branchFilter !== "all" || typeFilter !== "all" || categoryFilter !== "All"
+    branchFilter !== defaultBranchFilter ||
+    typeFilter !== "all" ||
+    categoryFilter !== "All"
 
   function handleResetFilters() {
-    setBranchFilter("all")
+    setBranchFilter(defaultBranchFilter)
     setTypeFilter("all")
     setCategoryFilter("All")
     table.setPageIndex(0)
   }
 
-  function setStatus(product: Product, status: ProductStatus) {
-    setProducts((current) =>
-      current.map((item) =>
-        item.id === product.id ? { ...item, status } : item
-      )
-    )
-  }
-
-  const columns = React.useMemo(
-    () =>
-      createProductColumns({
-        onEdit: () => {},
-        onDeactivate: (product) => setStatus(product, "inactive"),
-        onActivate: (product) => setStatus(product, "active"),
-      }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [products]
-  )
+  const columns = React.useMemo(() => createProductColumns(), [])
 
   const table = useDataTable({
     data: filteredData,
     columns,
-    pageSize: 10,
+    pageSize: 50,
     globalFilterFn: (row, _columnId, filterValue) => {
       const query = filterValue.toLowerCase()
       const item = row.original
@@ -159,7 +198,7 @@ export function ProductsPage() {
     <div className="flex flex-col gap-4">
       <PageHeader
         title="Products"
-        count={`${products.length} products`}
+        count={`${scopedProducts.length} products`}
         actions={
           <>
             <Button variant="outline" size="sm">
@@ -205,7 +244,6 @@ export function ProductsPage() {
 
             <div className="hidden h-4 w-px bg-border sm:block" />
 
-            {/* Multi-Filter: Branch */}
             <DropdownMenu>
               <DropdownMenuTrigger
                 render={
@@ -214,7 +252,7 @@ export function ProductsPage() {
                     size="sm"
                     className={cn(
                       "h-8 gap-1.5 text-xs font-normal",
-                      branchFilter !== "all" &&
+                      branchFilter !== defaultBranchFilter &&
                         "border-primary bg-primary/5 font-medium text-primary"
                     )}
                   >
@@ -222,7 +260,7 @@ export function ProductsPage() {
                     <span className="max-w-[120px] truncate">
                       {branchFilter === "all"
                         ? "Branch: All"
-                        : availableBranches.find((b) => b.id === branchFilter)
+                        : liveBranches.find((b) => b.id === branchFilter)
                             ?.name ?? "Branch"}
                     </span>
                     <ChevronDownIcon className="size-3 opacity-60" />
@@ -245,7 +283,7 @@ export function ProductsPage() {
                     <CheckIcon className="ml-auto size-4 text-primary" />
                   ) : null}
                 </DropdownMenuItem>
-                {availableBranches.map((b) => (
+                {filterBranches.map((b) => (
                   <DropdownMenuItem
                     key={b.id}
                     onClick={() => {

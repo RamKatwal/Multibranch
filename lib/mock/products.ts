@@ -19,16 +19,9 @@ export const productCategories = [
   "Product Category 2",
 ] as const
 
-const branchIdsList = [
-  "br_ht_01",
-  "br_ht_02",
-  "comp_10881-head-office",
-  "br_ev_01",
-  "br_ev_02",
-  "br_ev_03",
-  "br_ev_04",
-  "br_hq_01",
-]
+const HQ_BRANCH_ID = "br-hq"
+const KTM_BRANCH_ID = "br-ktm-hub"
+const branchIdsList = [HQ_BRANCH_ID, KTM_BRANCH_ID]
 
 export const mockProducts: Product[] = [
   {
@@ -39,8 +32,8 @@ export const mockProducts: Product[] = [
     type: "goods",
     entryBy: "ram",
     status: "active",
-    createdBranchId: "br_ht_01",
-    addedBranchIds: ["br_ht_01", "br_ht_02", "comp_10881-head-office"],
+    createdBranchId: KTM_BRANCH_ID,
+    addedBranchIds: [KTM_BRANCH_ID, HQ_BRANCH_ID],
   },
   {
     id: "PRD2",
@@ -50,8 +43,8 @@ export const mockProducts: Product[] = [
     type: "goods",
     entryBy: "admin",
     status: "active",
-    createdBranchId: "comp_10881-head-office",
-    addedBranchIds: ["comp_10881-head-office", "br_ht_01"],
+    createdBranchId: HQ_BRANCH_ID,
+    addedBranchIds: [HQ_BRANCH_ID, KTM_BRANCH_ID],
   },
   {
     id: "PRD3",
@@ -61,8 +54,8 @@ export const mockProducts: Product[] = [
     type: "goods",
     entryBy: "gopal",
     status: "active",
-    createdBranchId: "br_ht_02",
-    addedBranchIds: ["br_ht_02", "br_ht_01", "comp_10881-head-office"],
+    createdBranchId: KTM_BRANCH_ID,
+    addedBranchIds: [KTM_BRANCH_ID, HQ_BRANCH_ID],
   },
   {
     id: "PRD4",
@@ -72,8 +65,8 @@ export const mockProducts: Product[] = [
     type: "goods",
     entryBy: "farah",
     status: "active",
-    createdBranchId: "br_ev_01",
-    addedBranchIds: ["br_ev_01"],
+    createdBranchId: KTM_BRANCH_ID,
+    addedBranchIds: [KTM_BRANCH_ID],
   },
   {
     id: "PRD5",
@@ -83,8 +76,8 @@ export const mockProducts: Product[] = [
     type: "goods",
     entryBy: "ram",
     status: "active",
-    createdBranchId: "br_ht_01",
-    addedBranchIds: ["br_ht_01", "br_ht_02"],
+    createdBranchId: KTM_BRANCH_ID,
+    addedBranchIds: [KTM_BRANCH_ID],
   },
   {
     id: "PRD6",
@@ -94,8 +87,8 @@ export const mockProducts: Product[] = [
     type: "goods",
     entryBy: "laxman",
     status: "active",
-    createdBranchId: "br_ev_04",
-    addedBranchIds: ["br_ev_04"],
+    createdBranchId: KTM_BRANCH_ID,
+    addedBranchIds: [KTM_BRANCH_ID],
   },
   {
     id: "PRD7",
@@ -105,8 +98,8 @@ export const mockProducts: Product[] = [
     type: "goods",
     entryBy: "kabita",
     status: "active",
-    createdBranchId: "br_ev_03",
-    addedBranchIds: ["br_ev_03"],
+    createdBranchId: HQ_BRANCH_ID,
+    addedBranchIds: [HQ_BRANCH_ID],
   },
   {
     id: "PRD8",
@@ -116,8 +109,8 @@ export const mockProducts: Product[] = [
     type: "goods",
     entryBy: "admin",
     status: "active",
-    createdBranchId: "br_ev_02",
-    addedBranchIds: ["br_ev_02", "comp_10881-head-office"],
+    createdBranchId: KTM_BRANCH_ID,
+    addedBranchIds: [KTM_BRANCH_ID, HQ_BRANCH_ID],
   },
   {
     id: "PRD9",
@@ -127,8 +120,8 @@ export const mockProducts: Product[] = [
     type: "goods",
     entryBy: "farah",
     status: "active",
-    createdBranchId: "br_hq_01",
-    addedBranchIds: ["br_hq_01"],
+    createdBranchId: HQ_BRANCH_ID,
+    addedBranchIds: [HQ_BRANCH_ID],
   },
   {
     id: "PRD10",
@@ -138,8 +131,8 @@ export const mockProducts: Product[] = [
     type: "goods",
     entryBy: "gopal",
     status: "active",
-    createdBranchId: "br_ht_02",
-    addedBranchIds: ["br_ht_02"],
+    createdBranchId: KTM_BRANCH_ID,
+    addedBranchIds: [KTM_BRANCH_ID],
   },
   {
     id: "PRD11",
@@ -149,8 +142,8 @@ export const mockProducts: Product[] = [
     type: "goods",
     entryBy: "ram",
     status: "active",
-    createdBranchId: "br_ht_01",
-    addedBranchIds: ["br_ht_01", "br_ev_01"],
+    createdBranchId: KTM_BRANCH_ID,
+    addedBranchIds: [KTM_BRANCH_ID],
   },
   {
     id: "PRD12",
@@ -160,8 +153,8 @@ export const mockProducts: Product[] = [
     type: "service",
     entryBy: "admin",
     status: "active",
-    createdBranchId: "comp_10881-head-office",
-    addedBranchIds: ["comp_10881-head-office", "br_ht_01", "br_ht_02"],
+    createdBranchId: HQ_BRANCH_ID,
+    addedBranchIds: [HQ_BRANCH_ID, KTM_BRANCH_ID],
   },
   {
     id: "PRD13",
@@ -171,8 +164,8 @@ export const mockProducts: Product[] = [
     type: "service",
     entryBy: "laxman",
     status: "active",
-    createdBranchId: "br_ev_04",
-    addedBranchIds: ["br_ev_04"],
+    createdBranchId: KTM_BRANCH_ID,
+    addedBranchIds: [KTM_BRANCH_ID],
   },
   {
     id: "PRD14",
@@ -182,8 +175,8 @@ export const mockProducts: Product[] = [
     type: "goods",
     entryBy: "farah",
     status: "inactive",
-    createdBranchId: "br_hq_01",
-    addedBranchIds: ["br_hq_01"],
+    createdBranchId: HQ_BRANCH_ID,
+    addedBranchIds: [HQ_BRANCH_ID],
   },
   {
     id: "PRD15",
@@ -193,10 +186,10 @@ export const mockProducts: Product[] = [
     type: "goods",
     entryBy: "kabita",
     status: "inactive",
-    createdBranchId: "br_ev_03",
-    addedBranchIds: ["br_ev_03"],
+    createdBranchId: KTM_BRANCH_ID,
+    addedBranchIds: [KTM_BRANCH_ID],
   },
-  // Products 16 - 75 generated cleanly
+  // Products 16 - 75: every row gets Created on (HO or Kathmandu Hub)
   ...Array.from({ length: 60 }, (_, idx) => {
     const num = idx + 16
     const names = [
@@ -276,12 +269,12 @@ export const mockProducts: Product[] = [
       "Product Category 2",
     ]
 
-    const branch = branchIdsList[idx % branchIdsList.length]
-    const otherBranches = branchIdsList.filter((b) => b !== branch)
-    const assignedBranches = [
-      branch,
-      ...(idx % 2 === 0 ? [otherBranches[idx % otherBranches.length]] : []),
-      ...(idx % 3 === 0 ? [otherBranches[(idx + 1) % otherBranches.length]] : []),
+    const createdBranchId = branchIdsList[idx % branchIdsList.length]
+    const otherBranch =
+      createdBranchId === HQ_BRANCH_ID ? KTM_BRANCH_ID : HQ_BRANCH_ID
+    const addedBranchIds = [
+      createdBranchId,
+      ...(idx % 2 === 0 ? [otherBranch] : []),
     ]
 
     const category = categoriesList[idx % categoriesList.length]
@@ -296,8 +289,8 @@ export const mockProducts: Product[] = [
       type: isService ? ("service" as const) : ("goods" as const),
       entryBy: ["admin", "ram", "farah", "gopal", "laxman", "kabita"][idx % 6],
       status: num % 12 === 0 ? ("inactive" as const) : ("active" as const),
-      createdBranchId: branch,
-      addedBranchIds: assignedBranches,
+      createdBranchId,
+      addedBranchIds,
     }
   }),
 ]

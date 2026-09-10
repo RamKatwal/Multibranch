@@ -187,6 +187,13 @@ export const keyboardShortcuts: KeyboardShortcutDef[] = [
     category: "Global",
     availability: "available",
   },
+  {
+    id: "switch-branch",
+    keys: ["Alt", "Shift", "B"],
+    description: "Switch branch (search any number of branches)",
+    category: "Global",
+    availability: "available",
+  },
 
   // Quick Create
   {

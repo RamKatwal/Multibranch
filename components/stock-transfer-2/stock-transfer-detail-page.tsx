@@ -20,7 +20,7 @@ import {
   StockTransferActionDialog,
   type StockTransferAction,
   type StockTransferActionConfirmPayload,
-} from "@/components/stock-transfer/stock-transfer-action-dialog"
+} from "@/components/stock-transfer-2/stock-transfer-action-dialog"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -35,14 +35,11 @@ import {
   assertHeadOfficeHasStock,
   getActiveBranchContext,
 } from "@/lib/inventory/branch-stock"
-import { ACTION_TOAST, runStockTransferAction } from "@/lib/stock-transfer/actions"
-import { getStockTransferById } from "@/lib/stock-transfer/storage"
+import { ACTION_TOAST, runStockTransferAction } from "@/lib/stock-transfer-2/actions"
+import { getStockTransferById } from "@/lib/stock-transfer-2/storage"
 import { cn } from "@/lib/utils"
 import type { Branch } from "@/types/branch"
 import {
-  isStockTransferDestination,
-  isStockTransferRequester,
-  isStockTransferSource,
   stockTransferStatusBadgeClassName,
   stockTransferStatusLabels,
   type StockTransfer,
@@ -80,6 +77,7 @@ export function StockTransferDetailPage({
   const [transfer, setTransfer] = React.useState<StockTransfer | null>(null)
   const [isLoading, setIsLoading] = React.useState(true)
   const [activeBranch, setActiveBranch] = React.useState<Branch | null>(null)
+  const [isHeadOffice, setIsHeadOffice] = React.useState(false)
 
   const [pendingAction, setPendingAction] = React.useState<{
     action: StockTransferAction
@@ -88,9 +86,10 @@ export function StockTransferDetailPage({
 
   React.useEffect(() => {
     const decoded = decodeURIComponent(transferId)
-    const { branch } = getActiveBranchContext()
+    const { branch, isHeadOffice: ho } = getActiveBranchContext()
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setActiveBranch(branch)
+    setIsHeadOffice(ho)
     setTransfer(getStockTransferById(decoded) ?? null)
     setIsLoading(false)
   }, [transferId])
@@ -140,7 +139,7 @@ export function StockTransferDetailPage({
         <Button
           variant="outline"
           nativeButton={false}
-          render={<Link href="/inventory/stock-transfer" />}
+          render={<Link href="/inventory/stock-transfer-2" />}
         >
           Back to transfers
         </Button>
@@ -148,28 +147,12 @@ export function StockTransferDetailPage({
     )
   }
 
-  const branchId = activeBranch?.id ?? ""
-  const showAmounts = transfer.items.some((item) => item.rate > 0 || item.totalPrice > 0)
-  const canApprove =
-    Boolean(branchId) &&
-    isStockTransferSource(transfer, branchId) &&
-    transfer.status === "requested"
-  const canDispatch =
-    Boolean(branchId) &&
-    isStockTransferSource(transfer, branchId) &&
-    transfer.status === "approved"
-  const canEdit =
-    Boolean(branchId) &&
-    isStockTransferRequester(transfer, branchId) &&
-    transfer.status === "requested"
-  const canReceive =
-    Boolean(branchId) &&
-    isStockTransferDestination(transfer, branchId) &&
-    transfer.status === "in-transit"
-  const canReturn =
-    Boolean(branchId) &&
-    isStockTransferDestination(transfer, branchId) &&
-    transfer.status === "completed"
+  const isRequestingBranch = activeBranch?.id === transfer.toBranchId
+  const canApprove = isHeadOffice && transfer.status === "requested"
+  const canDispatch = isHeadOffice && transfer.status === "approved"
+  const canEdit = isRequestingBranch && transfer.status === "requested"
+  const canReceive = isRequestingBranch && transfer.status === "in-transit"
+  const canReturn = isRequestingBranch && transfer.status === "completed"
 
   return (
     <div className="flex flex-col gap-4">
@@ -189,7 +172,7 @@ export function StockTransferDetailPage({
             size="sm"
             className="-ml-2 h-7 w-fit px-2 text-muted-foreground"
             nativeButton={false}
-            render={<Link href="/inventory/stock-transfer" />}
+            render={<Link href="/inventory/stock-transfer-2" />}
           >
             <ArrowLeftIcon />
             Back to transfers
@@ -203,7 +186,7 @@ export function StockTransferDetailPage({
                 size="sm"
                 onClick={() =>
                   router.push(
-                    `/inventory/stock-transfer/${encodeURIComponent(transfer.id)}/edit`
+                    `/inventory/stock-transfer-2/${encodeURIComponent(transfer.id)}/edit`
                   )
                 }
               >
@@ -310,16 +293,10 @@ export function StockTransferDetailPage({
                       <th className="px-4 py-2.5 font-medium">#</th>
                       <th className="px-4 py-2.5 font-medium">Item</th>
                       <th className="px-4 py-2.5 text-right font-medium">Qty</th>
-                      {showAmounts ? (
-                        <>
-                          <th className="px-4 py-2.5 text-right font-medium">
-                            Rate
-                          </th>
-                          <th className="px-4 py-2.5 text-right font-medium">
-                            Total
-                          </th>
-                        </>
-                      ) : null}
+                      <th className="px-4 py-2.5 text-right font-medium">Rate</th>
+                      <th className="px-4 py-2.5 text-right font-medium">
+                        Total
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -335,34 +312,28 @@ export function StockTransferDetailPage({
                         <td className="px-4 py-3 text-right tabular-nums">
                           {item.quantity}
                         </td>
-                        {showAmounts ? (
-                          <>
-                            <td className="px-4 py-3 text-right tabular-nums">
-                              {formatCurrency(item.rate)}
-                            </td>
-                            <td className="px-4 py-3 text-right font-medium tabular-nums">
-                              {formatCurrency(item.totalPrice)}
-                            </td>
-                          </>
-                        ) : null}
+                        <td className="px-4 py-3 text-right tabular-nums">
+                          {formatCurrency(item.rate)}
+                        </td>
+                        <td className="px-4 py-3 text-right font-medium tabular-nums">
+                          {formatCurrency(item.totalPrice)}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
-                  {showAmounts ? (
-                    <tfoot>
-                      <tr className="bg-muted/40">
-                        <td
-                          colSpan={4}
-                          className="px-4 py-3 text-right text-xs font-medium text-muted-foreground"
-                        >
-                          Grand total
-                        </td>
-                        <td className="px-4 py-3 text-right text-base font-semibold tabular-nums">
-                          {formatCurrency(transfer.totalAmount)}
-                        </td>
-                      </tr>
-                    </tfoot>
-                  ) : null}
+                  <tfoot>
+                    <tr className="bg-muted/40">
+                      <td
+                        colSpan={4}
+                        className="px-4 py-3 text-right text-xs font-medium text-muted-foreground"
+                      >
+                        Grand total
+                      </td>
+                      <td className="px-4 py-3 text-right text-base font-semibold tabular-nums">
+                        {formatCurrency(transfer.totalAmount)}
+                      </td>
+                    </tr>
+                  </tfoot>
                 </table>
               </div>
             </CardContent>
@@ -417,15 +388,13 @@ export function StockTransferDetailPage({
                 <DetailRow label="Total qty">
                   <span className="tabular-nums">{transfer.totalQuantity}</span>
                 </DetailRow>
-                {showAmounts ? (
-                  <div className="mt-2 border-t pt-2">
-                    <DetailRow label="Amount">
-                      <span className="text-base font-semibold tabular-nums">
-                        {formatCurrency(transfer.totalAmount)}
-                      </span>
-                    </DetailRow>
-                  </div>
-                ) : null}
+                <div className="mt-2 border-t pt-2">
+                  <DetailRow label="Amount">
+                    <span className="text-base font-semibold tabular-nums">
+                      {formatCurrency(transfer.totalAmount)}
+                    </span>
+                  </DetailRow>
+                </div>
               </dl>
             </CardContent>
           </Card>

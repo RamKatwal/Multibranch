@@ -25,8 +25,10 @@ import {
   getProductDetailById,
   mockProducts,
 } from "@/lib/mock/products"
+import { getActiveBranchContext } from "@/lib/inventory/branch-stock"
 import { cn } from "@/lib/utils"
 import {
+  productBelongsToBranch,
   productStatusLabels,
   type Product,
   type ProductStatus,
@@ -62,11 +64,31 @@ export function ProductListPanel({
   const [query, setQuery] = React.useState("")
   const [selectedIds, setSelectedIds] = React.useState<Set<string>>(new Set())
   const selectedRowRef = React.useRef<HTMLAnchorElement | null>(null)
+  const [branchScope, setBranchScope] = React.useState<{
+    isHeadOffice: boolean
+    branchId: string | null
+  }>({ isHeadOffice: true, branchId: null })
+
+  React.useEffect(() => {
+    const { branch, isHeadOffice } = getActiveBranchContext()
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setBranchScope({
+      isHeadOffice,
+      branchId: branch?.id ?? null,
+    })
+  }, [])
 
   const filteredProducts = React.useMemo(() => {
     const normalized = query.trim().toLowerCase()
     return mockProducts.filter((product) => {
       if (listFilter !== "all" && product.status !== listFilter) return false
+      if (
+        !branchScope.isHeadOffice &&
+        branchScope.branchId &&
+        !productBelongsToBranch(product, branchScope.branchId)
+      ) {
+        return false
+      }
       if (!normalized) return true
       return (
         product.name.toLowerCase().includes(normalized) ||
@@ -74,7 +96,7 @@ export function ProductListPanel({
         product.category.toLowerCase().includes(normalized)
       )
     })
-  }, [listFilter, query])
+  }, [listFilter, query, branchScope])
 
   React.useEffect(() => {
     selectedRowRef.current?.scrollIntoView({

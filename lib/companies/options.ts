@@ -1,5 +1,9 @@
 import { getBranchLocation } from "@/lib/branches/location"
+import { isHeadOfficeBranch as isLiveHeadOfficeBranch } from "@/lib/branches/head-office"
+import { readBranches } from "@/lib/branches/storage"
+import { mockBranches } from "@/lib/mock/branches"
 import { mockSubscriptions } from "@/lib/mock/subscriptions"
+import type { Branch } from "@/types/branch"
 
 export type CompanyBranchOption = {
   id: string
@@ -120,23 +124,62 @@ export type ResolvedBranchOption = CompanyBranchOption & {
   companyName: string
 }
 
+function toResolvedFromLiveBranch(branch: Branch): ResolvedBranchOption {
+  return {
+    id: branch.id,
+    name: branch.name,
+    code: branch.code,
+    address: branch.address,
+    location: branch.address,
+    status: branch.status,
+    isHeadOffice: isLiveHeadOfficeBranch(branch),
+    companyId: branch.id,
+    companyName: branch.name,
+  }
+}
+
+function readBranchesSafe(): Branch[] {
+  try {
+    return readBranches()
+  } catch {
+    return mockBranches.map((branch) => ({ ...branch }))
+  }
+}
+
 /** Resolve branch options (with company labels) for a list of branch IDs. */
 export function getBranchesByIds(branchIds: string[]): ResolvedBranchOption[] {
   const companies = getCompanyOptions()
+  const liveBranches = readBranchesSafe()
   const resolved: ResolvedBranchOption[] = []
 
   for (const branchId of branchIds) {
+    let found: ResolvedBranchOption | undefined
+
     for (const company of companies) {
       const branch = company.branches.find((item) => item.id === branchId)
       if (branch) {
-        resolved.push({
+        found = {
           ...branch,
           companyId: company.id,
           companyName: company.name,
-        })
+        }
         break
       }
     }
+
+    if (!found) {
+      const live = liveBranches.find((item) => item.id === branchId)
+      if (live) found = toResolvedFromLiveBranch(live)
+    }
+
+    // Demo inventory data uses live branch ids (br-hq / br-ktm-hub) that are not
+    // in subscription company options — always resolve those from the seed list.
+    if (!found) {
+      const seed = mockBranches.find((item) => item.id === branchId)
+      if (seed) found = toResolvedFromLiveBranch(seed)
+    }
+
+    if (found) resolved.push(found)
   }
 
   return resolved

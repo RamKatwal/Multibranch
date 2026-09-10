@@ -1,8 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { useRouter, useSearchParams } from "next/navigation"
-import { PlusIcon } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { InfoIcon, PlusIcon } from "lucide-react"
 import { toast } from "sonner"
 
 import {
@@ -16,35 +16,33 @@ import {
   StockTransferActionDialog,
   type StockTransferAction,
   type StockTransferActionConfirmPayload,
-} from "@/components/stock-transfer/stock-transfer-action-dialog"
-import { createStockTransferColumns } from "@/components/stock-transfer/stock-transfer-columns"
+} from "@/components/stock-transfer-2/stock-transfer-action-dialog"
+import {
+  createStockTransferColumns,
+  type StockTransferRole,
+} from "@/components/stock-transfer-2/stock-transfer-columns"
 import { Button } from "@/components/ui/button"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { assertHeadOfficeHasStock, getActiveBranchContext } from "@/lib/inventory/branch-stock"
-import { ACTION_TOAST, runStockTransferAction } from "@/lib/stock-transfer/actions"
-import { getAllStockTransfers } from "@/lib/stock-transfer/storage"
+import { Card, CardContent } from "@/components/ui/card"
+import { Tabs } from "@/components/ui/tabs"
+import {
+  assertHeadOfficeHasStock,
+  getActiveBranchContext,
+} from "@/lib/inventory/branch-stock"
+import { ACTION_TOAST, runStockTransferAction } from "@/lib/stock-transfer-2/actions"
+import { getAllStockTransfers } from "@/lib/stock-transfer-2/storage"
 import type { Branch } from "@/types/branch"
 import {
   STOCK_TRANSFER_STATUSES,
-  getStockTransferDirectionForBranch,
-  parseStockTransferDirection,
-  stockTransferDirectionLabels,
   stockTransferStatusLabels,
   type StockTransfer,
-  type StockTransferDirection,
   type StockTransferStatus,
 } from "@/types/stock-transfer"
 
-function defaultDirection(isHeadOffice: boolean): StockTransferDirection {
-  return isHeadOffice ? "out" : "in"
-}
-
 export function StockTransferPage() {
   const router = useRouter()
-  const searchParams = useSearchParams()
   const [transfers, setTransfers] = React.useState<StockTransfer[]>([])
   const [activeBranch, setActiveBranch] = React.useState<Branch | null>(null)
-  const [direction, setDirection] = React.useState<StockTransferDirection>("in")
+  const [isHeadOffice, setIsHeadOffice] = React.useState(false)
   const [statusTab, setStatusTab] =
     React.useState<StockTransferStatus>("requested")
   const [rowSize, setRowSize] = React.useState<DataTableRowSize>("md")
@@ -62,38 +60,22 @@ export function StockTransferPage() {
 
   React.useEffect(() => {
     const { branch, isHeadOffice: ho } = getActiveBranchContext()
-    const fromUrl = parseStockTransferDirection(searchParams.get("direction"))
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setActiveBranch(branch)
-    setDirection(fromUrl ?? defaultDirection(ho))
+    setIsHeadOffice(ho)
     refresh()
-  }, [refresh, searchParams])
+  }, [refresh])
 
-  const involvedTransfers = React.useMemo(() => {
+  const role: StockTransferRole = isHeadOffice ? "head-office" : "branch"
+
+  const scopedTransfers = React.useMemo(() => {
     if (!activeBranch) return []
-    return transfers.filter(
-      (item) =>
-        item.fromBranchId === activeBranch.id ||
-        item.toBranchId === activeBranch.id
+    return transfers.filter((item) =>
+      isHeadOffice
+        ? item.fromBranchId === activeBranch.id
+        : item.toBranchId === activeBranch.id
     )
-  }, [transfers, activeBranch])
-
-  const stockOutTransfers = React.useMemo(() => {
-    if (!activeBranch) return []
-    return involvedTransfers.filter(
-      (item) => getStockTransferDirectionForBranch(item, activeBranch.id) === "out"
-    )
-  }, [involvedTransfers, activeBranch])
-
-  const stockInTransfers = React.useMemo(() => {
-    if (!activeBranch) return []
-    return involvedTransfers.filter(
-      (item) => getStockTransferDirectionForBranch(item, activeBranch.id) === "in"
-    )
-  }, [involvedTransfers, activeBranch])
-
-  const scopedTransfers =
-    direction === "out" ? stockOutTransfers : stockInTransfers
+  }, [transfers, activeBranch, isHeadOffice])
 
   const filteredData = React.useMemo(
     () => scopedTransfers.filter((item) => item.status === statusTab),
@@ -109,14 +91,6 @@ export function StockTransferPage() {
       })),
     [scopedTransfers]
   )
-
-  function selectDirection(next: StockTransferDirection) {
-    setDirection(next)
-    const params = new URLSearchParams(searchParams.toString())
-    params.set("direction", next)
-    const query = params.toString()
-    router.replace(query ? `?${query}` : "?", { scroll: false })
-  }
 
   function openAction(action: StockTransferAction, transfer: StockTransfer) {
     const blockedReason =
@@ -147,16 +121,16 @@ export function StockTransferPage() {
   const columns = React.useMemo(
     () =>
       createStockTransferColumns({
-        currentBranchId: activeBranch?.id ?? "",
+        role,
         onEdit: (transfer) =>
           router.push(
-            `/inventory/stock-transfer/${encodeURIComponent(transfer.id)}/edit`
+            `/inventory/stock-transfer-2/${encodeURIComponent(transfer.id)}/edit`
           ),
         onDispatch: (transfer) => openAction("dispatch", transfer),
         onReceive: (transfer) => openAction("receive", transfer),
         onReturn: (transfer) => openAction("return", transfer),
       }),
-    [activeBranch?.id, router]
+    [role, router]
   )
 
   const table = useDataTable({
@@ -179,43 +153,53 @@ export function StockTransferPage() {
     },
   })
 
-  const createHref = "/inventory/stock-transfer/create?direction=in"
-  const canCreate = direction === "in"
-
   return (
     <div className="flex flex-col gap-4">
       <PageHeader
-        title="Stock Transfer"
-        count={`${involvedTransfers.length} transfers`}
+        title="Stock Transfer 2"
+        count={`${scopedTransfers.length} transfers`}
         actions={
-          canCreate ? (
-            <Button size="sm" onClick={() => router.push(createHref)}>
+          isHeadOffice ? null : (
+            <Button
+              size="sm"
+              onClick={() => router.push("/inventory/stock-transfer-2/create")}
+            >
               <PlusIcon />
-              New Stock In
+              New Stock Request
             </Button>
-          ) : null
+          )
         }
       />
 
-      <Tabs
-        value={direction}
-        onValueChange={(value) => {
-          if (typeof value !== "string") return
-          const next = parseStockTransferDirection(value)
-          if (!next) return
-          selectDirection(next)
-          table.setPageIndex(0)
-        }}
-      >
-        <TabsList>
-          <TabsTrigger value="out" count={stockOutTransfers.length}>
-            {stockTransferDirectionLabels.out}
-          </TabsTrigger>
-          <TabsTrigger value="in" count={stockInTransfers.length}>
-            {stockTransferDirectionLabels.in}
-          </TabsTrigger>
-        </TabsList>
-      </Tabs>
+      <Card size="sm" className="ring-foreground/10">
+        <CardContent className="flex items-start gap-3 pt-(--card-spacing) text-sm">
+          <InfoIcon className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
+          <div className="text-muted-foreground">
+            {isHeadOffice ? (
+              <>
+                You are acting as{" "}
+                <span className="font-medium text-foreground">
+                  {activeBranch?.name ?? "Head Office"}
+                </span>
+                . Review incoming stock requests — approve (status becomes{" "}
+                <em>Approved</em>, eligible for dispatch) or reject with a
+                reason. Dispatch releases stock from Head Office inventory; the
+                branch confirms receipt once goods arrive.
+              </>
+            ) : (
+              <>
+                You are acting as{" "}
+                <span className="font-medium text-foreground">
+                  {activeBranch?.name ?? "your branch"}
+                </span>
+                . Raise a request to pull stock from Head Office. After approval
+                and dispatch (status becomes <em>In transit</em>), confirm
+                receipt when the goods arrive.
+              </>
+            )}
+          </div>
+        </CardContent>
+      </Card>
 
       <DataTableCard
         table={table}
@@ -227,10 +211,10 @@ export function StockTransferPage() {
         onToggleFullscreen={toggleFullscreen}
         emptyMessage={`No ${stockTransferStatusLabels[
           statusTab
-        ].toLowerCase()} ${stockTransferDirectionLabels[direction].toLowerCase()} transfers.`}
+        ].toLowerCase()} transfers.`}
         onRowClick={(transfer) =>
           router.push(
-            `/inventory/stock-transfer/${encodeURIComponent(transfer.id)}`
+            `/inventory/stock-transfer-2/${encodeURIComponent(transfer.id)}`
           )
         }
         leading={

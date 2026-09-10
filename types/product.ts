@@ -62,3 +62,12 @@ export const productStatusLabels: Record<ProductStatus, string> = {
   active: "Active",
   inactive: "Inactive",
 }
+
+export function productBelongsToBranch(
+  product: Product,
+  branchId: string
+) {
+  if (!branchId) return false
+  if (product.createdBranchId === branchId) return true
+  return product.addedBranchIds?.includes(branchId) ?? false
+}

@@ -38,6 +38,10 @@ export const stockTransferStatusBadgeClassName: Record<
   rejected: "border-transparent bg-destructive/15 text-destructive",
 }
 
+export const STOCK_TRANSFER_DIRECTIONS = ["out", "in"] as const
+
+export type StockTransferDirection = (typeof STOCK_TRANSFER_DIRECTIONS)[number]
+
 export type StockTransfer = {
   id: string
   fromBranch: string
@@ -53,6 +57,11 @@ export type StockTransfer = {
   totalAmount: number
   entryBy: string
   status: StockTransferStatus
+  /**
+   * Branch that raised the request. Older records omit this; treat `toBranchId`
+   * as the requester (branch pull from Head Office).
+   */
+  requestedByBranchId?: string
 }
 
 export const stockTransferStatusLabels: Record<StockTransferStatus, string> = {
@@ -62,4 +71,59 @@ export const stockTransferStatusLabels: Record<StockTransferStatus, string> = {
   completed: "Completed",
   returned: "Returned",
   rejected: "Rejected",
+}
+
+export const stockTransferDirectionLabels: Record<
+  StockTransferDirection,
+  string
+> = {
+  out: "Stock Out",
+  in: "Stock In",
+}
+
+export function parseStockTransferDirection(
+  value: string | null | undefined
+): StockTransferDirection | null {
+  if (value === "out" || value === "in") return value
+  return null
+}
+
+/** Sending location for this transfer. */
+export function isStockTransferSource(
+  transfer: StockTransfer,
+  branchId: string
+) {
+  return transfer.fromBranchId === branchId
+}
+
+/** Receiving location for this transfer. */
+export function isStockTransferDestination(
+  transfer: StockTransfer,
+  branchId: string
+) {
+  return transfer.toBranchId === branchId
+}
+
+export function getStockTransferRequesterId(transfer: StockTransfer) {
+  return transfer.requestedByBranchId ?? transfer.toBranchId
+}
+
+export function isStockTransferRequester(
+  transfer: StockTransfer,
+  branchId: string
+) {
+  return getStockTransferRequesterId(transfer) === branchId
+}
+
+/**
+ * Stock Out for a location = stock leaving it (others requested from you).
+ * Stock In = stock coming in (you requested from another location).
+ */
+export function getStockTransferDirectionForBranch(
+  transfer: StockTransfer,
+  branchId: string
+): StockTransferDirection | null {
+  if (transfer.fromBranchId === branchId) return "out"
+  if (transfer.toBranchId === branchId) return "in"
+  return null
 }

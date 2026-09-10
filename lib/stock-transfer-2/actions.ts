@@ -1,5 +1,5 @@
 import { addNotification } from "@/lib/notifications/storage"
-import { upsertStockTransfer } from "@/lib/stock-transfer/storage"
+import { upsertStockTransfer } from "@/lib/stock-transfer-2/storage"
 import type {
   StockTransfer,
   StockTransferAction,
@@ -20,7 +20,7 @@ export const ACTION_TOAST: Record<StockTransferAction, string> = {
   reject: "Request rejected. Requester notified.",
   dispatch: "Dispatched — stock is in transit.",
   receive: "Receipt confirmed — stock added to your branch.",
-  return: "Stock returned to the source branch.",
+  return: "Stock returned to Head Office.",
 }
 
 export type RunStockTransferActionOptions = {
@@ -71,7 +71,7 @@ function notifyRequesterOfRejection(transfer: StockTransfer) {
   const entryBy = transfer.entryBy.trim() || "Requester"
   addNotification({
     title: `Stock request ${transfer.id} rejected`,
-    description: `${transfer.fromBranch} rejected the request destined for ${transfer.toBranch} (entered by ${entryBy}). Reason: ${reason}`,
+    description: `${transfer.fromBranch} rejected the request from ${transfer.toBranch} (entered by ${entryBy}). Reason: ${reason}`,
     icon: "check",
     badges: [{ label: "Rejected", tone: "urgent" }],
     actions: [

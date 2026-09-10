@@ -250,22 +250,25 @@ export function BranchAccessChips({
   className,
 }: BranchChipListProps) {
   const groups = groupBranchesByCompany(branchIds)
+  const resolved = groups.flatMap((group) => group.branches)
 
-  if (groups.length === 0) {
+  if (branchIds.length === 0) {
+    return <span className="text-muted-foreground">{emptyLabel}</span>
+  }
+
+  if (resolved.length === 0) {
     return <span className="text-muted-foreground">{emptyLabel}</span>
   }
 
   return (
     <ChipRow className={className}>
-      {groups.flatMap((group) =>
-        group.branches.map((branch) => (
-          <StatusChip
-            key={branch.id}
-            label={branchChipLabel(branch)}
-            tone={getCompanyTone(branch.companyId)}
-          />
-        ))
-      )}
+      {resolved.map((branch) => (
+        <StatusChip
+          key={branch.id}
+          label={branchChipLabel(branch)}
+          tone={getCompanyTone(branch.companyId)}
+        />
+      ))}
     </ChipRow>
   )
 }

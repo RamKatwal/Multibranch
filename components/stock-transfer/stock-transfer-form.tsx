@@ -2,20 +2,14 @@
 
 import * as React from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { ArrowRightIcon, PlusIcon, Trash2Icon } from "lucide-react"
+import { ArrowRightIcon, CalendarIcon, ChevronDownIcon, PlusIcon, Trash2Icon } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
 
 import { ProductItemSelect } from "@/components/stock-transfer/product-item-select"
 import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import {
   Form,
   FormControl,
@@ -25,10 +19,10 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { NativeSelect } from "@/components/ui/native-select"
 import { Textarea } from "@/components/ui/textarea"
 import { todayIsoDate } from "@/lib/branches/storage"
-import { formatCurrency } from "@/lib/format"
-import { getBranchProductStock } from "@/lib/inventory/branch-stock"
+import { getBranchStockMap } from "@/lib/inventory/branch-stock"
 import {
   getTransferableProducts,
   type TransferableProduct,
@@ -40,7 +34,7 @@ const createStockTransferSchema = z.object({
   remarks: z
     .string()
     .trim()
-    .max(250, { message: "Remarks are too long" })
+    .max(250, { message: "Notes are too long" })
     .optional(),
 })
 
@@ -51,9 +45,13 @@ type ItemRow = {
   productId: string
   name: string
   quantity: string
-  rate: string
   availableQuantity: number
   unit: string
+}
+
+type TransferBranchOption = {
+  id: string
+  name: string
 }
 
 type StockTransferFormProps = {
@@ -61,6 +59,14 @@ type StockTransferFormProps = {
   fromBranchId: string
   toBranch: string
   toBranchId: string
+  counterpartSelect?: {
+    label: "From" | "To"
+    options: TransferBranchOption[]
+    value: string
+    onChange: (branch: TransferBranchOption) => void
+  }
+  requestedByBranchId?: string
+  entryByName?: string
   initialTransfer?: StockTransfer
   submitLabel?: string
   onSubmitTransfer: (transfer: StockTransfer) => void
@@ -73,16 +79,9 @@ function makeRow(): ItemRow {
     productId: "",
     name: "",
     quantity: "",
-    rate: "",
     availableQuantity: 0,
     unit: "Unit",
   }
-}
-
-function rowTotal(row: ItemRow) {
-  const quantity = Number(row.quantity) || 0
-  const rate = Number(row.rate) || 0
-  return quantity * rate
 }
 
 function makeTransferId() {
@@ -91,26 +90,6 @@ function makeTransferId() {
 
 function makeItemId(index: number) {
   return `ITM-${Date.now().toString().slice(-5)}-${index + 1}`
-}
-
-function FormSection({
-  title,
-  description,
-  children,
-}: {
-  title: string
-  description?: string
-  children: React.ReactNode
-}) {
-  return (
-    <Card size="sm" className="ring-foreground/10">
-      <CardHeader className="border-b pb-3">
-        <CardTitle>{title}</CardTitle>
-        {description ? <CardDescription>{description}</CardDescription> : null}
-      </CardHeader>
-      <CardContent className="pt-(--card-spacing)">{children}</CardContent>
-    </Card>
-  )
 }
 
 function BranchField({ label, value }: { label: string; value: string }) {
@@ -124,29 +103,78 @@ function BranchField({ label, value }: { label: string; value: string }) {
   )
 }
 
+function BranchSelectField({
+  label,
+  options,
+  value,
+  onChange,
+}: {
+  label: string
+  options: TransferBranchOption[]
+  value: string
+  onChange: (branch: TransferBranchOption) => void
+}) {
+  return (
+    <div className="flex flex-col gap-1.5">
+      <span className="text-sm font-medium">
+        {label} <span className="text-destructive">*</span>
+      </span>
+      <div className="relative">
+        <NativeSelect
+          value={value}
+          onChange={(event) => {
+            const next = options.find((option) => option.id === event.target.value)
+            if (next) onChange(next)
+          }}
+          aria-label={label}
+          className="pr-8"
+        >
+          {options.map((option) => (
+            <option key={option.id} value={option.id}>
+              {option.name}
+            </option>
+          ))}
+        </NativeSelect>
+        <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 text-muted-foreground opacity-50" />
+      </div>
+    </div>
+  )
+}
+
 export function StockTransferForm({
   fromBranch,
   fromBranchId,
   toBranch,
   toBranchId,
+  counterpartSelect,
+  requestedByBranchId,
+  entryByName,
   initialTransfer,
   submitLabel = "Submit Request",
   onSubmitTransfer,
   onCancel,
 }: StockTransferFormProps) {
-  const products = React.useMemo(() => getTransferableProducts(), [])
+  const products = React.useMemo(() => {
+    const stock = getBranchStockMap(fromBranchId)
+    return getTransferableProducts()
+      .map((product) => ({
+        ...product,
+        availableQuantity: stock[product.id] ?? 0,
+      }))
+      .filter((product) => product.availableQuantity > 0)
+  }, [fromBranchId])
 
   const [rows, setRows] = React.useState<ItemRow[]>(() => {
     if (!initialTransfer?.items.length) return [makeRow()]
+    const stock = getBranchStockMap(fromBranchId)
     return initialTransfer.items.map((item) => {
-      const product = products.find((p) => p.id === item.productId)
+      const product = getTransferableProducts().find((p) => p.id === item.productId)
       return {
         key: `row-${item.id}`,
         productId: item.productId,
         name: item.name,
         quantity: String(item.quantity),
-        rate: String(item.rate),
-        availableQuantity: getBranchProductStock(fromBranchId, item.productId),
+        availableQuantity: stock[item.productId] ?? 0,
         unit: product?.unit ?? "Unit",
       }
     })
@@ -161,6 +189,21 @@ export function StockTransferForm({
   })
 
   const selectedProductIds = rows.map((row) => row.productId)
+  const availableIds = React.useMemo(
+    () => new Set(products.map((product) => product.id)),
+    [products]
+  )
+
+  const isFirstFromBranch = React.useRef(true)
+
+  React.useEffect(() => {
+    if (isFirstFromBranch.current) {
+      isFirstFromBranch.current = false
+      return
+    }
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setRows([makeRow()])
+  }, [fromBranchId])
 
   function updateRow(key: string, patch: Partial<ItemRow>) {
     setRows((current) =>
@@ -172,8 +215,7 @@ export function StockTransferForm({
     updateRow(key, {
       productId: product.id,
       name: product.name,
-      rate: String(product.rate),
-      availableQuantity: getBranchProductStock(fromBranchId, product.id),
+      availableQuantity: product.availableQuantity,
       unit: product.unit,
       quantity: "1",
     })
@@ -193,7 +235,6 @@ export function StockTransferForm({
     (sum, row) => sum + (Number(row.quantity) || 0),
     0
   )
-  const grandTotal = rows.reduce((sum, row) => sum + rowTotal(row), 0)
 
   function handleSubmit(values: CreateStockTransferFormInput) {
     const validRows = rows.filter(
@@ -217,14 +258,13 @@ export function StockTransferForm({
 
     const items: StockTransferItem[] = validRows.map((row, index) => {
       const quantity = Number(row.quantity) || 0
-      const rate = Number(row.rate) || 0
       return {
         id: initialTransfer?.items[index]?.id ?? makeItemId(index),
         productId: row.productId,
         name: row.name.trim(),
         quantity,
-        rate,
-        totalPrice: quantity * rate,
+        rate: 0,
+        totalPrice: 0,
       }
     })
 
@@ -238,9 +278,13 @@ export function StockTransferForm({
       remarks: values.remarks?.trim() ?? "",
       items,
       totalQuantity: items.reduce((sum, item) => sum + item.quantity, 0),
-      totalAmount: items.reduce((sum, item) => sum + item.totalPrice, 0),
-      entryBy: initialTransfer?.entryBy ?? toBranch,
+      totalAmount: 0,
+      entryBy: initialTransfer?.entryBy ?? entryByName ?? toBranch,
       status: initialTransfer?.status ?? "requested",
+      requestedByBranchId:
+        initialTransfer?.requestedByBranchId ??
+        requestedByBranchId ??
+        toBranchId,
     }
 
     onSubmitTransfer(transfer)
@@ -252,89 +296,97 @@ export function StockTransferForm({
         onSubmit={form.handleSubmit(handleSubmit)}
         className="flex flex-col gap-4"
       >
-        <FormSection
-          title="Transfer details"
-          description="Stock is requested from Head Office into your branch."
-        >
-          <div className="grid gap-3 sm:grid-cols-[1fr_auto_1fr] sm:items-end">
-            <BranchField label="From" value={fromBranch} />
-            <div className="hidden h-9 items-center justify-center sm:flex">
-              <span className="flex size-8 items-center justify-center rounded-full bg-muted text-muted-foreground">
-                <ArrowRightIcon className="size-4" />
-              </span>
-            </div>
-            <BranchField label="To" value={toBranch} />
-          </div>
-
-          <div className="mt-4 sm:max-w-xs">
-            <FormField
-              control={form.control}
-              name="date"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Request date <span className="text-destructive">*</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input type="date" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+        <Card size="sm" className="ring-foreground/10">
+          <CardContent className="flex flex-col gap-5 pt-(--card-spacing)">
+            <div className="grid gap-3 sm:grid-cols-[1fr_auto_1fr_12rem] sm:items-end">
+              {counterpartSelect?.label === "From" ? (
+                <BranchSelectField
+                  label="From"
+                  options={counterpartSelect.options}
+                  value={counterpartSelect.value}
+                  onChange={counterpartSelect.onChange}
+                />
+              ) : (
+                <BranchField label="From" value={fromBranch} />
               )}
-            />
-          </div>
-        </FormSection>
-
-        <FormSection
-          title="Items"
-          description="Pick products from the catalog. Rate fills from cost price."
-        >
-          <div className="mb-3 flex items-center justify-end">
-            <Button type="button" variant="outline" size="sm" onClick={addRow}>
-              <PlusIcon className="size-4" />
-              Add line
-            </Button>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <div className="hidden grid-cols-[minmax(0,1.6fr)_7rem_7rem_7rem_2.25rem] gap-2 px-1 text-[11px] font-medium tracking-wide text-muted-foreground uppercase md:grid">
-              <span>Item</span>
-              <span className="text-right">Qty</span>
-              <span className="text-right">Rate</span>
-              <span className="text-right">Total</span>
-              <span />
+              <div className="hidden h-9 items-center justify-center sm:flex">
+                <ArrowRightIcon className="size-4 text-muted-foreground" />
+              </div>
+              {counterpartSelect?.label === "To" ? (
+                <BranchSelectField
+                  label="To"
+                  options={counterpartSelect.options}
+                  value={counterpartSelect.value}
+                  onChange={counterpartSelect.onChange}
+                />
+              ) : (
+                <BranchField label="To" value={toBranch} />
+              )}
+              <FormField
+                control={form.control}
+                name="date"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Request date <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Input
+                          type="date"
+                          className="pr-9 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-y-0 [&::-webkit-calendar-picker-indicator]:right-0 [&::-webkit-calendar-picker-indicator]:w-9 [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0"
+                          {...field}
+                        />
+                        <CalendarIcon className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted-foreground" />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
 
-            {rows.map((row, index) => (
-              <div
-                key={row.key}
-                className="group/row grid grid-cols-1 gap-2 rounded-lg border bg-card p-3 transition-[box-shadow,border-color] focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/30 md:grid-cols-[minmax(0,1.6fr)_7rem_7rem_7rem_2.25rem] md:items-start md:p-2"
-              >
-                <div className="min-w-0 space-y-1">
-                  <p className="text-[11px] font-medium text-muted-foreground md:hidden">
-                    Item {index + 1}
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-sm font-medium">Items</p>
+                  <p className="text-xs text-muted-foreground">
+                    Items listed are available at {fromBranch}.
                   </p>
+                </div>
+                <Button type="button" variant="outline" size="sm" onClick={addRow}>
+                  <PlusIcon className="size-4" />
+                  Add
+                </Button>
+              </div>
+
+              <div className="hidden grid-cols-[minmax(0,1fr)_7rem_2.25rem] gap-2 px-1 text-[11px] font-medium tracking-wide text-muted-foreground uppercase md:grid">
+                <span>Item</span>
+                <span className="text-right">Qty</span>
+                <span />
+              </div>
+
+              {rows.map((row, index) => (
+                <div
+                  key={row.key}
+                  className="grid grid-cols-1 gap-2 md:grid-cols-[minmax(0,1fr)_7rem_2.25rem] md:items-center"
+                >
                   <ProductItemSelect
                     value={row.productId}
                     products={products}
                     excludeIds={selectedProductIds}
                     onChange={(product) => selectProduct(row.key, product)}
                     placeholder="Select item…"
+                    emptyMessage={
+                      availableIds.size === 0
+                        ? `No items available at ${fromBranch}.`
+                        : "No item found."
+                    }
                   />
-                  {row.productId ? (
-                    <p className="px-0.5 text-[11px] text-muted-foreground tabular-nums">
-                      {row.availableQuantity} {row.unit} available at {fromBranch}
-                    </p>
-                  ) : null}
-                </div>
-
-                <div>
-                  <p className="mb-1 text-[11px] font-medium text-muted-foreground md:hidden">
-                    Quantity
-                  </p>
                   <Input
                     type="number"
                     min={0}
+                    max={row.availableQuantity || undefined}
                     step="any"
                     inputMode="decimal"
                     placeholder="0"
@@ -345,35 +397,6 @@ export function StockTransferForm({
                     className="h-9 text-right tabular-nums"
                     aria-label={`Quantity for line ${index + 1}`}
                   />
-                </div>
-
-                <div>
-                  <p className="mb-1 text-[11px] font-medium text-muted-foreground md:hidden">
-                    Rate
-                  </p>
-                  <Input
-                    type="number"
-                    min={0}
-                    step="any"
-                    inputMode="decimal"
-                    placeholder="0"
-                    value={row.rate}
-                    onChange={(e) => updateRow(row.key, { rate: e.target.value })}
-                    className="h-9 text-right tabular-nums"
-                    aria-label={`Rate for line ${index + 1}`}
-                  />
-                </div>
-
-                <div className="flex h-9 items-center justify-between rounded-md bg-muted/40 px-3 md:justify-end md:bg-transparent md:px-0">
-                  <span className="text-[11px] font-medium text-muted-foreground md:hidden">
-                    Line total
-                  </span>
-                  <span className="font-medium tabular-nums">
-                    {formatCurrency(rowTotal(row))}
-                  </span>
-                </div>
-
-                <div className="flex justify-end md:pt-0.5">
                   <Button
                     type="button"
                     variant="ghost"
@@ -386,43 +409,38 @@ export function StockTransferForm({
                     <Trash2Icon className="size-3.5" />
                   </Button>
                 </div>
+              ))}
+
+              <div className="flex justify-end text-sm">
+                <span className="text-muted-foreground">
+                  Total qty{" "}
+                  <span className="font-medium text-foreground tabular-nums">
+                    {totalQuantity}
+                  </span>
+                </span>
               </div>
-            ))}
-          </div>
-
-          <div className="mt-3 flex flex-col items-end gap-1 border-t pt-3 text-sm">
-            <div className="flex w-full max-w-xs items-center justify-between">
-              <span className="text-muted-foreground">Total quantity</span>
-              <span className="font-medium tabular-nums">{totalQuantity}</span>
             </div>
-            <div className="flex w-full max-w-xs items-center justify-between">
-              <span className="font-medium">Grand total</span>
-              <span className="text-base font-semibold tabular-nums">
-                {formatCurrency(grandTotal)}
-              </span>
-            </div>
-          </div>
-        </FormSection>
 
-        <FormSection title="Remarks">
-          <FormField
-            control={form.control}
-            name="remarks"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Notes</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder="Reason or context for this request"
-                    rows={3}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </FormSection>
+            <FormField
+              control={form.control}
+              name="remarks"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Notes</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Optional"
+                      rows={2}
+                      className="min-h-16"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </CardContent>
+        </Card>
 
         <div className="flex justify-end gap-2">
           <Button type="button" variant="outline" onClick={onCancel}>

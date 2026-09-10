@@ -69,6 +69,12 @@ export const mainNavigation: NavItem[] = [
         icon: DuoStockAdjustmentIcon,
         description: "Move stock between branches with itemised transfers.",
       },
+      {
+        title: "Stock Transfer 2",
+        href: "/inventory/stock-transfer-2",
+        icon: DuoStockAdjustmentIcon,
+        description: "Alternate stock transfer flow between branches.",
+      },
     ],
   },
   {
