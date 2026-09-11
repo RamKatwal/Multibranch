@@ -1,10 +1,5 @@
-import { ConfigurationsPlaceholderPage } from "@/components/settings/configurations-placeholder-page"
+import { DocumentTemplatesPage } from "@/components/settings/document-templates/document-templates-page"
 
-export default function DocumentTemplatePage() {
-  return (
-    <ConfigurationsPlaceholderPage
-      href="/configurations/general/document-template"
-      fallbackTitle="Document Template"
-    />
-  )
+export default function DocumentTemplateRoute() {
+  return <DocumentTemplatesPage />
 }

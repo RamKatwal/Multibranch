@@ -11,11 +11,6 @@ export const configurationsNavigation: ConfigurationsNavItem[] = [
     href: "/configurations/general",
     children: [
       {
-        title: "Company Profile",
-        href: "/configurations/general/company-configuration",
-        description: "View and update your company profile information.",
-      },
-      {
         title: "Branch Management",
         href: "/configurations/general/branch-management",
         description: "Add and manage branches for your company.",
@@ -40,6 +35,16 @@ export const configurationsNavigation: ConfigurationsNavItem[] = [
         href: "/configurations/general/document-template",
         description: "Customize print and PDF document templates.",
       },
+      {
+        title: "TDS Type",
+        href: "/configurations/general/tds-type",
+        description: "Manage TDS categories and deduction rates.",
+      },
+      {
+        title: "Transaction Numbering",
+        href: "/configurations/general/transaction-numbering",
+        description: "Configure document number prefixes and sequences.",
+      },
     ],
   },
   {
@@ -62,11 +67,6 @@ export const configurationsNavigation: ConfigurationsNavItem[] = [
         description: "Assign module and action-level permissions.",
       },
     ],
-  },
-  {
-    title: "Billing & Plans",
-    href: "/configurations/billing-plans",
-    description: "View subscription plans and billing details.",
   },
 ]
 

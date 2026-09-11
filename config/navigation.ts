@@ -3,6 +3,7 @@ import {
   DuoBankAccountsIcon,
   DuoChartOfAccountsIcon,
   DuoChequesIcon,
+  DuoConfigurationsIcon,
   DuoDeliveryNoteIcon,
   DuoExpenseIcon,
   DuoHomeIcon,
@@ -24,6 +25,7 @@ import {
   DuoUsersIcon,
 } from "@/components/icons/duo"
 import { getConfigurationsItemByHref } from "@/config/configurations-navigation"
+import { getSettingsItemByHref } from "@/config/settings-navigation"
 import { getUsersPermissionsItemByHref } from "@/config/users-permissions-navigation"
 
 import type { NavItem } from "@/types/navigation"
@@ -204,6 +206,11 @@ export const mainNavigation: NavItem[] = [
     href: "/configurations",
     icon: DuoSettingsIcon,
   },
+  {
+    title: "Settings",
+    href: "/settings",
+    icon: DuoConfigurationsIcon,
+  },
 ]
 
 export const appBrand = {
@@ -262,6 +269,7 @@ export function getBreadcrumbs(pathname: string): BreadcrumbEntry[] {
         navItem?.title ??
         getConfigurationsItemByHref(currentPath)?.title ??
         getUsersPermissionsItemByHref(currentPath)?.title ??
+        getSettingsItemByHref(currentPath)?.title ??
         formatSegmentTitle(segment),
       href: isLast ? undefined : currentPath,
     })

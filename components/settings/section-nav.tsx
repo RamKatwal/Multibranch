@@ -5,7 +5,6 @@ import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { ChevronRight } from "lucide-react"
 
-import { configurationsNavigation } from "@/config/configurations-navigation"
 import {
   Collapsible,
   CollapsibleContent,
@@ -13,12 +12,19 @@ import {
 } from "@/components/ui/collapsible"
 import { cn } from "@/lib/utils"
 
+export type SectionNavItem = {
+  title: string
+  href: string
+  description?: string
+  children?: SectionNavItem[]
+}
+
 function isActivePath(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`)
 }
 
-function flattenConfigurationsLinks() {
-  return configurationsNavigation.flatMap((section) => {
+function flattenSectionLinks(items: SectionNavItem[]) {
+  return items.flatMap((section) => {
     if (section.children?.length) {
       return section.children.map((child) => ({
         label: `${section.title} / ${child.title}`,
@@ -30,15 +36,20 @@ function flattenConfigurationsLinks() {
   })
 }
 
-export function ConfigurationsNav({ className }: { className?: string }) {
+export function SectionNav({
+  items,
+  ariaLabel,
+  className,
+}: {
+  items: SectionNavItem[]
+  ariaLabel: string
+  className?: string
+}) {
   const pathname = usePathname()
 
   return (
-    <nav
-      className={cn("flex flex-col gap-1 p-3", className)}
-      aria-label="Configurations"
-    >
-      {configurationsNavigation.map((section) => {
+    <nav className={cn("flex flex-col gap-1 p-3", className)} aria-label={ariaLabel}>
+      {items.map((section) => {
         const hasChildren = Boolean(section.children?.length)
 
         if (!hasChildren) {
@@ -61,7 +72,7 @@ export function ConfigurationsNav({ className }: { className?: string }) {
         }
 
         return (
-          <ConfigurationsNavSection
+          <SectionNavGroup
             key={section.href}
             title={section.title}
             href={section.href}
@@ -74,16 +85,20 @@ export function ConfigurationsNav({ className }: { className?: string }) {
   )
 }
 
-export function ConfigurationsMobileNav() {
+export function SectionMobileNav({
+  items,
+  label,
+}: {
+  items: SectionNavItem[]
+  label: string
+}) {
   const pathname = usePathname()
   const router = useRouter()
-  const links = React.useMemo(() => flattenConfigurationsLinks(), [])
+  const links = React.useMemo(() => flattenSectionLinks(items), [items])
 
   return (
     <label className="flex flex-col gap-1.5">
-      <span className="text-xs font-medium text-muted-foreground">
-        Configuration section
-      </span>
+      <span className="text-xs font-medium text-muted-foreground">{label}</span>
       <select
         className="h-9 w-full rounded-md border border-input bg-transparent px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
         value={pathname}
@@ -101,7 +116,7 @@ export function ConfigurationsMobileNav() {
   )
 }
 
-function ConfigurationsNavSection({
+function SectionNavGroup({
   title,
   href,
   items,

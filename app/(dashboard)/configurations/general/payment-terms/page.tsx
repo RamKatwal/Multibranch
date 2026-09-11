@@ -1,10 +1,5 @@
-import { ConfigurationsPlaceholderPage } from "@/components/settings/configurations-placeholder-page"
+import { PaymentTermsPage } from "@/components/settings/payment-terms/payment-terms-page"
 
-export default function PaymentTermsPage() {
-  return (
-    <ConfigurationsPlaceholderPage
-      href="/configurations/general/payment-terms"
-      fallbackTitle="Payment Terms"
-    />
-  )
+export default function PaymentTermsRoute() {
+  return <PaymentTermsPage />
 }
