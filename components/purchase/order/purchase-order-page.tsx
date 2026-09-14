@@ -33,7 +33,7 @@ export function PurchaseOrderPage() {
   const router = useRouter()
   const [orders, setOrders] = React.useState<PurchaseOrder[]>(mockPurchaseOrders)
   const [activeStatus, setActiveStatus] =
-    React.useState<PurchaseOrderStatus>("draft")
+    React.useState<PurchaseOrderStatus>("approved")
   const [rowSize, setRowSize] = React.useState<DataTableRowSize>("md")
   const { isFullscreen, toggleFullscreen } = useDataTableFullscreen()
 
@@ -114,7 +114,8 @@ export function PurchaseOrderPage() {
       return (
         item.id.toLowerCase().includes(query) ||
         item.supplier.toLowerCase().includes(query) ||
-        item.orderDate.includes(query) ||
+        item.reference.toLowerCase().includes(query) ||
+        item.entryDate.includes(query) ||
         item.remarks.toLowerCase().includes(query) ||
         item.items.some((line) => line.name.toLowerCase().includes(query))
       )

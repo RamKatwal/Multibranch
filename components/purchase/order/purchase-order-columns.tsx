@@ -10,7 +10,6 @@ import {
 } from "lucide-react"
 
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
@@ -21,12 +20,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { formatCurrency, formatDate } from "@/lib/format"
-import { cn } from "@/lib/utils"
-import {
-  purchaseOrderStatusBadgeClassName,
-  purchaseOrderStatusLabels,
-  type PurchaseOrder,
-} from "@/types/purchase-order"
+import type { PurchaseOrder } from "@/types/purchase-order"
 
 type PurchaseOrderColumnActions = {
   onView: (order: PurchaseOrder) => void
@@ -67,11 +61,18 @@ export function createPurchaseOrderColumns({
     {
       accessorKey: "id",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Order No." />
+        <DataTableColumnHeader column={column} title="ID" />
       ),
       cell: ({ row }) => (
         <span className="font-medium text-foreground">{row.getValue("id")}</span>
       ),
+    },
+    {
+      accessorKey: "entryDate",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Entry Date" />
+      ),
+      cell: ({ row }) => formatDate(row.getValue("entryDate")),
     },
     {
       accessorKey: "supplier",
@@ -80,38 +81,28 @@ export function createPurchaseOrderColumns({
       ),
     },
     {
-      accessorKey: "orderDate",
+      accessorKey: "reference",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Order Date" />
-      ),
-      cell: ({ row }) => formatDate(row.getValue("orderDate")),
-    },
-    {
-      accessorKey: "status",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Status" />
+        <DataTableColumnHeader column={column} title="Ref. Requisition" />
       ),
       cell: ({ row }) => (
-        <Badge
-          variant="outline"
-          className={cn(purchaseOrderStatusBadgeClassName[row.original.status])}
-        >
-          {purchaseOrderStatusLabels[row.original.status]}
-        </Badge>
+        <span className="text-muted-foreground">
+          {(row.getValue("reference") as string) || "--"}
+        </span>
       ),
     },
     {
-      accessorKey: "totalAmount",
+      accessorKey: "grandTotal",
       header: ({ column }) => (
         <DataTableColumnHeader
           column={column}
-          title="Total Amount"
+          title="Amount"
           className="justify-end"
         />
       ),
       cell: ({ row }) => (
         <div className="text-right font-medium tabular-nums">
-          {formatCurrency(row.getValue("totalAmount"))}
+          {formatCurrency(row.getValue("grandTotal"))}
         </div>
       ),
     },

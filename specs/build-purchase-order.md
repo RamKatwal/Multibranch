@@ -1,53 +1,47 @@
-# Page Spec: Purchase Order (build from scratch)
+# Page Spec: Purchase Order (build from scratch, real fields, prototype data)
+
+## Step 0 — Discover real fields (do this first)
+- Use Claude in Chrome to open https://uat-iam.providhy.com/ (already authenticated
+  in the browser session) and navigate to its Purchase Order module (list view and
+  create/edit view).
+- Extract: exact field list, field types (text/select/date/number/etc.), status values,
+  table columns, and any line-item structure. Screenshot both views into
+  design-refs/uat-purchase-order-list.png and design-refs/uat-purchase-order-form.png.
+- Do NOT copy their visual styling — only the data shape and functional structure.
+  Styling comes from this codebase's own components/ui + patterns below.
 
 ## Context
-- No live reference exists for this page — erp-tan-rho.vercel.app/purchase/order is
-  also a stub ("This module is ready for implementation"). This must be designed
-  following this codebase's own existing patterns, not ported from anything external.
+- This is a design prototype — no real backend/API integration needed. Once real
+  fields are known (Step 0), populate the UI with realistic mock data matching that
+  shape.
 - Route: purchase/order
-- Structural reference pages (already done, use as pattern source):
-  - purchase/suppliers — list view pattern (table, filters, search, row actions)
-  - purchase/return — closest functional sibling (a purchase-flow document with line items)
-  - inventory/stock-transfer — another document-with-line-items pattern, if useful
+- Structural/styling reference pages (already done in this codebase):
+  purchase/suppliers, purchase/return, inventory/stock-transfer
 
 ## Scope
-Build a standard Purchase Order module with:
-1. **List view** (purchase/order):
-   - Table of purchase orders: Order No., Supplier, Order Date, Status, Total Amount
-   - Search/filter consistent with how purchase/suppliers or purchase/return do it
-   - "Create" action leading to the create flow
-   - Row actions consistent with existing list patterns (view/edit, matching how
-     purchase/suppliers or purchase/return handle row actions)
-2. **Create/Edit form** (can be a route, drawer, or modal — follow whichever pattern
-   purchase/return or inventory/stock-transfer already use for its create/edit flow):
-   - Supplier (select)
-   - Order Date
-   - Line items: Product, Quantity, Unit Cost (repeatable row, add/remove)
-   - Status (Draft/Ordered/Received/Cancelled, or match whatever status vocabulary
-     other document types in this app already use)
-   - Remarks/notes field
-   - Total calculation (sum of line items)
+1. **List view** (purchase/order): table using the real columns discovered in Step 0,
+   styled per this codebase's existing list pattern (purchase/suppliers). Populate
+   with realistic dummy rows.
+2. **Create/Edit form**: fields exactly matching what Step 0 discovered, laid out
+   using this codebase's existing form pattern (purchase/return or
+   inventory/stock-transfer). On submit: local/mock state only, no real persistence.
 
 ## Components to reuse
-- components/ui/table (or whatever the list pages use)
-- components/ui/tabs — only if needed, and only the shared component, per CLAUDE.md
-- Form components already used in purchase/return or inventory/stock-transfer's create flow
-- Do not invent new list/table/form primitives — this module should look and behave
-  like a sibling of the existing done modules, not a new design language.
+- List/table components from purchase/suppliers or purchase/return
+- Form components from purchase/return or inventory/stock-transfer
+- Do not invent new primitives
 
 ## Out of scope
-- Do not touch purchase/suppliers, purchase/return, or any other existing page.
-- Do not build the detail/edit dynamic sub-route in this pass — list + create/edit only.
-  (Matches the audit note that dynamic detail routes were excluded from comparison.)
-- No backend/API work beyond what's needed to wire the form — if no API endpoint exists
-  yet, stub the submission and flag it clearly rather than guessing at a contract.
+- No real API/backend integration
+- Do not touch purchase/suppliers, purchase/return, or any other existing page
+- Do not build the dynamic detail/edit sub-route in this pass
+- Do not copy uat-iam.providhy.com's visual styling — structure/fields only
 
 ## Verification
 1. `npm run build` passes
 2. `npm run lint` passes
-3. Screenshot the list view and the create/edit form
-4. Side-by-side comparison against purchase/return and purchase/suppliers — confirm the
-   same table style, spacing, button placement, and form conventions were followed
-5. Confirm every UI element traces back to an existing shared component — list any
-   new components created and justify each one in the PR description
+3. Screenshot list + form, confirm they match this codebase's existing design language
+   (not Providhy's)
+4. Confirm every discovered field from Step 0 is represented
+5. Confirm every UI element traces to an existing shared component — justify any new one
 6. Confirm no hardcoded colors/spacing

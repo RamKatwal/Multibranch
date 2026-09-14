@@ -8,7 +8,7 @@ import {
  * Client-side stub. No purchase-order API exists yet — persist to
  * localStorage instead of guessing at a contract.
  */
-const PURCHASE_ORDERS_STORAGE_KEY = "ibmerp-purchase-orders-v1"
+const PURCHASE_ORDERS_STORAGE_KEY = "ibmerp-purchase-orders-v2"
 
 function canUseStorage() {
   return typeof window !== "undefined"
@@ -18,6 +18,7 @@ function isCurrentSchema(order: PurchaseOrder): boolean {
   return (
     typeof order.id === "string" &&
     typeof order.supplierId === "string" &&
+    typeof order.entryDate === "string" &&
     Array.isArray(order.items) &&
     PURCHASE_ORDER_STATUSES.includes(order.status)
   )
