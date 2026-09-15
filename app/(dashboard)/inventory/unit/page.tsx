@@ -1,5 +1,5 @@
-import { ModulePage } from "@/components/dashboard/module-page"
+import { UnitPage } from "@/components/unit/unit-page"
 
-export default function UnitPage() {
-  return <ModulePage title="Unit" />
+export default function UnitRoute() {
+  return <UnitPage />
 }

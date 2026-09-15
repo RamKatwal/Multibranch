@@ -1,5 +1,5 @@
-import { ModulePage } from "@/components/dashboard/module-page"
+import { StockAdjustmentPage } from "@/components/stock-adjustment/stock-adjustment-page"
 
-export default function StockAdjustmentPage() {
-  return <ModulePage title="Stock Adjustment" />
+export default function StockAdjustmentRoute() {
+  return <StockAdjustmentPage />
 }

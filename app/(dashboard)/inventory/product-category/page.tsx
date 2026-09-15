@@ -1,5 +1,5 @@
-import { ModulePage } from "@/components/dashboard/module-page"
+import { ProductCategoryPage } from "@/components/product-category/product-category-page"
 
-export default function ProductCategoryPage() {
-  return <ModulePage title="Product Category" />
+export default function ProductCategoryRoute() {
+  return <ProductCategoryPage />
 }
