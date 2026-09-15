@@ -36,10 +36,13 @@ export const reportCatalog: ReportCategory[] = [
         title: "Inventory Valuation Report",
         href: "/reports/inventory-valuation",
       },
-      { title: "Batch-wise Inventory Valuation" },
-      { title: "Inventory Master" },
-      { title: "Reorder Inventory Report" },
-      { title: "Expiry Inventory Report" },
+      {
+        title: "Batch-wise Inventory Valuation",
+        href: "/reports/inventory-batch-valuation",
+      },
+      { title: "Inventory Master", href: "/reports/inventory-master" },
+      { title: "Reorder Inventory Report", href: "/reports/reorder-inventory" },
+      { title: "Expiry Inventory Report", href: "/reports/expiry-inventory" },
     ],
   },
   {
