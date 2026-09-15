@@ -1,10 +1,5 @@
-import { ConfigurationsPlaceholderPage } from "@/components/settings/configurations-placeholder-page"
+import { PermissionManagementPage } from "@/components/settings/users-permissions/permission-management-page"
 
-export default function PermissionManagementPlaceholderPage() {
-  return (
-    <ConfigurationsPlaceholderPage
-      href="/configurations/users/permission-management"
-      fallbackTitle="Permission Management"
-    />
-  )
+export default function PermissionManagementRoute() {
+  return <PermissionManagementPage />
 }

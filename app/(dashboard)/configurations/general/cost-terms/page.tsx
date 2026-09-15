@@ -1,10 +1,5 @@
-import { ConfigurationsPlaceholderPage } from "@/components/settings/configurations-placeholder-page"
+import { CostTermsPage } from "@/components/settings/cost-terms/cost-terms-page"
 
-export default function CostTermsPage() {
-  return (
-    <ConfigurationsPlaceholderPage
-      href="/configurations/general/cost-terms"
-      fallbackTitle="Cost Terms"
-    />
-  )
+export default function CostTermsRoute() {
+  return <CostTermsPage />
 }

@@ -1,0 +1,460 @@
+- generic [ref=f18e4]:
+  - generic [ref=f18e5]:
+    - generic:
+      - status
+  - generic [ref=f18e7]:
+    - generic [ref=f18e8]:
+      - generic:
+        - status
+    - generic [ref=f18e10]:
+      - link "Skip to content":
+        - /url: "#AppFrameMain"
+        - strong:
+          - generic: Skip to content
+      - generic [ref=f18e16]:
+        - generic [ref=f18e21] [cursor=pointer]:
+          - img "Shopify" [ref=f18e22]
+          - img "Shopify" [ref=f18e23]
+        - toolbar [ref=f18e28]:
+          - generic [ref=f18e30]:
+            - paragraph [ref=f18e38]:
+              - generic: Unsaved product
+            - generic [ref=f18e39]:
+              - button "Discard" [ref=f18e42] [cursor=pointer]
+              - button "Save" [disabled] [ref=f18e45]
+        - generic [ref=f18e46]:
+          - generic [ref=f18e48]:
+            - button "Sidekick" [ref=f18e52] [cursor=pointer]
+            - button "Alerts Feed - 0 unseen alerts" [ref=f18e69] [cursor=pointer]
+          - button "alextmz.777@gmail.com" [ref=f18e90] [cursor=pointer]:
+            - generic [ref=f18e93]:
+              - img "My Store" [ref=f18e97]:
+                - generic [ref=f18e98]: MS
+              - paragraph [ref=f18e100]: My Store
+      - generic [ref=f18e102]:
+        - generic "Navigation" [ref=f18e103]:
+          - navigation [ref=f18e105]:
+            - generic [ref=f18e110]:
+              - generic [ref=f18e111]:
+                - list [ref=f18e113]:
+                  - listitem [ref=f18e114]:
+                    - link "Home" [ref=f18e117] [cursor=pointer]:
+                      - /url: /store/npuwum-mv
+                  - listitem [ref=f18e128]:
+                    - link "Orders" [ref=f18e131] [cursor=pointer]:
+                      - /url: /store/npuwum-mv/orders
+                  - listitem [ref=f18e142]:
+                    - link "Products" [expanded] [ref=f18e145] [cursor=pointer]:
+                      - /url: /store/npuwum-mv/products
+                    - list [ref=f18e159]:
+                      - listitem [ref=f18e160]:
+                        - link "Collections" [ref=f18e163] [cursor=pointer]:
+                          - /url: /store/npuwum-mv/collections
+                      - listitem [ref=f18e165]:
+                        - link "Inventory" [ref=f18e168] [cursor=pointer]:
+                          - /url: /store/npuwum-mv/products/inventory
+                      - listitem [ref=f18e170]:
+                        - link "Purchase orders" [ref=f18e173] [cursor=pointer]:
+                          - /url: /store/npuwum-mv/purchase_orders
+                      - listitem [ref=f18e175]:
+                        - link "Transfers" [ref=f18e178] [cursor=pointer]:
+                          - /url: /store/npuwum-mv/transfers
+                      - listitem [ref=f18e180]:
+                        - link "Gift cards" [ref=f18e183] [cursor=pointer]:
+                          - /url: /store/npuwum-mv/gift_cards
+                  - listitem [ref=f18e185]:
+                    - link "Customers" [ref=f18e188] [cursor=pointer]:
+                      - /url: /store/npuwum-mv/customers
+                  - listitem [ref=f18e201]:
+                    - link "Growth" [ref=f18e204] [cursor=pointer]:
+                      - /url: /store/npuwum-mv/growth
+                  - listitem [ref=f18e219]:
+                    - link "Discounts" [ref=f18e222] [cursor=pointer]:
+                      - /url: /store/npuwum-mv/discounts
+                  - listitem [ref=f18e236]:
+                    - link "Content" [ref=f18e239] [cursor=pointer]:
+                      - /url: /store/npuwum-mv/content/metaobjects
+                  - listitem [ref=f18e256]:
+                    - link "Markets" [ref=f18e259] [cursor=pointer]:
+                      - /url: /store/npuwum-mv/markets
+                  - listitem [ref=f18e272]:
+                    - link "Analytics" [ref=f18e275] [cursor=pointer]:
+                      - /url: /store/npuwum-mv/analytics
+                - list [ref=f18e290]:
+                  - listitem [ref=f18e291]:
+                    - button "Sales channels" [ref=f18e293] [cursor=pointer]:
+                      - strong [ref=f18e295]:
+                        - generic: Sales channels
+                    - list [ref=f18e298]:
+                      - button [ref=f18e299]:
+                        - list [ref=f18e300]:
+                          - listitem [ref=f18e301]:
+                            - link "Online Store" [ref=f18e304] [cursor=pointer]:
+                              - /url: /store/npuwum-mv/themes?appLoadId=433bb44b-d6f2-4fa3-8a98-4602c96a0a15
+                      - button [ref=f18e309]:
+                        - list [ref=f18e310]:
+                          - listitem [ref=f18e311]:
+                            - link "Agentic" [ref=f18e314] [cursor=pointer]:
+                              - /url: /store/npuwum-mv/apps/agentic?appLoadId=28c82192-d092-4c7d-929d-ea79cfb4f27e
+                    - status [ref=f18e319]
+                  - listitem [ref=f18e320]:
+                    - button "Apps" [ref=f18e322] [cursor=pointer]:
+                      - strong [ref=f18e324]:
+                        - generic: Apps
+                    - button [ref=f18e328] [cursor=pointer]
+              - generic [ref=f18e335]:
+                - list [ref=f18e336]:
+                  - listitem [ref=f18e337]:
+                    - link "Settings" [ref=f18e340] [cursor=pointer]:
+                      - /url: /store/npuwum-mv/settings
+                - link "Subscribe for $1" [ref=f18e348] [cursor=pointer]:
+                  - /url: /store/npuwum-mv/subscribe/checkout
+                  - generic [ref=f18e349]:
+                    - paragraph [ref=f18e350]: Trial ends in 3 days
+                    - paragraph [ref=f18e351]: Subscribe for $1
+                    - button "Select a plan" [ref=f18e353]
+        - main [ref=f18e356]:
+          - generic [ref=f18e360]:
+            - button [aria-hidden] [ref=f18e362]: Submit
+            - main [ref=f18e365]:
+              - generic [ref=f18e373]:
+                - generic:
+                  - navigation [ref=f18e375]:
+                    - link "Products" [ref=f18e384] [cursor=pointer]:
+                      - /url: /store/npuwum-mv/products
+                  - heading "Add product" [level=1] [ref=f18e399]
+              - generic [ref=f18e401]:
+                - generic:
+                  - generic [ref=f18e402]:
+                    - generic:
+                      - status
+                      - generic [ref=f18e403]:
+                        - generic [ref=f18e407]:
+                          - generic [ref=f18e409]:
+                            - generic [ref=f18e412]:
+                              - generic [ref=f18e413]: Title
+                              - textbox "Title" [ref=f18e417]:
+                                - /placeholder: Short sleeve t-shirt
+                            - generic [ref=f18e419]:
+                              - generic [ref=f18e420]: Rich text editor
+                              - generic [ref=f18e421]:
+                                - generic [ref=f18e422]: Description
+                                - generic [ref=f18e425]:
+                                  - generic [ref=f18e428]:
+                                    - generic [ref=f18e429]:
+                                      - button "Generate text" [ref=f18e433] [cursor=pointer]
+                                      - generic [ref=f18e440]:
+                                        - button "Formatting options, Paragraph selected" [ref=f18e445] [cursor=pointer]: Paragraph
+                                        - generic [ref=f18e451]:
+                                          - button "Bold" [ref=f18e454] [cursor=pointer]
+                                          - button "Italic" [ref=f18e462] [cursor=pointer]
+                                          - button "Underline" [ref=f18e470] [cursor=pointer]
+                                          - button "Color" [ref=f18e480] [cursor=pointer]
+                                        - button "Alignment" [ref=f18e496] [cursor=pointer]
+                                        - generic [ref=f18e510]:
+                                          - generic [ref=f18e512]:
+                                            - button "Link - Select text" [disabled]
+                                          - button "Insert image" [ref=f18e515] [cursor=pointer]
+                                          - button "Insert video" [ref=f18e524] [cursor=pointer]
+                                          - button "Insert table" [ref=f18e534] [cursor=pointer]
+                                      - button "Additional controls" [ref=f18e547] [cursor=pointer]
+                                    - button "Show HTML" [ref=f18e558] [cursor=pointer]
+                                  - iframe [ref=f18e569]:
+                                    - generic "Rich Text Area. Press ALT-0 for help." [ref=f19e1]:
+                                      - paragraph [ref=f19e2]
+                          - generic [ref=f18e571]:
+                            - paragraph [ref=f18e575]:
+                              - generic: Media
+                            - generic [ref=f18e578]:
+                              - generic [ref=f18e579]: Drop media to upload
+                              - generic [ref=f18e581] [cursor=pointer]:
+                                - button "Drop media to upload" [ref=f18e583]
+                                - generic [ref=f18e584]:
+                                  - generic [ref=f18e585]:
+                                    - button "Upload new" [ref=f18e587]
+                                    - button "Select existing" [ref=f18e591]
+                                  - paragraph [ref=f18e593]:
+                                    - generic: Accepts images, videos, or 3D models
+                          - generic [ref=f18e597]:
+                            - generic [ref=f18e598]: Category
+                            - generic [ref=f18e603]:
+                              - generic [ref=f18e605]:
+                                - generic [ref=f18e606]: Category
+                                - generic [ref=f18e607] [cursor=pointer]:
+                                  - button "Category" [ref=f18e608]
+                                  - generic: Choose a product category
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - generic: Animals & Pet Supplies
+                                    - generic: Apparel & Accessories
+                                    - generic: Arts & Entertainment
+                                    - generic: Baby & Toddler
+                                    - generic: Business & Industrial
+                                    - generic: Cameras & Optics
+                                    - generic: Electronics
+                                    - generic: Food, Beverages & Tobacco
+                                    - generic: Furniture
+                                    - generic: Hardware
+                                    - generic: Health & Beauty
+                                    - generic: Home & Garden
+                                    - generic: Luggage & Bags
+                                    - generic: Mature
+                                    - generic: Media
+                                    - generic: Office Supplies
+                                    - generic: Religious & Ceremonial
+                                    - generic: Software
+                                    - generic: Sporting Goods
+                                    - generic: Toys & Games
+                                    - generic: Vehicles & Parts
+                                    - generic: Gift Cards
+                                    - generic: Uncategorized
+                                    - generic: Services
+                                    - generic: Product Add-Ons
+                                    - generic: Bundles
+                            - paragraph [ref=f18e615]: Determines tax rates and adds metafields to improve search, filters, and cross-channel sales
+                        - generic [ref=f18e618]:
+                          - heading "Price" [level=2] [ref=f18e623]
+                          - generic:
+                            - group [ref=f18e627]:
+                              - generic [ref=f18e633]:
+                                - generic [ref=f18e634]: Price
+                                - generic [ref=f18e639]:
+                                  - generic: Rs
+                                  - textbox "Price Rs" [ref=f18e640]:
+                                    - /placeholder: "0.00"
+                            - generic [ref=f18e641]:
+                              - button [expanded] [ref=f18e1129] [cursor=pointer]:
+                                - heading "Additional display prices" [level=4] [ref=f18e1131]
+                              - generic [ref=f18e1139]:
+                                - generic [ref=f18e1141]:
+                                  - generic [ref=f18e1142]:
+                                    - generic [ref=f18e1144]:
+                                      - generic [ref=f18e1145]: Compare-at price
+                                      - generic [ref=f18e1150]:
+                                        - generic: Rs
+                                        - textbox "Compare-at price Rs" [active] [ref=f18e1151]:
+                                          - /placeholder: "0.00"
+                                    - generic [ref=f18e1166]:
+                                      - generic [ref=f18e1167]: Unit price
+                                      - generic [ref=f18e1168]:
+                                        - textbox "Unit price" [ref=f18e1171]: "--"
+                                        - button "Edit unit price" [ref=f18e1174] [cursor=pointer]
+                                  - generic [ref=f18e1183] [cursor=pointer]:
+                                    - checkbox "Charge tax on this product" [checked] [ref=f18e1184]
+                                    - generic [ref=f18e1185]: Charge tax on this product
+                                - generic [ref=f18e1188]:
+                                  - generic "Cost" [ref=f18e1191]:
+                                    - paragraph [ref=f18e1195]: Cost
+                                    - textbox "—" [ref=f18e1198]
+                                  - generic [ref=f18e1199]:
+                                    - generic "Profit" [ref=f18e1201]:
+                                      - paragraph [ref=f18e1205]: Profit
+                                      - generic [ref=f18e1206]: —
+                                    - generic "Margin" [ref=f18e1209]:
+                                      - paragraph [ref=f18e1213]: Margin
+                                      - generic [ref=f18e1214]: —
+                        - generic [ref=f18e682]:
+                          - generic:
+                            - generic [ref=f18e684]:
+                              - heading "Inventory" [level=2] [ref=f18e685]
+                              - generic [ref=f18e689]:
+                                - generic [ref=f18e690]: Inventory tracked
+                                - generic [ref=f18e694] [cursor=pointer]:
+                                  - checkbox "Inventory tracked" [checked] [ref=f18e695]
+                                  - generic [ref=f18e696]: Inventory tracked
+                            - table [ref=f18e706]:
+                              - rowgroup [ref=f18e710]:
+                                - row [ref=f18e711]:
+                                  - columnheader "Quantity" [ref=f18e712]
+                                  - columnheader "Quantity" [ref=f18e713]
+                              - rowgroup [ref=f18e717]:
+                                - row [ref=f18e718]:
+                                  - cell "Shop location" [ref=f18e719]
+                                  - cell [ref=f18e724]:
+                                    - generic [ref=f18e728]:
+                                      - generic [ref=f18e729]: Shop location quantity available
+                                      - spinbutton "Shop location quantity available" [ref=f18e735]: "0"
+                            - generic [ref=f18e739]:
+                              - generic [ref=f18e740]:
+                                - generic "SKU" [ref=f18e741]:
+                                  - button [ref=f18e742] [cursor=pointer]:
+                                    - paragraph [ref=f18e746]: SKU
+                                - generic "Barcodes" [ref=f18e747]:
+                                  - button [ref=f18e748] [cursor=pointer]:
+                                    - paragraph [ref=f18e752]: Barcodes
+                                - generic "Sell when out of stock" [ref=f18e753]:
+                                  - button [ref=f18e754] [cursor=pointer]:
+                                    - paragraph [ref=f18e758]: Sell when out of stock
+                                    - generic [ref=f18e759]: "Off"
+                              - button [ref=f18e764] [cursor=pointer]
+                        - generic [ref=f18e772]:
+                          - generic:
+                            - generic [ref=f18e775]:
+                              - heading "Shipping" [level=2] [ref=f18e776]
+                              - generic [ref=f18e777]:
+                                - generic [ref=f18e778]: Physical product
+                                - generic [ref=f18e782] [cursor=pointer]:
+                                  - checkbox "Physical product" [checked] [ref=f18e783]
+                                  - generic [ref=f18e784]: Physical product
+                            - generic [ref=f18e786]:
+                              - generic [ref=f18e788]:
+                                - generic [ref=f18e789]: Package
+                                - combobox "Package" [ref=f18e799] [cursor=pointer]:
+                                  - generic [ref=f18e810]:
+                                    - paragraph [ref=f18e811]: Store default
+                                    - paragraph [ref=f18e812]:
+                                      - generic: •
+                                    - paragraph [ref=f18e813]: Sample box - 22 × 13.7 × 4.2 cm, 0 kg
+                              - generic [ref=f18e821]:
+                                - generic [ref=f18e822]: Product weight
+                                - generic [ref=f18e825]:
+                                  - textbox "Product weight" [ref=f18e828]:
+                                    - /placeholder: "0.0"
+                                    - text: "0.0"
+                                  - generic [ref=f18e831]:
+                                    - generic:
+                                      - generic: Weight unit
+                                      - generic [ref=f18e833]:
+                                        - generic [ref=f18e834]: kg
+                                        - combobox "Weight unit" [ref=f18e845] [cursor=pointer]:
+                                          - option "lb"
+                                          - option "oz"
+                                          - option "kg" [selected]
+                                          - option "g"
+                            - generic [ref=f18e849]:
+                              - generic [ref=f18e850]:
+                                - generic "Country of origin" [ref=f18e851]:
+                                  - button [ref=f18e852] [cursor=pointer]:
+                                    - paragraph [ref=f18e856]: Country of origin
+                                - generic "HS Code" [ref=f18e857]:
+                                  - button [ref=f18e858] [cursor=pointer]:
+                                    - paragraph [ref=f18e862]: HS Code
+                              - button [ref=f18e864] [cursor=pointer]
+                        - generic [ref=f18e871]:
+                          - heading "Variants" [level=2] [ref=f18e876]
+                          - generic [ref=f18e877]:
+                            - button "Add options like size or color" [ref=f18e882] [cursor=pointer]
+                            - status [ref=f18e890]
+                        - generic [ref=f18e894]:
+                          - generic [ref=f18e895]:
+                            - heading "Product metafields" [level=2] [ref=f18e899]
+                            - button "Add definition" [ref=f18e903] [cursor=pointer]
+                          - generic:
+                            - generic [ref=f18e906]:
+                              - generic:
+                                - status
+                            - button "Disclosures" [ref=f18e911] [cursor=pointer]
+                        - generic [ref=f18e923]:
+                          - generic [ref=f18e924]:
+                            - heading "Search engine listing" [level=2] [ref=f18e928]
+                            - button "Edit" [ref=f18e932] [cursor=pointer]
+                          - paragraph [ref=f18e939]:
+                            - generic: Add a title and description to see how this product might appear in a search engine listing
+                        - button [aria-hidden] [ref=f18e942]
+                  - complementary [ref=f18e943]:
+                    - generic [ref=f18e944]:
+                      - generic [ref=f18e946]:
+                        - heading "Status" [level=2] [ref=f18e951]
+                        - generic [ref=f18e952]:
+                          - generic [ref=f18e955]:
+                            - generic [ref=f18e956]: Status
+                            - generic [ref=f18e957] [cursor=pointer]:
+                              - button "Status" [ref=f18e958]
+                              - generic [ref=f18e959]: Active
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic: Active
+                                - generic: Draft
+                                - generic: Unlisted
+                      - generic [ref=f18e970]:
+                        - generic [ref=f18e971]:
+                          - heading "Publishing" [level=2] [ref=f18e975]
+                          - button "Manage publishing" [ref=f18e979] [cursor=pointer]
+                        - button [ref=f18e993] [cursor=pointer]:
+                          - list [ref=f18e1001]:
+                            - listitem [ref=f18e1002]:
+                              - strong [ref=f18e1007]:
+                                - generic: All channels
+                      - generic [ref=f18e1009]:
+                        - generic [ref=f18e1010]:
+                          - heading "Product organization" [level=2] [ref=f18e1014]
+                          - link "Learn more" [ref=f18e1018] [cursor=pointer]:
+                            - /url: https://help.shopify.com/en/manual/products/details#product-organization
+                        - generic [ref=f18e1026]:
+                          - generic [ref=f18e1030]:
+                            - generic [aria-hidden] [ref=f18e1031] [cursor=pointer]: Type
+                            - generic [ref=f18e1032] [cursor=pointer]:
+                              - button "Type" [ref=f18e1033]
+                              - generic: None
+                          - generic [ref=f18e1043]:
+                            - generic [aria-hidden] [ref=f18e1044] [cursor=pointer]: Vendor
+                            - generic [ref=f18e1045] [cursor=pointer]:
+                              - button "Vendor" [ref=f18e1046]
+                              - generic: None
+                          - generic [ref=f18e1054]:
+                            - generic [ref=f18e1057]:
+                              - generic [ref=f18e1058]: Collections
+                              - group "Collections" [ref=f18e1061]:
+                                - generic "Collections" [ref=f18e1062]:
+                                  - group [ref=f18e1063] [cursor=pointer]:
+                                    - button "Add collections" [ref=f18e1064]
+                            - generic: Home page
+                            - generic: Add new collection
+                          - generic [ref=f18e1076]:
+                            - generic [ref=f18e1077]: Tags
+                            - group "Tags" [ref=f18e1080]:
+                              - generic "Tags" [ref=f18e1081]:
+                                - group [ref=f18e1082] [cursor=pointer]:
+                                  - button "Add tags" [ref=f18e1083]
+                      - generic [ref=f18e1092]:
+                        - heading "Theme templates" [level=2] [ref=f18e1094]
+                        - generic [ref=f18e1096]:
+                          - heading "Theme template" [level=3] [ref=f18e1101]
+                          - generic [ref=f18e1102]:
+                            - generic [ref=f18e1105]:
+                              - generic [ref=f18e1106]: Theme template
+                              - generic [ref=f18e1107] [cursor=pointer]:
+                                - button "Theme template" [ref=f18e1108]
+                                - generic [ref=f18e1109]: Default product
+                            - generic: Default product
+              - generic [ref=f18e1124]:
+                - button "Save" [disabled]
+  - generic:
+    - generic:
+      - generic:
+        - generic:
+          - generic:
+            - generic: Cancel
+            - generic: Continue
+    - generic:
+      - generic:
+        - generic:
+          - generic:
+            - generic: Cancel
+            - generic: Set as active
+    - generic:
+      - generic:
+        - generic:
+          - generic:
+            - generic: Cancel
+            - generic: Go to preferences
+    - generic:
+      - generic:
+        - generic:
+          - generic:
+            - generic: To share this product, include it in your Online Store channel
+            - generic: Close
+            - generic: Manage sales channels
+    - generic:
+      - generic:
+        - generic:
+          - generic:
+            - generic: General shortcuts
+            - generic: Adding items to your store
+            - generic: Navigating your admin panel
+            - generic: Navigating settings
+    - generic [ref=f18e1125]:
+      - separator "Resize sidebar" [ref=f18e1126]
+      - complementary "Sidekick" [ref=f18e1127]

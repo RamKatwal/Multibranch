@@ -1,5 +1,5 @@
-import { ModulePage } from "@/components/dashboard/module-page"
+import { PurchaseOrderPage } from "@/components/purchase/order/purchase-order-page"
 
-export default function PurchaseOrderPage() {
-  return <ModulePage title="Purchase Order" />
+export default function PurchaseOrderRoute() {
+  return <PurchaseOrderPage />
 }

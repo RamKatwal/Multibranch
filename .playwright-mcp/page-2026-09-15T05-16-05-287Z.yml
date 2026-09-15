@@ -1,0 +1,158 @@
+- generic [ref=f4e1]:
+  - alert [ref=f4e5]
+  - main [ref=f4e7]:
+    - complementary [ref=f4e8]:
+      - complementary [ref=f4e9]:
+        - link [ref=f4e11] [cursor=pointer]:
+          - /url: /home/dashboard
+          - img "logo" [ref=f4e12]
+        - navigation [ref=f4e13]:
+          - list [ref=f4e14]:
+            - listitem [ref=f4e15]:
+              - link [ref=f4e432] [cursor=pointer]:
+                - /url: /home/dashboard
+            - listitem [ref=f4e19]:
+              - link [ref=f4e434] [cursor=pointer]:
+                - /url: /inventory/products
+            - listitem [ref=f4e23]:
+              - link [ref=f4e436] [cursor=pointer]:
+                - /url: /purchase/invoice
+            - listitem [ref=f4e27]:
+              - link [ref=f4e438] [cursor=pointer]:
+                - /url: /sales/invoice
+            - listitem [ref=f4e31]:
+              - link [ref=f4e440] [cursor=pointer]:
+                - /url: /accounting/vouchers/journal
+            - listitem [ref=f4e36]:
+              - link [ref=f4e442] [cursor=pointer]:
+                - /url: /reports
+          - generic [ref=f4e40]:
+            - link [ref=f4e444] [cursor=pointer]:
+              - /url: /settings
+            - button [ref=f4e445] [cursor=pointer]
+    - generic [ref=f4e52]:
+      - navigation [ref=f4e55]:
+        - generic [ref=f4e57]:
+          - generic [ref=f4e59] [cursor=pointer]
+          - generic [ref=f4e63]:
+            - combobox [ref=f4e65]:
+              - textbox "Search" [ref=f4e69]
+            - button "Create" [ref=f4e70] [cursor=pointer]
+          - generic [ref=f4e75]:
+            - generic [ref=f4e76] [cursor=pointer]
+            - generic [ref=f4e81] [cursor=pointer]: RK
+      - generic [ref=f4e84]:
+        - navigation [ref=f4e85]:
+          - menu [ref=f4e87]:
+            - menuitem "Invoice" [ref=f4e88] [cursor=pointer]
+            - menuitem "Return" [ref=f4e90] [cursor=pointer]
+            - menuitem "Order" [ref=f4e92] [cursor=pointer]
+            - menuitem "Requisition" [ref=f4e94] [cursor=pointer]
+            - menuitem "Expense" [ref=f4e96] [cursor=pointer]
+            - menuitem "Payments" [ref=f4e98] [cursor=pointer]
+            - listitem [aria-hidden]:
+              - menuitem [disabled]
+        - generic [ref=f4e448]:
+          - navigation [ref=f4e449]:
+            - generic [ref=f4e450]:
+              - generic [ref=f4e451]:
+                - link [ref=f4e452] [cursor=pointer]:
+                  - /url: /purchase/expense
+                - heading "Create Expense" [level=3] [ref=f4e456]
+                - switch "With Bill Without Bill" [checked] [active] [ref=f4e457] [cursor=pointer]:
+                  - generic [ref=f4e459]:
+                    - generic: With Bill
+                    - generic: Without Bill
+              - generic [ref=f4e460]:
+                - generic [ref=f4e461] [cursor=pointer]:
+                  - button "Save and New" [ref=f4e462]
+                  - button [ref=f4e465]
+                - button "Save" [ref=f4e469] [cursor=pointer]
+          - generic [ref=f4e471]:
+            - generic [ref=f4e474]:
+              - generic [ref=f4e828]:
+                - generic "Supplier" [ref=f4e830]:
+                  - text: Supplier
+                  - generic [ref=f4e831]: "*"
+                - generic [ref=f4e838]:
+                  - combobox [ref=f4e840]
+                  - generic: Select
+              - generic [ref=f4e490]:
+                - generic [ref=f4e842]:
+                  - generic "Invoice Number" [ref=f4e844]:
+                    - text: Invoice Number
+                    - generic [ref=f4e845]: "*"
+                  - textbox "Enter Invoice Number" [ref=f4e849]
+                - generic [ref=f4e851]:
+                  - generic "Entry Date" [ref=f4e853]:
+                    - text: Entry Date
+                    - generic [ref=f4e854]: "*"
+                  - generic [ref=f4e859] [cursor=pointer]:
+                    - button [ref=f4e860]
+                    - textbox "Entry Date" [ref=f4e863]: 2083-05-30
+                - generic [ref=f4e865]:
+                  - generic "Invoice Date" [ref=f4e867]
+                  - generic [ref=f4e872] [cursor=pointer]:
+                    - button [ref=f4e873]
+                    - textbox "Select date" [ref=f4e876]: 2083-05-30
+                - generic [ref=f4e878]:
+                  - generic "Payment Period" [ref=f4e880]:
+                    - text: Payment Period
+                    - generic [ref=f4e881]: "*"
+                  - generic [ref=f4e888]:
+                    - combobox [ref=f4e890]
+                    - generic: Select
+            - table [ref=f4e901]:
+              - rowgroup [ref=f4e908]:
+                - row [ref=f4e909]:
+                  - columnheader "Account" [ref=f4e910]
+                  - columnheader "VAT" [ref=f4e911]
+                  - columnheader "Amount" [ref=f4e912]
+                  - columnheader "Description" [ref=f4e913]
+                  - columnheader "Actions" [ref=f4e914]
+              - rowgroup [ref=f4e915]:
+                - row [ref=f4e916]:
+                  - cell [ref=f4e917]:
+                    - generic [ref=f4e926]:
+                      - combobox [ref=f4e928]
+                      - generic: Select
+                  - cell "13%" [ref=f4e929]:
+                    - generic [ref=f4e937]:
+                      - combobox [disabled] [ref=f4e939]
+                      - generic "13%" [ref=f4e940]
+                  - cell [ref=f4e941]:
+                    - textbox "Amount" [disabled] [ref=f4e950]: "0"
+                  - cell [ref=f4e951]:
+                    - textbox "Description" [disabled] [ref=f4e957]
+                  - cell [ref=f4e958]:
+                    - button [disabled] [ref=f4e960]
+            - generic [ref=f4e965]:
+              - generic [ref=f4e966]:
+                - heading "Remarks" [level=3] [ref=f4e968]
+                - generic [ref=f4e977]:
+                  - textbox "Please enter references if any or any remarks" [ref=f4e978]
+                  - generic: 0 / 100
+              - generic [ref=f4e983]:
+                - switch [ref=f4e984] [cursor=pointer]
+                - generic [ref=f4e987]: Tax Deducted at Source (TDS)
+              - generic [ref=f4e990]:
+                - generic [ref=f4e991] [cursor=pointer]:
+                  - paragraph [ref=f4e992]: Sub Total
+                  - paragraph [ref=f4e993]: "0"
+                - generic [ref=f4e994] [cursor=pointer]:
+                  - paragraph [ref=f4e995]: Taxable Total
+                  - paragraph [ref=f4e996]: "0"
+                - generic [ref=f4e997] [cursor=pointer]:
+                  - paragraph [ref=f4e998]: Non Taxable Total
+                  - paragraph [ref=f4e999]: "0"
+                - generic [ref=f4e1000] [cursor=pointer]:
+                  - paragraph [ref=f4e1001]: VAT
+                  - paragraph [ref=f4e1002]: "0"
+                - generic [ref=f4e1003] [cursor=pointer]:
+                  - paragraph [ref=f4e1004]: Grand Total
+                  - paragraph [ref=f4e1005]: "0"
+            - generic [ref=f4e1011]:
+              - switch [ref=f4e1012] [cursor=pointer]
+              - generic [ref=f4e1015]: Quick Payment
+            - button "+ Documents" [ref=f4e1019] [cursor=pointer]
+      - region "Notifications Alt+T"

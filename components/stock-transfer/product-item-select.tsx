@@ -16,13 +16,20 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import type { TransferableProduct } from "@/lib/mock/stock-transfers"
 import { cn } from "@/lib/utils"
 
-type ProductItemSelectProps = {
+type SelectableProduct = {
+  id: string
+  name: string
+  category: string
+  unit: string
+  availableQuantity: number
+}
+
+type ProductItemSelectProps<TProduct extends SelectableProduct> = {
   value: string
-  onChange: (product: TransferableProduct) => void
-  products: TransferableProduct[]
+  onChange: (product: TProduct) => void
+  products: TProduct[]
   excludeIds?: string[]
   disabled?: boolean
   placeholder?: string
@@ -31,7 +38,7 @@ type ProductItemSelectProps = {
   "aria-invalid"?: boolean
 }
 
-export function ProductItemSelect({
+export function ProductItemSelect<TProduct extends SelectableProduct>({
   value,
   onChange,
   products,
@@ -41,7 +48,7 @@ export function ProductItemSelect({
   emptyMessage = "No item found.",
   className,
   "aria-invalid": ariaInvalid,
-}: ProductItemSelectProps) {
+}: ProductItemSelectProps<TProduct>) {
   const [open, setOpen] = React.useState(false)
   const [query, setQuery] = React.useState("")
 
@@ -68,7 +75,7 @@ export function ProductItemSelect({
     if (!next) setQuery("")
   }
 
-  function selectProduct(product: TransferableProduct) {
+  function selectProduct(product: TProduct) {
     onChange(product)
     setQuery("")
     setOpen(false)

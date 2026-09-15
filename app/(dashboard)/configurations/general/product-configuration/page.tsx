@@ -1,10 +1,5 @@
-import { ConfigurationsPlaceholderPage } from "@/components/settings/configurations-placeholder-page"
+import { ProductConfigurationPage } from "@/components/settings/product-configuration/product-configuration-page"
 
-export default function ProductConfigurationPage() {
-  return (
-    <ConfigurationsPlaceholderPage
-      href="/configurations/general/product-configuration"
-      fallbackTitle="Product Configuration"
-    />
-  )
+export default function ProductConfigurationRoute() {
+  return <ProductConfigurationPage />
 }

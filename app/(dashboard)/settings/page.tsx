@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation"
 
-import { getDefaultConfigurationsHref } from "@/config/configurations-navigation"
+import { getDefaultSettingsHref } from "@/config/settings-navigation"
 
-export default function LegacySettingsRedirectPage() {
-  redirect(getDefaultConfigurationsHref())
+export default function SettingsIndexPage() {
+  redirect(getDefaultSettingsHref())
 }
