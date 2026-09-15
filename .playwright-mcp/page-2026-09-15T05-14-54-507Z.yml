@@ -1,0 +1,16 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - navigation [ref=e3]:
+      - link [ref=e4] [cursor=pointer]:
+        - /url: https://uat-landing.providhy.com
+        - img "logo" [ref=e5]
+    - generic [ref=e6]:
+      - img "404"
+      - generic [ref=e7]:
+        - heading "Page not found" [level=1] [ref=e8]
+        - heading "Sorry, the page you are looking for was not found." [level=2] [ref=e9]
+        - generic [ref=e10]:
+          - generic [ref=e11] [cursor=pointer]: Go back
+          - generic [ref=e15] [cursor=pointer]: Go to login
+  - region "Notifications Alt+T"
+  - alert [ref=e16]

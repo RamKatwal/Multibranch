@@ -1,5 +1,5 @@
-import { ModulePage } from "@/components/dashboard/module-page"
+import { PurchaseRequisitionPage } from "@/components/purchase/requisition/purchase-requisition-page"
 
-export default function PurchaseRequisitionPage() {
-  return <ModulePage title="Requisition" />
+export default function PurchaseRequisitionRoute() {
+  return <PurchaseRequisitionPage />
 }
