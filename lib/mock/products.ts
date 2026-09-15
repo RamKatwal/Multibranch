@@ -306,6 +306,19 @@ const stockValuations: ProductStockValuation[] = [
 ]
 
 /**
+ * Deterministic expiry date for perishable-category products, spread across
+ * already-expired, near-expiry, and far-future so the Expiry Inventory Report
+ * has realistic demo data. `seed` maps to an offset in [-20, +69] days from today.
+ */
+function expiryDateFromSeed(seed: number): string {
+  const offsetDays = (seed % 90) - 20
+  const date = new Date()
+  date.setHours(0, 0, 0, 0)
+  date.setDate(date.getDate() + offsetDays)
+  return date.toISOString().slice(0, 10)
+}
+
+/**
  * Expands a list-level product into the full record shown on the Product
  * Details page. Fields the demo data does not carry are derived deterministically
  * from the product id so the same product always renders the same values.
@@ -319,6 +332,9 @@ export function getProductDetailById(id: string): ProductDetail | undefined {
   const holdQuantity = isService ? 0 : (seed - 1) % 3
   const availableQuantity = Math.max(product.totalQuantity - holdQuantity, 0)
   const costPrice = isService ? 0 : ((seed * 53) % 900) + 100
+  const isPerishable =
+    !isService &&
+    (product.category === "Groceries" || product.category === "Apparel")
 
   return {
     ...product,
@@ -328,13 +344,13 @@ export function getProductDetailById(id: string): ProductDetail | undefined {
     itemCode: null,
     tax: seed % 2 === 0 ? "13% VAT" : null,
     stockValuation: stockValuations[(seed - 1) % stockValuations.length],
-    expiryDate: null,
+    expiryDate: isPerishable ? expiryDateFromSeed(seed) : null,
     primaryUnit: isService ? "Job" : "Unit",
     subCategory: null,
     reorderQty: isService ? null : ((seed % 5) + 1) * 5,
     availableQuantity,
     holdQuantity,
-    batchTracking: false,
+    batchTracking: isPerishable,
     inventoryManaged: !isService,
     isSellable: true,
     costPrice,
