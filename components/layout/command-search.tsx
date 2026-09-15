@@ -33,7 +33,7 @@ import {
   CommandShortcut,
 } from "@/components/ui/command"
 import { useIsMac } from "@/hooks/use-is-mac"
-import { mainNavigation } from "@/config/navigation"
+import { mainNavigation, utilityNavigation } from "@/config/navigation"
 import { createMenuSections } from "@/lib/dashboard/mock-data"
 import { formatShortcutParts, modKeyLabel } from "@/lib/keyboard/utils"
 import { cn } from "@/lib/utils"
@@ -79,12 +79,12 @@ function buildPaletteItems(): PaletteItem[] {
     items.push({ ...item, id })
   }
 
-  for (const nav of mainNavigation) {
+  for (const nav of [...mainNavigation, ...utilityNavigation]) {
     add({
       title: nav.title,
       href: nav.href,
       keywords: [nav.title, nav.description ?? "", "page", "go to"].join(" "),
-      group: nav.href === "/reports" || nav.href === "/configurations"
+      group: nav.href === "/reports" || nav.href === "/configurations" || nav.href === "/settings"
         ? "Reports & Configurations"
         : "Pages",
       icon: iconForHref(nav.href),

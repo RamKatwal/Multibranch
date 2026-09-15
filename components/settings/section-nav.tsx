@@ -3,13 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { ChevronRight } from "lucide-react"
 
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible"
 import { cn } from "@/lib/utils"
 
 export type SectionNavItem = {
@@ -17,10 +11,6 @@ export type SectionNavItem = {
   href: string
   description?: string
   children?: SectionNavItem[]
-}
-
-function isActivePath(pathname: string, href: string) {
-  return pathname === href || pathname.startsWith(`${href}/`)
 }
 
 function flattenSectionLinks(items: SectionNavItem[]) {
@@ -36,6 +26,31 @@ function flattenSectionLinks(items: SectionNavItem[]) {
   })
 }
 
+function SectionLink({
+  title,
+  href,
+  active,
+}: {
+  title: string
+  href: string
+  active: boolean
+}) {
+  return (
+    <Link
+      href={href}
+      aria-current={active ? "page" : undefined}
+      className={cn(
+        "block truncate rounded-lg border-l-2 border-transparent px-3 py-2 text-sm leading-none transition-colors",
+        active
+          ? "border-l-primary bg-primary/5 font-medium text-foreground"
+          : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
+      )}
+    >
+      {title}
+    </Link>
+  )
+}
+
 export function SectionNav({
   items,
   ariaLabel,
@@ -48,37 +63,41 @@ export function SectionNav({
   const pathname = usePathname()
 
   return (
-    <nav className={cn("flex flex-col gap-1 p-3", className)} aria-label={ariaLabel}>
+    <nav className={cn("flex flex-col gap-0.5 px-2", className)} aria-label={ariaLabel}>
       {items.map((section) => {
         const hasChildren = Boolean(section.children?.length)
 
         if (!hasChildren) {
-          const active = pathname === section.href
-
           return (
-            <Link
+            <SectionLink
               key={section.href}
+              title={section.title}
               href={section.href}
-              className={cn(
-                "rounded-lg px-3 py-2 text-sm transition-colors",
-                active
-                  ? "bg-muted font-medium text-foreground"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
-              )}
-            >
-              {section.title}
-            </Link>
+              active={pathname === section.href}
+            />
           )
         }
 
         return (
-          <SectionNavGroup
-            key={section.href}
-            title={section.title}
-            href={section.href}
-            items={section.children!}
-            pathname={pathname}
-          />
+          <div key={section.href} className="flex flex-col gap-0.5 py-1">
+            <p className="px-3 pt-1.5 pb-1 text-[11px] font-medium tracking-wide text-muted-foreground/70 uppercase">
+              {section.title}
+            </p>
+            <ul className="flex flex-col gap-0.5">
+              {section.children!.map((item) => (
+                <li key={item.href}>
+                  <SectionLink
+                    title={item.title}
+                    href={item.href}
+                    active={
+                      pathname === item.href ||
+                      pathname.startsWith(`${item.href}/`)
+                    }
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
         )
       })}
     </nav>
@@ -96,12 +115,18 @@ export function SectionMobileNav({
   const router = useRouter()
   const links = React.useMemo(() => flattenSectionLinks(items), [items])
 
+  const selected =
+    links.find(
+      (link) =>
+        pathname === link.href || pathname.startsWith(`${link.href}/`)
+    )?.href ?? pathname
+
   return (
     <label className="flex flex-col gap-1.5">
       <span className="text-xs font-medium text-muted-foreground">{label}</span>
       <select
         className="h-9 w-full rounded-md border border-input bg-transparent px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
-        value={pathname}
+        value={selected}
         onChange={(event) => {
           router.push(event.target.value)
         }}
@@ -113,61 +138,5 @@ export function SectionMobileNav({
         ))}
       </select>
     </label>
-  )
-}
-
-function SectionNavGroup({
-  title,
-  href,
-  items,
-  pathname,
-}: {
-  title: string
-  href: string
-  items: { title: string; href: string }[]
-  pathname: string
-}) {
-  const isGroupActive = isActivePath(pathname, href)
-  const [open, setOpen] = React.useState(isGroupActive)
-
-  React.useEffect(() => {
-    if (isGroupActive) {
-      setOpen(true)
-    }
-  }, [isGroupActive])
-
-  return (
-    <Collapsible open={open} onOpenChange={setOpen} className="flex flex-col">
-      <CollapsibleTrigger className="flex w-full items-center justify-between rounded-md px-3 py-2 text-left text-xs font-semibold tracking-wide text-muted-foreground uppercase transition-colors hover:bg-muted hover:text-foreground">
-        <span>{title}</span>
-        <ChevronRight
-          className={cn(
-            "size-3.5 shrink-0 transition-transform duration-200",
-            open && "rotate-90"
-          )}
-        />
-      </CollapsibleTrigger>
-
-      <CollapsibleContent className="mt-0.5 flex flex-col gap-0.5">
-        {items.map((item) => {
-          const active = pathname === item.href
-
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "rounded-lg px-3 py-1.5 text-sm transition-colors",
-                active
-                  ? "bg-muted font-medium text-foreground"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
-              )}
-            >
-              {item.title}
-            </Link>
-          )
-        })}
-      </CollapsibleContent>
-    </Collapsible>
   )
 }

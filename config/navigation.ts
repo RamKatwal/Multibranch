@@ -201,6 +201,10 @@ export const mainNavigation: NavItem[] = [
     href: "/reports",
     icon: DuoReportsIcon,
   },
+]
+
+/** Utility links pinned above the sidebar footer (plan + branch switcher). */
+export const utilityNavigation: NavItem[] = [
   {
     title: "Configurations",
     href: "/configurations",
@@ -221,7 +225,7 @@ export const appBrand = {
 }
 
 export function getNavItemByHref(href: string): NavItem | undefined {
-  for (const item of mainNavigation) {
+  for (const item of [...mainNavigation, ...utilityNavigation]) {
     if (item.href === href) {
       return item
     }

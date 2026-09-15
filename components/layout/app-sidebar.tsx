@@ -19,9 +19,7 @@ import {
   SidebarSubmenuItem,
   SidebarSubmenuPanel,
 } from "@/components/motion/sidebar-submenu"
-import {
-  mainNavigation,
-} from "@/config/navigation"
+import { mainNavigation, utilityNavigation } from "@/config/navigation"
 import { useHomeView } from "@/components/dashboard/home/home-view-context"
 import {
   Collapsible,
@@ -338,8 +336,15 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-sidebar-border p-2 gap-2">
+      <SidebarFooter className="gap-2 border-t border-sidebar-border p-2">
+        <SidebarMenu className="gap-0.5">
+          {utilityNavigation.map((item) => (
+            <NavMenuItem key={item.title} item={item} pathname={pathname} />
+          ))}
+        </SidebarMenu>
+
         <SidebarTrialFooter daysRemaining={3} />
+
         <SidebarMenu>
           <SidebarMenuItem>
             <BranchSwitcher />
