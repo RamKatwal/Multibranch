@@ -8,6 +8,7 @@ export type Customer = {
   id: string
   type: CustomerType
   name: string
+  panNumber?: string
   address: string
   email: string
   contact: string

@@ -69,14 +69,23 @@ export const reportCatalog: ReportCategory[] = [
     title: "Sales",
     icon: ReceiptTextIcon,
     reports: [
-      { title: "Sales Quotation" },
-      { title: "Sales Order" },
-      { title: "Delivery Note" },
-      { title: "Returns Delivery Note" },
-      { title: "Sales Book" },
-      { title: "Sales Return" },
-      { title: "Sales by Item – Summary Report" },
-      { title: "Sales by Item – Monthly Report" },
+      { title: "Sales Quotation", href: "/reports/sales-quotation" },
+      { title: "Sales Order", href: "/reports/sales-order" },
+      { title: "Delivery Note", href: "/reports/delivery-note" },
+      {
+        title: "Returns Delivery Note",
+        href: "/reports/delivery-note-return",
+      },
+      { title: "Sales Book", href: "/reports/sales-book" },
+      { title: "Sales Return", href: "/reports/sales-return" },
+      {
+        title: "Sales by Item – Summary Report",
+        href: "/reports/sales-by-item-summary",
+      },
+      {
+        title: "Sales by Item – Monthly Report",
+        href: "/reports/sales-by-item-monthly",
+      },
     ],
   },
   {
