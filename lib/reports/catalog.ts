@@ -93,11 +93,11 @@ export const reportCatalog: ReportCategory[] = [
     title: "Supplier Reports",
     icon: UsersIcon,
     reports: [
-      { title: "Supplier Summary" },
-      { title: "Supplier Ledger" },
-      { title: "Supplier Transaction" },
-      { title: "Supplier Ageing" },
-      { title: "Supplier Bill Ageing" },
+      { title: "Supplier Summary", href: "/reports/supplier-summary" },
+      { title: "Supplier Ledger", href: "/reports/supplier-ledger" },
+      { title: "Supplier Transaction", href: "/reports/supplier-transaction" },
+      { title: "Supplier Ageing", href: "/reports/supplier-ageing" },
+      { title: "Supplier Bill Ageing", href: "/reports/supplier-bill-ageing" },
     ],
   },
   {
@@ -105,11 +105,11 @@ export const reportCatalog: ReportCategory[] = [
     title: "Customer Reports",
     icon: UsersIcon,
     reports: [
-      { title: "Customer Summary" },
-      { title: "Customer Ledger" },
-      { title: "Customer Transaction" },
-      { title: "Customer Ageing" },
-      { title: "Customer Bill Ageing" },
+      { title: "Customer Summary", href: "/reports/customer-summary" },
+      { title: "Customer Ledger", href: "/reports/customer-ledger" },
+      { title: "Customer Transaction", href: "/reports/customer-transaction" },
+      { title: "Customer Ageing", href: "/reports/customer-ageing" },
+      { title: "Customer Bill Ageing", href: "/reports/customer-bill-ageing" },
     ],
   },
   {
