@@ -11,6 +11,7 @@ import {
   CopyIcon,
   EyeIcon,
   EyeOffIcon,
+  InfoIcon,
   LayersIcon,
   MoreHorizontalIcon,
   PackageIcon,
@@ -878,6 +879,26 @@ export function ProductDetailPage({ productId }: { productId: string }) {
                     </Badge>
                   }
                 >
+                  {isHeadOffice ? (
+                    <div className="mb-3 flex items-start gap-2.5 rounded-lg border border-primary/20 bg-primary/5 px-3 py-2.5 text-sm">
+                      <InfoIcon className="mt-0.5 size-4 shrink-0 text-primary" />
+                      <p className="text-muted-foreground">
+                        Showing stock for{" "}
+                        <span className="font-medium text-foreground">
+                          {activeBranch?.name ?? "Head Office"}
+                        </span>{" "}
+                        only — not company-wide totals. Open the{" "}
+                        <button
+                          type="button"
+                          className="font-medium text-primary underline-offset-2 hover:underline"
+                          onClick={() => setActiveTab("branches")}
+                        >
+                          Branches
+                        </button>{" "}
+                        tab for overall inventory across all branches.
+                      </p>
+                    </div>
+                  ) : null}
                   <div className="grid gap-3 sm:grid-cols-3">
                     <StatTile
                       icon={PackageIcon}

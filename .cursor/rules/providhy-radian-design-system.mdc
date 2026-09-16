@@ -1,0 +1,42 @@
+---
+description: Providhy Figma consumes the published Radian library — never duplicate the DS
+alwaysApply: true
+---
+
+# Providhy ↔ Radian Design System
+
+There is **no separate Providhy design system**. **Radian is the design system.**
+
+**Radian design system = this exact Figma file** (Design System ❖ Version 0.3), published as a library:
+
+`https://www.figma.com/design/TQngn3b7a4jlu8xD6SZiod/Design-System-%E2%9D%96-Version-0.3--Community-`
+
+File key: `TQngn3b7a4jlu8xD6SZiod`
+
+The **Providhy working file** (`ea33mdznzR2oa70arYuvT6` / “New”) is a **separate** Figma file that **consumes** that published library. Do **not** recreate or duplicate Radian inside the Providhy file. Use the published library for all Providhy pages.
+
+**Product sources (Figma phase):** codebase = this repo (`https://github.com/RamKatwal/Multibranch`); live UI = `https://multibranch-kohl.vercel.app/`. Do **not** refactor code in the Figma phase — establish Figma first; code will follow later.
+
+## Before creating any page
+
+1. Inspect available Radian library components.
+2. Identify the appropriate Radian component for each UI need.
+3. Use **instances** of published Radian components.
+4. Use available Radian **variants**.
+5. Use Radian **variables/tokens** where available.
+6. Do **not** create duplicate versions of existing Radian components.
+
+## Design language (always)
+
+Follow Radian typography (Geist; Heading/Body), spacing, colors, border radius, states/interaction patterns, and layout conventions. No arbitrary styling.
+
+## If something is missing
+
+Create a **Providhy-specific** component only when Radian has no match — smallest possible, built from Radian’s visual language and primitives. Prefer a new Radian variant in the library when that is the right long-term home; never fork a lookalike inside Providhy.
+
+## Do not
+
+- Copy the Radian design system into the Providhy file
+- Invent a parallel Providhy component library or token set
+- Hard-code one-off colors, type, radii, or shadows outside Radian tokens
+- Duplicate Radian components under a Providhy name when an instance/variant would work

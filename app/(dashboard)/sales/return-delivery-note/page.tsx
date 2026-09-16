@@ -1,5 +1,5 @@
-import { ModulePage } from "@/components/dashboard/module-page"
+import { DeliveryNoteReturnPage } from "@/components/sales/return-delivery-note/delivery-note-return-page"
 
-export default function SalesReturnDeliveryNotePage() {
-  return <ModulePage title="Return Delivery Note" />
+export default function SalesReturnDeliveryNoteRoute() {
+  return <DeliveryNoteReturnPage />
 }

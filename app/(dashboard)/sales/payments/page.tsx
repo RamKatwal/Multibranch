@@ -1,5 +1,5 @@
-import { ModulePage } from "@/components/dashboard/module-page"
+import { SalesPaymentsPage } from "@/components/sales/payments/sales-payments-page"
 
-export default function SalesPaymentsPage() {
-  return <ModulePage title="Sales Payments" />
+export default function SalesPaymentsRoute() {
+  return <SalesPaymentsPage />
 }

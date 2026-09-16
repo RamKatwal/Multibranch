@@ -1,4 +1,11 @@
-export type SalesReturnStatus = "approved" | "draft" | "for-approval" | "void"
+export const SALES_RETURN_STATUSES = [
+  "approved",
+  "draft",
+  "for-approval",
+  "void",
+] as const
+
+export type SalesReturnStatus = (typeof SALES_RETURN_STATUSES)[number]
 
 export type SalesReturn = {
   id: string
