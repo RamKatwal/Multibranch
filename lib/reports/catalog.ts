@@ -117,11 +117,14 @@ export const reportCatalog: ReportCategory[] = [
     title: "Accounting",
     icon: LandmarkIcon,
     reports: [
-      { title: "Trial Balance" },
-      { title: "Balance Sheet" },
-      { title: "Profit Loss Statement" },
-      { title: "General Ledger" },
-      { title: "Transaction Report/Day Book" },
+      { title: "Trial Balance", href: "/reports/trial-balance" },
+      { title: "Balance Sheet", href: "/reports/balance-sheet" },
+      { title: "Profit Loss Statement", href: "/reports/profit-loss" },
+      { title: "General Ledger", href: "/reports/general-ledger" },
+      {
+        title: "Transaction Report/Day Book",
+        href: "/reports/transaction-daybook",
+      },
     ],
   },
   {
