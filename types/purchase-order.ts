@@ -59,6 +59,7 @@ export type PurchaseOrder = {
   paymentPeriod: string
   status: PurchaseOrderStatus
   remarks: string
+  entryBy?: string
   items: PurchaseOrderItem[]
   additionalDiscount: number
   subTotal: number

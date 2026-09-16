@@ -43,5 +43,6 @@ export type PurchaseRequisition = {
   dueDate: string
   status: PurchaseRequisitionStatus
   remarks: string
+  entryBy?: string
   items: PurchaseRequisitionItem[]
 }

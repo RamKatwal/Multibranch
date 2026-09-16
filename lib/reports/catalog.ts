@@ -50,12 +50,18 @@ export const reportCatalog: ReportCategory[] = [
     title: "Purchase",
     icon: ShoppingCartIcon,
     reports: [
-      { title: "Purchase Requisition" },
-      { title: "Purchase Order" },
-      { title: "Purchase Book" },
-      { title: "Purchase Return" },
-      { title: "Purchase by Item – Summary Report" },
-      { title: "Purchase by Item – Monthly Report" },
+      { title: "Purchase Requisition", href: "/reports/purchase-requisition" },
+      { title: "Purchase Order", href: "/reports/purchase-order" },
+      { title: "Purchase Book", href: "/reports/purchase-book" },
+      { title: "Purchase Return", href: "/reports/purchase-return" },
+      {
+        title: "Purchase by Item – Summary Report",
+        href: "/reports/purchase-by-item-summary",
+      },
+      {
+        title: "Purchase by Item – Monthly Report",
+        href: "/reports/purchase-by-item-monthly",
+      },
     ],
   },
   {

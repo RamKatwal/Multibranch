@@ -70,6 +70,8 @@ const remarksSamples = [
   "Seasonal purchase — confirm lead time.",
 ]
 
+const entryBySamples = ["admin", "ram", "farah", "gopal", "laxman", "kabita"]
+
 function pad(value: number, length = 6) {
   return String(value).padStart(length, "0")
 }
@@ -141,6 +143,7 @@ function buildMockPurchaseOrders(count: number): PurchaseOrder[] {
       paymentPeriod: paymentTerm?.name ?? "",
       status: statuses[index % statuses.length],
       remarks: remarksSamples[index % remarksSamples.length],
+      entryBy: entryBySamples[index % entryBySamples.length],
       items,
       additionalDiscount,
       ...totals,

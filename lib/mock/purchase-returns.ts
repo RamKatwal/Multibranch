@@ -22,6 +22,8 @@ const statuses: PurchaseReturnStatus[] = [
   "void",
 ]
 
+const entryBySamples = ["admin", "ram", "farah", "gopal", "laxman", "kabita"]
+
 function pad(value: number, length = 6) {
   return String(value).padStart(length, "0")
 }
@@ -46,6 +48,7 @@ function buildMockPurchaseReturns(count: number): PurchaseReturn[] {
       refInvoice: `PIN-${pad(((index * 11) % 900) + 1)}-2082/83`,
       totalAmount: 8500 + ((index * 13750) % 485000),
       status: statuses[index % statuses.length],
+      entryBy: entryBySamples[index % entryBySamples.length],
     }
   })
 }

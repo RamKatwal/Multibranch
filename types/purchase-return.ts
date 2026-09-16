@@ -11,6 +11,7 @@ export type PurchaseReturn = {
   refInvoice: string
   totalAmount: number
   status: PurchaseReturnStatus
+  entryBy?: string
 }
 
 export const purchaseReturnStatusLabels: Record<PurchaseReturnStatus, string> = {

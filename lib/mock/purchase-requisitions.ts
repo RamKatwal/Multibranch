@@ -20,6 +20,8 @@ const remarksSamples = [
   "Match previous requisition quantities.",
 ]
 
+const entryBySamples = ["admin", "ram", "farah", "gopal", "laxman", "kabita"]
+
 function pad(value: number, length = 6) {
   return String(value).padStart(length, "0")
 }
@@ -66,6 +68,7 @@ function buildMockPurchaseRequisitions(count: number): PurchaseRequisition[] {
       dueDate: dateForIndex(index, 7),
       status: statuses[index % statuses.length],
       remarks: remarksSamples[index % remarksSamples.length],
+      entryBy: entryBySamples[index % entryBySamples.length],
       items: buildItems(index, products),
     }
   })
