@@ -132,14 +132,23 @@ export const reportCatalog: ReportCategory[] = [
     title: "Tax Reports",
     icon: ScrollTextIcon,
     reports: [
-      { title: "Sales Register" },
-      { title: "Sales Return Register" },
-      { title: "Purchase Register" },
-      { title: "Purchase Return Register" },
-      { title: "VAT Summary Report" },
-      { title: "TDS Report" },
-      { title: "Annex 5 Materialized View Report" },
-      { title: "Annex 13 Report" },
+      { title: "Sales Register", href: "/reports/sales-register" },
+      {
+        title: "Sales Return Register",
+        href: "/reports/sales-return-register",
+      },
+      { title: "Purchase Register", href: "/reports/purchase-register" },
+      {
+        title: "Purchase Return Register",
+        href: "/reports/purchase-return-register",
+      },
+      { title: "VAT Summary Report", href: "/reports/vat-summary" },
+      { title: "TDS Report", href: "/reports/tds-report" },
+      {
+        title: "Annex 5 Materialized View Report",
+        href: "/reports/annex-5",
+      },
+      { title: "Annex 13 Report", href: "/reports/annex-13" },
     ],
   },
   {
@@ -147,8 +156,11 @@ export const reportCatalog: ReportCategory[] = [
     title: "Financial Position Reports",
     icon: TrendingUpIcon,
     reports: [
-      { title: "Financial Overview" },
-      { title: "Financial Transactions" },
+      { title: "Financial Overview", href: "/reports/financial-overview" },
+      {
+        title: "Financial Transactions",
+        href: "/reports/financial-transactions",
+      },
     ],
   },
 ]
