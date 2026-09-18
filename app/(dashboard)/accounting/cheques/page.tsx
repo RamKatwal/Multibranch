@@ -1,5 +1,5 @@
-import { ModulePage } from "@/components/dashboard/module-page"
+import { ChequesPage } from "@/components/cheques/cheques-page"
 
-export default function ChequesPage() {
-  return <ModulePage title="Cheques" />
+export default function ChequesRoute() {
+  return <ChequesPage />
 }

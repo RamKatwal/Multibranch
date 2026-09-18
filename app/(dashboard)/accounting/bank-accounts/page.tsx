@@ -1,5 +1,5 @@
-import { ModulePage } from "@/components/dashboard/module-page"
+import { BankAccountsPage } from "@/components/bank-accounts/bank-accounts-page"
 
-export default function BankAccountsPage() {
-  return <ModulePage title="Bank Accounts" />
+export default function BankAccountsRoute() {
+  return <BankAccountsPage />
 }

@@ -1,5 +1,5 @@
-import { ModulePage } from "@/components/dashboard/module-page"
+import { ChartOfAccountsPage } from "@/components/chart-of-accounts/chart-of-accounts-page"
 
-export default function ChartOfAccountsPage() {
-  return <ModulePage title="Chart of Accounts" />
+export default function ChartOfAccountsRoute() {
+  return <ChartOfAccountsPage />
 }
