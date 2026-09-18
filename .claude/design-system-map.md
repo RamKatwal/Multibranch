@@ -8,8 +8,10 @@ under `components/`, `app/`, `lib/`, and `types/` (excluding `node_modules`).
 
 "Radian" is the name of the Figma design-system library this codebase
 implements (`.cursor/rules/providhy-radian-design-system.mdc`). In code,
-Radian = `components/ui/**`. It is built primarily on **Base UI**
-(`@base-ui/react`), with a handful of gaps filled by **Radix UI** primitives.
+Radian = `components/ui/**`. It is built on **Base UI** (`@base-ui/react`)
+plus `cmdk` for the command palette — the last Radix UI holdouts
+(`label.tsx`, `form.tsx`'s `FormControl`) were removed on 2026-09-18 (see
+"Consolidation status" below).
 
 ---
 
@@ -66,8 +68,9 @@ invisible to Figma parity — Radian's Figma fidelity is governed by the
   `switch`, `tooltip`, `sidebar`, `popover`, `separator`, `sheet`, `input`,
   `drawer`, `dropdown-menu`, `dialog`, `collapsible`, `button`, `avatar`,
   `badge`, `breadcrumb`, `button-group`, `divider`, `otp-field`.
-- **Radix UI** — 1 wrapper file remains, kept deliberately: `form.tsx`
-  (`react-slot`, via `FormControl`).
+- **Radix UI** — none remain. The last wrapper file, `form.tsx`
+  (`react-slot`, via `FormControl`), was migrated — see "Consolidation
+  status" below.
 - **cmdk** — `components/ui/command.tsx` only.
 
 **Consolidation status (updated 2026-09-18):**
@@ -114,14 +117,28 @@ invisible to Figma parity — Radian's Figma fidelity is governed by the
   `checkbox.tsx` being hand-built rather than wrapping a headless
   primitive. `@radix-ui/react-label` was removed from `package.json`.
   Verified via `tsc --noEmit`, `eslint`, and `npm run build`, all clean.
-- **Deliberately not done** — `form.tsx`'s `FormControl`. It relies on
-  Radix's `Slot` implicit-`asChild` behavior
-  (`<FormControl><Input/></FormControl>` merges props onto the child
-  automatically); Base UI's `useRender` equivalent needs an explicit
-  `render` prop instead, which would require editing call sites in all
-  ~30 forms that use `FormControl`, not just the primitive underneath. A
-  real, larger project — left for a dedicated branch with per-form
-  testing rather than folded into this pass.
+- **Also done (2026-09-18)** — `form.tsx`'s `FormControl` dropped
+  `@radix-ui/react-slot` without touching any of its ~30 call sites.
+  Adopting Base UI's `useRender` was rejected because it swaps the
+  implicit-`asChild` API (`<FormControl><Input/></FormControl>`) for an
+  explicit `render` prop, which would have forced editing every form.
+  Instead, `FormControl`'s only actual requirement — clone its own props
+  (`id`, `aria-describedby`, `aria-invalid`) onto its single child element
+  — was hand-rolled as a small local `Slot` inside `form.tsx`, reading
+  Radix's own `mergeProps`/`getElementRef` source to replicate its exact
+  semantics: child props win over slot props for plain keys (so a call
+  site that sets its own `id` still overrides `formItemId`, unchanged
+  behavior), event handlers chain, `className`/`style` merge instead of
+  overwrite, and refs compose. Radix's `Slottable`/lazy-child branches
+  were skipped since no call site in this codebase uses them (confirmed
+  by inspecting all `<FormControl>` usages). Verified via `tsc --noEmit`,
+  `eslint`, `npm run build`, and an SSR fetch of `/signup` diffed against
+  the expected merged output (`id="fullName"` still wins over
+  `formItemId`, `aria-describedby`/`aria-invalid`/`data-slot` still land
+  on the rendered `<input>`) — byte-for-byte the same merge result as
+  before. `@radix-ui/react-slot` was removed from `package.json`. This
+  closes out Radix UI entirely: Radian is now 100% Base UI (plus `cmdk`
+  for the command palette).
 
 ---
 
@@ -137,23 +154,7 @@ invisible to Figma parity — Radian's Figma fidelity is governed by the
 | `next-themes` | theme provider | 5 files (`theme-provider.tsx`, `mode-toggle.tsx`, `app-navbar.tsx`, `appearance-settings-panel.tsx`, `components/ui/sonner.tsx`) |
 | `embla-carousel*` | carousel engine | 2 files (`components/ui/carousel.tsx`, `components/testimonial-carousel.tsx`) |
 
-### Removed (were dead weight — zero imports anywhere in the codebase)
 
-**Status: done, 2026-09-18.** Uninstalled from `package.json` and
-`node_modules` (269 packages dropped from the tree). `npm run build` and
-`npm run lint` were re-run after removal — build is clean; lint shows only
-pre-existing, unrelated issues (`hooks/use-mobile.ts`,
-`lib/companies/options.ts`) untouched by this change.
-
-- `@carbon/react`
-- `@chakra-ui/react`
-- `@saas-ui/react`
-- `@emotion/react` (was only Chakra's peer dependency)
-- `@radix-ui/react-checkbox` (note: `components/ui/checkbox.tsx` is actually
-  hand-built from scratch, not built on this package, so nothing had to
-  change in the component itself)
-
----
 
 ## 3. Custom-built (bespoke, app-specific — not from any UI library)
 
@@ -190,17 +191,12 @@ violation of `.cursor/rules/ui-tabs.mdc`:
 - Feature code reaches directly for a small, consistent set of
   non-visual/utility libraries (icons, forms, tables, toasts, charts,
   theming) rather than competing component kits.
-- Three dead component libraries (`@carbon/react`, `@chakra-ui/react`,
-  `@saas-ui/react`, plus `@emotion/react` and the unused
-  `@radix-ui/react-checkbox`) have been removed from `package.json` —
-  they were never imported and added no real risk to Figma parity, just
-  install weight.
 - Two known violations (hand-rolled tabs) remain unfixed and should migrate
   to `components/ui/tabs` per `.cursor/rules/ui-tabs.mdc`.
 - `divider.tsx` and `otp-field.tsx` are now on Base UI, `toast()` is now
   centralized through `components/ui/sonner.tsx` instead of being imported
-  from `sonner` directly in 94 places, and `label.tsx` has dropped
-  `@radix-ui/react-label` in favor of a hand-rolled native `<label>` — see
-  the "Consolidation status" notes above. `form.tsx`'s `FormControl` is the
-  last Radix-only wrapper, remaining deliberately, pending a dedicated
-  branch (see "Deliberately not done" above).
+  from `sonner` directly in 94 places, `label.tsx` has dropped
+  `@radix-ui/react-label` in favor of a hand-rolled native `<label>`, and
+  `form.tsx`'s `FormControl` has dropped `@radix-ui/react-slot` in favor of
+  a hand-rolled `Slot` — see the "Consolidation status" notes above. Radian
+  no longer depends on Radix UI at all; it's Base UI plus `cmdk`.

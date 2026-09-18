@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
 import {
 	Controller,
 	type ControllerProps,
@@ -12,6 +11,75 @@ import {
 } from "react-hook-form"
 import { cn } from "@/lib/utils"
 import { Label, type LabelProps } from "@/components/ui/label"
+
+function composeRefs<T>(...refs: Array<React.Ref<T> | undefined>) {
+	return (node: T | null) => {
+		for (const ref of refs) {
+			if (typeof ref === "function") {
+				ref(node)
+			} else if (ref) {
+				;(ref as React.RefObject<T | null>).current = node
+			}
+		}
+	}
+}
+
+function mergeSlotProps(
+	slotProps: Record<string, unknown>,
+	childProps: Record<string, unknown>
+) {
+	const merged: Record<string, unknown> = { ...slotProps, ...childProps }
+
+	for (const propName in childProps) {
+		const slotValue = slotProps[propName]
+		const childValue = childProps[propName]
+		const isHandler = /^on[A-Z]/.test(propName)
+
+		if (
+			isHandler &&
+			typeof slotValue === "function" &&
+			typeof childValue === "function"
+		) {
+			merged[propName] = (...args: unknown[]) => {
+				childValue(...args)
+				slotValue(...args)
+			}
+		} else if (propName === "style") {
+			merged.style = { ...(slotValue as object), ...(childValue as object) }
+		} else if (propName === "className") {
+			merged.className = [slotValue, childValue].filter(Boolean).join(" ")
+		}
+	}
+
+	return merged
+}
+
+/**
+ * Merges its own props onto its single child instead of rendering a
+ * wrapper element — the implicit-`asChild` behavior `FormControl` needs
+ * (`<FormControl><Input/></FormControl>` becomes just `<Input/>` with
+ * both sets of props applied). Hand-rolled to drop the
+ * `@radix-ui/react-slot` dependency; Base UI has no drop-in equivalent
+ * since its `render`-prop pattern would require editing every call site.
+ */
+type SlotProps = React.HTMLAttributes<HTMLElement> & {
+	ref?: React.Ref<HTMLElement>
+	children?: React.ReactNode
+}
+
+function Slot({ children, ref, ...slotProps }: SlotProps) {
+	if (!React.isValidElement(children)) {
+		return null
+	}
+
+	const childProps = (children.props ?? {}) as Record<string, unknown>
+	const childRef = (children.props as { ref?: React.Ref<HTMLElement> })?.ref
+
+	return React.cloneElement(children, {
+		...mergeSlotProps(slotProps, childProps),
+		ref: composeRefs(ref, childRef),
+	} as Record<string, unknown>)
+}
 
 export type FormFieldContextValue<
 	TFieldValues extends FieldValues = FieldValues,
