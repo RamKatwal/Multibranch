@@ -6,6 +6,15 @@ under `components/`, `app/`, `lib/`, and `types/` (excluding `node_modules`).
 
 ## Naming note: "Radian"
 
+> **Updated 2026-10-05:** "Radian" is Radian UI (radianui.com): the Figma
+> library *and* its React components, added with `npx radianui@latest add`.
+> The `components/ui` files below are mostly shadcn (base-mira, Base UI)
+> components that are being replaced by the real Radian ones (Radix-based)
+> one primitive per PR, because only Radian's props and tokens match the
+> Figma library one to one. The Base UI consolidation described below is
+> history. Current status, mapping and decisions:
+> `.claude/rules/design-system.md`.
+
 "Radian" is the name of the Figma design-system library this codebase
 implements (`.cursor/rules/providhy-radian-design-system.mdc`). In code,
 Radian = `components/ui/**`. It is built on **Base UI** (`@base-ui/react`)
@@ -103,6 +112,9 @@ invisible to Figma parity — Radian's Figma fidelity is governed by the
   `npm run build`, all clean. This closes the gap: if Radian's toast
   variant/icon/duration conventions ever change, there is now one file to
   edit instead of 94.
+  **Correction (2026-10-05): this change never reached `main`.**
+  `components/ui/sonner.tsx` still exports only `Toaster`, and 97 files
+  import `toast` from `"sonner"` directly.
 - **Also done (2026-09-18)** — `label.tsx` dropped `@radix-ui/react-label`
   entirely rather than migrating to Base UI's `Field.Label`. `Field.Label`
   requires a `Field.Root`/`Labelable` context ancestor (it throws without
