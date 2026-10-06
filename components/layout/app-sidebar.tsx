@@ -122,16 +122,16 @@ function HomeMoreActions() {
   return (
     <DropdownMenu>
       <Tooltip>
-        <DropdownMenuTrigger
-          render={
-            <TooltipTrigger
-              render={<SidebarMenuAction showOnHover aria-label="More actions" />}
-            />
-          }
-        >
-          <MoreHorizontal />
-          <span className="sr-only">More actions</span>
-        </DropdownMenuTrigger>
+        <TooltipTrigger asChild>
+          <DropdownMenuTrigger
+            render={
+              <SidebarMenuAction showOnHover aria-label="More actions" />
+            }
+          >
+            <MoreHorizontal />
+            <span className="sr-only">More actions</span>
+          </DropdownMenuTrigger>
+        </TooltipTrigger>
         <TooltipContent side="right">More actions</TooltipContent>
       </Tooltip>
       <DropdownMenuContent
@@ -240,15 +240,13 @@ function NavMenuItem({ item, pathname }: { item: NavItem; pathname: string }) {
               <SidebarSubmenuItem key={child.href} index={index}>
                 {shortcutKeys ? (
                   <Tooltip>
-                    <TooltipTrigger
-                      render={
-                        <SidebarMenuSubButton
-                          render={<Link href={child.href} />}
-                          isActive={isNavItemActive(pathname, child.href)}
-                        />
-                      }
-                    >
-                      {content}
+                    <TooltipTrigger asChild>
+                      <SidebarMenuSubButton
+                        render={<Link href={child.href} />}
+                        isActive={isNavItemActive(pathname, child.href)}
+                      >
+                        {content}
+                      </SidebarMenuSubButton>
                     </TooltipTrigger>
                     <TooltipContent side="right" align="center">
                       <NavShortcutTooltipLabel
@@ -283,25 +281,23 @@ export function AppSidebar() {
     <Sidebar collapsible="icon" className="relative">
       {!isMobile ? (
         <Tooltip>
-          <TooltipTrigger
-            render={
-              <button
-                type="button"
-                onClick={toggleSidebar}
-                aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-                className={cn(
-                  "absolute top-1/2 z-30 flex size-6 -translate-y-1/2 items-center justify-center rounded-full border border-sidebar-border bg-background text-muted-foreground shadow-sm transition-opacity",
-                  "opacity-0 group-hover:opacity-100 hover:bg-accent hover:text-foreground",
-                  "-right-3"
-                )}
-              />
-            }
-          >
-            {isCollapsed ? (
-              <ChevronRight className="size-3.5" />
-            ) : (
-              <ChevronLeft className="size-3.5" />
-            )}
+          <TooltipTrigger asChild>
+            <button
+              type="button"
+              onClick={toggleSidebar}
+              aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+              className={cn(
+                "absolute top-1/2 z-30 flex size-6 -translate-y-1/2 items-center justify-center rounded-full border border-sidebar-border bg-background text-muted-foreground shadow-sm transition-opacity",
+                "opacity-0 group-hover:opacity-100 hover:bg-accent hover:text-foreground",
+                "-right-3"
+              )}
+            >
+              {isCollapsed ? (
+                <ChevronRight className="size-3.5" />
+              ) : (
+                <ChevronLeft className="size-3.5" />
+              )}
+            </button>
           </TooltipTrigger>
           <TooltipContent side="right">
             <NavShortcutTooltipLabel

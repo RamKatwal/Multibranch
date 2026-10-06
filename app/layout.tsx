@@ -9,7 +9,6 @@ import { AppearanceProvider } from "@/components/appearance/appearance-provider"
 import { MotionProvider } from "@/components/motion/motion-provider"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
-import { TooltipProvider } from "@/components/ui/tooltip"
 import { appearanceInitScript } from "@/lib/appearance/init-script"
 import { appBrand } from "@/config/navigation"
 
@@ -72,7 +71,7 @@ export default function RootLayout({
         >
           <AppearanceProvider>
             <MotionProvider>
-              <TooltipProvider>{children}</TooltipProvider>
+              {children}
               <Toaster position="bottom-center" />
             </MotionProvider>
           </AppearanceProvider>

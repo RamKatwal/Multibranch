@@ -14,7 +14,6 @@ import {
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { useIsMac } from "@/hooks/use-is-mac"
@@ -110,32 +109,28 @@ export function DemoFillFab({
     )
 
     return (
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger
-            render={
-              <IconButton
-                type="button"
-                size="32"
-                onClick={action.onFill}
-                className={fabClassName}
-                aria-label={`${action.label} (${shortcutLabel})`}
-              />
-            }
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <IconButton
+            type="button"
+            size="32"
+            onClick={action.onFill}
+            className={fabClassName}
+            aria-label={`${action.label} (${shortcutLabel})`}
           >
             <HugeiconsIcon icon={MagicWand01Icon} className="size-4 shrink-0" />
-          </TooltipTrigger>
-          <TooltipContent side="left" className="flex items-center gap-1.5">
-            <span>{action.label}</span>
-            <kbd
-              data-slot="kbd"
-              className="pointer-events-none inline-flex h-5 items-center rounded border border-background/20 bg-background/15 px-1.5 font-mono text-[10px] font-medium text-background"
-            >
-              {shortcutLabel}
-            </kbd>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+          </IconButton>
+        </TooltipTrigger>
+        <TooltipContent side="left" className="flex items-center gap-1.5">
+          <span>{action.label}</span>
+          <kbd
+            data-slot="kbd"
+            className="pointer-events-none inline-flex h-5 items-center rounded border border-background/20 bg-background/15 px-1.5 font-mono text-[10px] font-medium text-background"
+          >
+            {shortcutLabel}
+          </kbd>
+        </TooltipContent>
+      </Tooltip>
     )
   }
 

@@ -80,13 +80,13 @@ re-add with the CLI) · ⏳ shadcn on Base UI (migrate) · ➖ no Radian equival
 
 | Here (`components/ui`) | Status | Radian target | Notes |
 |---|---|---|---|
-| `spinner`, `carousel` | ✅ | same name | |
+| `spinner`, `carousel`, `tooltip` | ✅ | same name | |
 | `button` | ✅ | `button` (`Button`, `IconButton`, `ButtonGroup`, `CompactButton`) | `children` optional (transitional, §9) |
 | `badge`, `input`, `checkbox`, `switch`, `avatar`, `breadcrumb`, `collapsible`, `label`, `skeleton` | ⏳ | same name | |
 | `textarea` | ⏳ | `text-area` | |
 | `native-select` | ⏳ | `select` | |
 | `tabs` | ⏳ | `tabs`, plus `toggle-group` for filter rows | Keep the `ui-tabs.mdc` look |
-| `dialog`, `drawer`, `dropdown-menu`, `popover`, `tooltip`, `sidebar` | ⏳ | same name | Triggers switch from `render={…}` to `asChild` |
+| `dialog`, `drawer`, `dropdown-menu`, `popover`, `sidebar` | ⏳ | same name | Triggers switch from `render={…}` to `asChild` |
 | `sheet` | ⏳ | `drawer` | |
 | `separator` | ⏳ | `divider` | |
 | `command` (69%), `form` (75%) | ⏳ | same name | |
@@ -180,3 +180,12 @@ select, slider, stepper, table, text-area, toggle, toggle-group.
   (`<TooltipTrigger render={<IconButton …/>}>`) that receive their children from the trigger.
   Restore upstream when tooltip, dropdown-menu, dialog, popover and drawer are Radian (`asChild`).
   Re-adding a primitive that depends on `button` with `--overwrite` rewrites `button.tsx`: reapply this.
+- 2026-10-06: **Tooltip migrated to Radian** (Radix). `<TooltipTrigger render={<X/>}>kids</TooltipTrigger>`
+  became `<TooltipTrigger asChild><X>kids</X></TooltipTrigger>` (53 places). Where a tooltip sat inside
+  a Base UI trigger's `render` (47 places, e.g. `DropdownMenuTrigger render={<TooltipTrigger …/>}`), the
+  nesting is inverted: `<TooltipTrigger asChild><DropdownMenuTrigger render={<IconButton/>}>…`. The Radix
+  Slot hands its ref and handlers to the Base UI trigger, which forwards them. When dropdown-menu moves to
+  Radian, these become `<TooltipTrigger asChild><DropdownMenuTrigger asChild><IconButton>`.
+  `TooltipProvider` is gone (Radian's `Tooltip` includes its provider, delay 0, as before). The sidebar's
+  `SidebarMenuButton` now wraps its rendered element in `TooltipTrigger asChild`. Radian's content is
+  13px with an 8px offset (was 12px, 4px) and isn't portaled.

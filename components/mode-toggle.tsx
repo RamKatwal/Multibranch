@@ -47,24 +47,22 @@ export function ModeToggle() {
   return (
     <DropdownMenu>
       <Tooltip>
-        <DropdownMenuTrigger
-          render={
-            <TooltipTrigger
-              render={
-                <IconButton
-                  variant="ghost"
-                  color="neutral"
-                  size="32"
-                  className="relative text-muted-foreground hover:text-foreground"
-                  aria-label="Toggle theme"
-                />
-              }
-            />
-          }
-        >
-          <Sun className="size-4 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-          <Moon className="absolute size-4 scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
-        </DropdownMenuTrigger>
+        <TooltipTrigger asChild>
+          <DropdownMenuTrigger
+            render={
+              <IconButton
+                variant="ghost"
+                color="neutral"
+                size="32"
+                className="relative text-muted-foreground hover:text-foreground"
+                aria-label="Toggle theme"
+              />
+            }
+          >
+            <Sun className="size-4 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+            <Moon className="absolute size-4 scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+          </DropdownMenuTrigger>
+        </TooltipTrigger>
         <TooltipContent>Toggle theme</TooltipContent>
       </Tooltip>
       <DropdownMenuContent align="end" className="w-44">

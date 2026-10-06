@@ -110,22 +110,20 @@ export function VatSummaryReportPage() {
             <ButtonGroup className="self-end lg:self-auto">
               <DropdownMenu>
                 <Tooltip>
-                  <DropdownMenuTrigger
-                    render={
-                      <TooltipTrigger
-                        render={
-                          <IconButton
-                            variant="outline"
-                            color="neutral"
-                            size="32"
-                            aria-label="Row size"
-                          />
-                        }
-                      />
-                    }
-                  >
-                    <Rows3Icon />
-                  </DropdownMenuTrigger>
+                  <TooltipTrigger asChild>
+                    <DropdownMenuTrigger
+                      render={
+                        <IconButton
+                          variant="outline"
+                          color="neutral"
+                          size="32"
+                          aria-label="Row size"
+                        />
+                      }
+                    >
+                      <Rows3Icon />
+                    </DropdownMenuTrigger>
+                  </TooltipTrigger>
                   <TooltipContent>Row size</TooltipContent>
                 </Tooltip>
                 <DropdownMenuContent align="end" className="min-w-40">
@@ -149,21 +147,19 @@ export function VatSummaryReportPage() {
               </DropdownMenu>
 
               <Tooltip>
-                <TooltipTrigger
-                  render={
-                    <IconButton
-                      variant="outline"
-                      color="neutral"
-                      size="32"
-                      aria-label={
-                        isFullscreen ? "Exit full screen" : "Full screen"
-                      }
-                      aria-pressed={isFullscreen}
-                      onClick={toggleFullscreen}
-                    />
-                  }
-                >
-                  {isFullscreen ? <Minimize2Icon /> : <Maximize2Icon />}
+                <TooltipTrigger asChild>
+                  <IconButton
+                    variant="outline"
+                    color="neutral"
+                    size="32"
+                    aria-label={
+                      isFullscreen ? "Exit full screen" : "Full screen"
+                    }
+                    aria-pressed={isFullscreen}
+                    onClick={toggleFullscreen}
+                  >
+                    {isFullscreen ? <Minimize2Icon /> : <Maximize2Icon />}
+                  </IconButton>
                 </TooltipTrigger>
                 <TooltipContent>
                   {isFullscreen ? "Exit full screen" : "Full screen"}
