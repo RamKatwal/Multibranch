@@ -159,28 +159,26 @@ function ModulePermissionTable({
             </th>
             <th className="px-2 py-1.5 text-center">
               <Tooltip>
-                <TooltipTrigger
-                  render={
-                    <IconButton
-                      type="button"
-                      variant="ghost"
-                      color="neutral"
-                      size="32"
-                      className="mx-auto"
-                      disabled={readOnly}
-                      aria-label={selectAllLabel}
-                      aria-pressed={moduleSelection.isSelected}
-                      onClick={() =>
-                        onToggleModule(module, !moduleSelection.isSelected)
-                      }
-                    />
-                  }
-                >
-                  {moduleSelection.isSelected ? (
-                    <CheckSquareIcon />
-                  ) : (
-                    <SquareIcon />
-                  )}
+                <TooltipTrigger asChild>
+                  <IconButton
+                    type="button"
+                    variant="ghost"
+                    color="neutral"
+                    size="32"
+                    className="mx-auto"
+                    disabled={readOnly}
+                    aria-label={selectAllLabel}
+                    aria-pressed={moduleSelection.isSelected}
+                    onClick={() =>
+                      onToggleModule(module, !moduleSelection.isSelected)
+                    }
+                  >
+                    {moduleSelection.isSelected ? (
+                      <CheckSquareIcon />
+                    ) : (
+                      <SquareIcon />
+                    )}
+                  </IconButton>
                 </TooltipTrigger>
                 <TooltipContent>
                   {moduleSelection.isSelected ? "Clear all" : "Select all"}

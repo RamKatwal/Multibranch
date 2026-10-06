@@ -62,33 +62,29 @@ export function StackedAvatars({
       <AvatarGroup>
         {visible.map((item) => (
           <Tooltip key={item.key}>
-            <TooltipTrigger
-              render={
-                <Avatar
-                  size="sm"
-                  className="cursor-default after:border-border"
-                  aria-label={item.title}
-                />
-              }
-            >
-              <AvatarFallback className={avatarFallbackClass}>
-                {item.initials}
-              </AvatarFallback>
+            <TooltipTrigger asChild>
+              <Avatar
+                size="sm"
+                className="cursor-default after:border-border"
+                aria-label={item.title}
+              >
+                <AvatarFallback className={avatarFallbackClass}>
+                  {item.initials}
+                </AvatarFallback>
+              </Avatar>
             </TooltipTrigger>
             <TooltipContent side="top">{item.title}</TooltipContent>
           </Tooltip>
         ))}
         {remaining > 0 ? (
           <Tooltip>
-            <TooltipTrigger
-              render={
-                <AvatarGroupCount
-                  className="size-6 cursor-default border border-border bg-muted text-[10px] font-medium text-muted-foreground"
-                  aria-label={remainingLabel}
-                />
-              }
-            >
-              +{remaining}
+            <TooltipTrigger asChild>
+              <AvatarGroupCount
+                className="size-6 cursor-default border border-border bg-muted text-[10px] font-medium text-muted-foreground"
+                aria-label={remainingLabel}
+              >
+                +{remaining}
+              </AvatarGroupCount>
             </TooltipTrigger>
             <TooltipContent side="top">{remainingLabel}</TooltipContent>
           </Tooltip>

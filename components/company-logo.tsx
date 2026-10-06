@@ -78,7 +78,9 @@ export function CompanyAvatar({
 
   return (
     <Tooltip>
-      <TooltipTrigger render={avatar} />
+      <TooltipTrigger asChild>
+        {avatar}
+      </TooltipTrigger>
       <TooltipContent side="top">{name}</TooltipContent>
     </Tooltip>
   )

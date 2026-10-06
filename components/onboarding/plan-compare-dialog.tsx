@@ -26,7 +26,6 @@ import {
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import {
@@ -108,20 +107,18 @@ function CategorySection({
                 </span>
                 {feature.description ? (
                   <Tooltip>
-                    <TooltipTrigger
-                      render={
-                        <button
-                          type="button"
-                          className="inline-flex size-4 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground"
-                          aria-label={`About ${feature.name}`}
+                    <TooltipTrigger asChild>
+                      <button
+                        type="button"
+                        className="inline-flex size-4 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground"
+                        aria-label={`About ${feature.name}`}
+                      >
+                        <HugeiconsIcon
+                          icon={InformationCircleIcon}
+                          className="size-3.5"
+                          strokeWidth={2}
                         />
-                      }
-                    >
-                      <HugeiconsIcon
-                        icon={InformationCircleIcon}
-                        className="size-3.5"
-                        strokeWidth={2}
-                      />
+                      </button>
                     </TooltipTrigger>
                     <TooltipContent side="top" className="max-w-[220px]">
                       {feature.description}
@@ -203,76 +200,74 @@ export function PlanCompareDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <TooltipProvider>
-          <div className="min-h-0 flex-1 overflow-auto">
-            <div className="sticky top-0 z-10 grid grid-cols-[minmax(0,1.4fr)_repeat(3,minmax(0,1fr))] gap-2 border-b border-border bg-popover px-3 py-3">
-              <div className="flex items-end pb-1 text-xs font-medium text-muted-foreground">
-                Features
-              </div>
-              {PLANS.map((plan) => {
-                const isSelected = selectedPlanId === plan.id
-                const priceLabel =
-                  plan.monthlyPerUser === 0
-                    ? "Free"
-                    : `${formatNpr(plan.monthlyPerUser)}/user`
+        <div className="min-h-0 flex-1 overflow-auto">
+          <div className="sticky top-0 z-10 grid grid-cols-[minmax(0,1.4fr)_repeat(3,minmax(0,1fr))] gap-2 border-b border-border bg-popover px-3 py-3">
+            <div className="flex items-end pb-1 text-xs font-medium text-muted-foreground">
+              Features
+            </div>
+            {PLANS.map((plan) => {
+              const isSelected = selectedPlanId === plan.id
+              const priceLabel =
+                plan.monthlyPerUser === 0
+                  ? "Free"
+                  : `${formatNpr(plan.monthlyPerUser)}/user`
 
-                return (
-                  <div
-                    key={plan.id}
-                    className={cn(
-                      "flex flex-col items-center gap-2 rounded-lg border px-2 py-2.5 text-center",
-                      isSelected
-                        ? "border-primary bg-primary/5 ring-1 ring-primary/30"
-                        : "border-border bg-muted/20"
-                    )}
-                  >
-                    <div className="min-w-0">
-                      <p className="truncate text-xs font-semibold text-foreground sm:text-sm">
-                        {plan.name}
-                      </p>
-                      <p className="mt-0.5 text-[11px] tabular-nums text-muted-foreground">
-                        {priceLabel}
-                        {plan.monthlyPerUser > 0 ? " /mo" : ""}
-                      </p>
-                    </div>
-                    {onSelectPlan ? (
-                      <Button
-                        type="button"
-                        size="32"
-                        variant={isSelected ? "strong" : "outline"}
-                        color={isSelected ? "primary" : "neutral"}
-                        className="h-7 w-full max-w-[7.5rem] text-xs"
-                        onClick={() => handleSelect(plan.id)}
-                      >
-                        {isSelected ? (
-                          <>
-                            <HugeiconsIcon
-                              icon={Tick02Icon}
-                              className="size-3"
-                            />
-                            Selected
-                          </>
-                        ) : (
-                          "Select"
-                        )}
-                      </Button>
-                    ) : null}
+              return (
+                <div
+                  key={plan.id}
+                  className={cn(
+                    "flex flex-col items-center gap-2 rounded-lg border px-2 py-2.5 text-center",
+                    isSelected
+                      ? "border-primary bg-primary/5 ring-1 ring-primary/30"
+                      : "border-border bg-muted/20"
+                  )}
+                >
+                  <div className="min-w-0">
+                    <p className="truncate text-xs font-semibold text-foreground sm:text-sm">
+                      {plan.name}
+                    </p>
+                    <p className="mt-0.5 text-[11px] tabular-nums text-muted-foreground">
+                      {priceLabel}
+                      {plan.monthlyPerUser > 0 ? " /mo" : ""}
+                    </p>
                   </div>
-                )
-              })}
-            </div>
-
-            <div className="pb-2">
-              {PLAN_FEATURE_CATEGORIES.map((category, index) => (
-                <CategorySection
-                  key={category.id}
-                  category={category}
-                  defaultOpen={index === 0}
-                />
-              ))}
-            </div>
+                  {onSelectPlan ? (
+                    <Button
+                      type="button"
+                      size="32"
+                      variant={isSelected ? "strong" : "outline"}
+                      color={isSelected ? "primary" : "neutral"}
+                      className="h-7 w-full max-w-[7.5rem] text-xs"
+                      onClick={() => handleSelect(plan.id)}
+                    >
+                      {isSelected ? (
+                        <>
+                          <HugeiconsIcon
+                            icon={Tick02Icon}
+                            className="size-3"
+                          />
+                          Selected
+                        </>
+                      ) : (
+                        "Select"
+                      )}
+                    </Button>
+                  ) : null}
+                </div>
+              )
+            })}
           </div>
-        </TooltipProvider>
+
+          <div className="pb-2">
+            {PLAN_FEATURE_CATEGORIES.map((category, index) => (
+              <CategorySection
+                key={category.id}
+                category={category}
+                defaultOpen={index === 0}
+              />
+            ))}
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   )
