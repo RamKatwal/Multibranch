@@ -290,8 +290,7 @@ export function BranchSwitcher({ className }: { className?: string }) {
       {/* Branch Switching Modal */}
       <Dialog open={isSwitching}>
         <DialogContent
-          showCloseButton={false}
-          className="gap-0 overflow-hidden p-0 sm:max-w-sm"
+          className="overflow-hidden sm:max-w-sm"
         >
           <div className="flex flex-col items-center pt-8 text-center">
             <div className="flex flex-col items-center px-6">
@@ -313,7 +312,10 @@ export function BranchSwitcher({ className }: { className?: string }) {
                 </AnimatePresence>
               </IconStack>
 
-              <DialogTitle className="mt-5 text-lg font-semibold tracking-tight text-foreground">
+              <DialogTitle
+                closeButton={false}
+                className="mt-5 text-lg font-semibold tracking-tight text-foreground"
+              >
                 Switching Branch
               </DialogTitle>
               <DialogDescription className="sr-only">

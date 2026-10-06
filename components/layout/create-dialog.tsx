@@ -20,6 +20,7 @@ import { useKeyboardShortcuts } from "@/components/layout/keyboard-shortcuts-pro
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
+  DialogBody,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -65,30 +66,26 @@ export function CreateDialog() {
 
   return (
     <Dialog open={createOpen} onOpenChange={setCreateOpen}>
-      <DialogTrigger
-        render={
-          <Button size="32" className="gap-1.5 px-2.5" />
-        }
-      >
-        <Plus className="size-3.5" />
-        Create
-        <kbd className="pointer-events-none ml-0.5 hidden h-5 items-center gap-0.5 rounded border border-primary-foreground/20 bg-primary-foreground/15 px-1 font-mono text-[10px] font-medium text-primary-foreground sm:inline-flex">
-          {isMac ? "⌥" : "Alt"}
-          <span>N</span>
-        </kbd>
+      <DialogTrigger asChild>
+        <Button size="32" className="gap-1.5 px-2.5">
+          <Plus className="size-3.5" />
+          Create
+          <kbd className="pointer-events-none ml-0.5 hidden h-5 items-center gap-0.5 rounded border border-primary-foreground/20 bg-primary-foreground/15 px-1 font-mono text-[10px] font-medium text-primary-foreground sm:inline-flex">
+            {isMac ? "⌥" : "Alt"}
+            <span>N</span>
+          </kbd>
+        </Button>
       </DialogTrigger>
       <DialogContent
-        className="gap-0 overflow-hidden p-0 sm:max-w-lg"
-        showCloseButton
-      >
-        <DialogHeader className="border-b px-5 py-4 pr-12">
-          <DialogTitle className="text-base font-semibold">Create</DialogTitle>
+        className="overflow-hidden sm:max-w-lg">
+        <DialogHeader>
+          <DialogTitle>Create</DialogTitle>
           <DialogDescription className="sr-only">
             Quick access to create common records.
           </DialogDescription>
         </DialogHeader>
 
-        <div className="thin-scrollbar max-h-[min(32rem,70vh)] space-y-5 overflow-y-auto px-5 py-4">
+        <DialogBody className="thin-scrollbar max-h-[min(32rem,70vh)] space-y-5 overflow-y-auto">
           {createMenuSections.map((section) => (
             <section key={section.title} className="space-y-2">
               <h3 className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
@@ -105,7 +102,7 @@ export function CreateDialog() {
                       key={item.label}
                       variant="outline"
                       color="neutral"
-                      className="h-auto justify-start gap-2.5 px-3 py-2.5 text-sm font-normal"
+                      className="h-auto w-full justify-start gap-2.5 px-3 py-2.5 text-sm font-normal"
                       asChild
                     >
                       <Link
@@ -133,7 +130,7 @@ export function CreateDialog() {
               </div>
             </section>
           ))}
-        </div>
+        </DialogBody>
       </DialogContent>
     </Dialog>
   )

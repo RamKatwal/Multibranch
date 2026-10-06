@@ -3,6 +3,7 @@
 import * as React from "react"
 
 import {
+  DialogBody,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -10,6 +11,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { cn } from "@/lib/utils"
+
+// Local composite on top of Radian's Dialog (not a Radian registry item). Radian's
+// DialogHeader / DialogBody / DialogFooter bring the padding and dividers; this adds the
+// width presets and a scrolling body for long forms.
 
 const formDialogSizes = {
   sm: "sm:max-w-md",
@@ -33,7 +38,7 @@ function FormDialogContent({
   return (
     <DialogContent
       className={cn(
-        "flex max-h-[min(720px,calc(100svh-2rem))] w-full max-w-[calc(100%-1.5rem)] flex-col gap-0 overflow-hidden bg-card p-0 ring-border dark:bg-background sm:max-w-lg",
+        "max-h-[min(720px,calc(100svh-2rem))] overflow-hidden",
         formDialogSizes[size],
         className
       )}
@@ -46,41 +51,27 @@ function FormDialogHeader({
   className,
   ...props
 }: React.ComponentProps<typeof DialogHeader>) {
-  return (
-    <DialogHeader
-      className={cn("shrink-0 border-b px-5 py-4 pr-12", className)}
-      {...props}
-    />
-  )
+  return <DialogHeader className={cn("shrink-0", className)} {...props} />
 }
 
-function FormDialogTitle({
-  className,
-  ...props
-}: React.ComponentProps<typeof DialogTitle>) {
-  return (
-    <DialogTitle
-      className={cn("text-base font-semibold", className)}
-      {...props}
-    />
-  )
+function FormDialogTitle(props: React.ComponentProps<typeof DialogTitle>) {
+  return <DialogTitle {...props} />
 }
 
-function FormDialogDescription({
-  className,
-  ...props
-}: React.ComponentProps<typeof DialogDescription>) {
-  return <DialogDescription className={className} {...props} />
+function FormDialogDescription(
+  props: React.ComponentProps<typeof DialogDescription>
+) {
+  return <DialogDescription {...props} />
 }
 
 function FormDialogBody({
   className,
   ...props
-}: React.ComponentProps<"div">) {
+}: React.ComponentProps<typeof DialogBody>) {
   return (
-    <div
+    <DialogBody
       className={cn(
-        "thin-scrollbar flex flex-col gap-4 overflow-y-auto px-5 py-4",
+        "thin-scrollbar flex min-h-0 flex-col gap-4 overflow-y-auto",
         className
       )}
       {...props}
@@ -92,12 +83,7 @@ function FormDialogFooter({
   className,
   ...props
 }: React.ComponentProps<typeof DialogFooter>) {
-  return (
-    <DialogFooter
-      className={cn("shrink-0 border-t px-5 py-4", className)}
-      {...props}
-    />
-  )
+  return <DialogFooter className={cn("shrink-0", className)} {...props} />
 }
 
 export {

@@ -6,6 +6,7 @@ import { TriangleAlertIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
+  DialogBody,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -142,7 +143,7 @@ export function StockTransferActionDialog({
         </DialogHeader>
 
         {isReject ? (
-          <div className="flex flex-col gap-2">
+          <DialogBody className="flex flex-col gap-2">
             <Label htmlFor="stock-transfer-2-rejection-reason">
               Rejection reason <span className="text-destructive">*</span>
             </Label>
@@ -168,7 +169,7 @@ export function StockTransferActionDialog({
                 {reasonError}
               </p>
             ) : null}
-          </div>
+          </DialogBody>
         ) : null}
 
         <DialogFooter>

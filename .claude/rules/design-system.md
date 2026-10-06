@@ -87,14 +87,15 @@ re-add with the CLI) · ⏳ shadcn on Base UI (migrate) · ➖ no Radian equival
 | `textarea` | ⏳ | `text-area` | |
 | `native-select` | ⏳ | `select` | |
 | `tabs` | ⏳ | `tabs`, plus `toggle-group` for filter rows | Keep the `ui-tabs.mdc` look |
-| `dialog`, `drawer`, `sidebar` | ⏳ | same name | Triggers switch from `render={…}` to `asChild` |
+| `dialog` | ✅ | `dialog` | Header / Body / Footer bring the padding and dividers; close button lives in `DialogTitle` |
+| `drawer`, `sidebar` | ⏳ | same name | Triggers switch from `render={…}` to `asChild` |
 | `sheet` | ⏳ | `drawer` | |
 | `separator` | ⏳ | `divider` | |
 | `command` (69%), `form` (75%) | ⏳ | same name | |
 | `card`, `chart`, `divider`, `otp-field` | 🟡 | same name | 87–98% the same |
 | `button-group` | ➖ | `ButtonGroup` in `button`, or `toggle-group` | |
 | `input-group` | ➖ | check Radian `input` slots when migrating it | |
-| `form-dialog` | ➖ | — | Local composite; belongs in tier 2 |
+| `form-dialog` | ➖ | — | Local composite on Radian `dialog` (width presets, scrolling body); belongs in tier 2 |
 | `sonner` | ➖ | — | Radian has no registry item. Keep it and centralize `toast` here |
 
 **Not in the repo yet** (add with the CLI when a page needs one): accordion, alert, alert-dialog,
@@ -206,3 +207,14 @@ select, slider, stepper, table, text-area, toggle, toggle-group.
   `report-list-panel.tsx` opens on hover (80ms) and closes after leaving (120ms), and click still toggles.
   A Radix popover inside a Base UI dialog (user form → companies and branches) works: picking options
   doesn't close the dialog.
+- 2026-10-06: **Dialog migrated to Radian** (Radix). Radian's structure replaces the shadcn one:
+  `DialogContent` has no padding; `DialogHeader` (p-5), the new `DialogBody` (divider, p-5) and
+  `DialogFooter` (divider, p-4) carry the spacing, and the close button is part of `DialogTitle`
+  (`closeButton`, default on) instead of `showCloseButton` on the content. Dialogs that hand-built that
+  layout with class overrides now use the parts. `form-dialog` is rebuilt as thin wrappers over them
+  (same exports, so its 18 users didn't change). Mapped: `DialogTrigger render` → `asChild`;
+  `disablePointerDismissal` → `onInteractOutside` + `preventDefault` on the content. The settings modal
+  has a visually hidden title, so it renders its own `DialogClose asChild` + `IconButton`. In
+  `ui/command.tsx` the title moved inside `DialogContent` (Radix requires it). Sheet and Drawer are next.
+- 2026-10-06: Radian's `Button` is `w-fit`. A button that must fill its grid cell or column needs
+  `w-full` (found in the Create dialog tiles after the Button migration).

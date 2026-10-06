@@ -5,6 +5,7 @@ import * as React from "react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
+  DialogBody,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -46,11 +47,9 @@ export function AddWidgetsDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="gap-0 overflow-hidden p-0 sm:max-w-sm"
-        showCloseButton
-      >
-        <DialogHeader className="border-b px-5 py-4 pr-12">
-          <DialogTitle className="text-base font-semibold">
+        className="overflow-hidden sm:max-w-sm">
+        <DialogHeader>
+          <DialogTitle>
             Show and hide widgets
           </DialogTitle>
           <DialogDescription className="sr-only">
@@ -58,7 +57,7 @@ export function AddWidgetsDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="thin-scrollbar max-h-[min(28rem,65vh)] overflow-y-auto px-5 py-3">
+        <DialogBody className="thin-scrollbar max-h-[min(28rem,65vh)] overflow-y-auto">
           <div className="flex flex-col gap-5">
             {grouped.map((category) => (
               <section key={category.id} className="flex flex-col gap-1">
@@ -102,9 +101,9 @@ export function AddWidgetsDialog({
               </section>
             ))}
           </div>
-        </div>
+        </DialogBody>
 
-        <DialogFooter className="border-t px-5 py-3 sm:justify-end">
+        <DialogFooter>
           <Button type="button" size="32" onClick={() => onOpenChange(false)}>
             Done
           </Button>

@@ -173,25 +173,23 @@ export function PlanCompareDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       {hideTrigger ? null : (
-        <DialogTrigger
-          render={
-            <Button
-              type="button"
-              variant="link"
-              className={cn(
-                "h-auto px-0 text-sm font-medium text-primary",
-                triggerClassName
-              )}
-            />
-          }
-        >
-          {triggerLabel}
+        <DialogTrigger asChild>
+          <Button
+            type="button"
+            variant="link"
+            className={cn(
+              "h-auto px-0 text-sm font-medium text-primary",
+              triggerClassName
+            )}
+          >
+            {triggerLabel}
+          </Button>
         </DialogTrigger>
       )}
 
-      <DialogContent className="flex max-h-[min(860px,calc(100svh-2rem))] w-full max-w-[calc(100%-1.5rem)] flex-col gap-0 overflow-hidden p-0 sm:max-w-3xl">
-        <DialogHeader className="shrink-0 border-b border-border px-5 py-4 pr-12">
-          <DialogTitle className="font-heading text-base font-semibold">
+      <DialogContent className="max-h-[min(860px,calc(100svh-2rem))] overflow-hidden sm:max-w-3xl">
+        <DialogHeader className="shrink-0">
+          <DialogTitle>
             Compare plans
           </DialogTitle>
           <DialogDescription>

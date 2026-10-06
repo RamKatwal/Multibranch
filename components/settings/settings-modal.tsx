@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { XIcon } from "lucide-react"
 
 import { AppearanceSettingsPanel } from "@/components/settings/appearance-settings-panel"
 import { KeyboardShortcutsSettingsPanel } from "@/components/settings/keyboard-shortcuts-settings-panel"
@@ -8,9 +9,10 @@ import { NotificationsSettingsPanel } from "@/components/settings/notifications-
 import { ProfileSettingsPanel } from "@/components/settings/profile-settings-panel"
 import { useSettingsModal } from "@/components/settings/settings-modal-provider"
 import { UserActivitiesSettingsPanel } from "@/components/settings/user-activities-settings-panel"
-import { Button } from "@/components/ui/button"
+import { Button, IconButton } from "@/components/ui/button"
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogTitle,
@@ -46,11 +48,21 @@ export function SettingsModal() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent
-        showCloseButton
-        className="flex h-[min(720px,calc(100svh-2rem))] w-full max-w-4xl flex-col gap-0 overflow-hidden p-0 sm:max-w-4xl"
-      >
-        <DialogTitle className="sr-only">Settings</DialogTitle>
+      <DialogContent className="h-[min(720px,calc(100svh-2rem))] max-w-4xl overflow-hidden sm:max-w-4xl">
+        <DialogTitle closeButton={false} className="sr-only">
+          Settings
+        </DialogTitle>
+        <DialogClose asChild>
+          <IconButton
+            variant="ghost"
+            color="neutral"
+            size="32"
+            aria-label="Close settings"
+            className="absolute top-2 right-2 z-10"
+          >
+            <XIcon />
+          </IconButton>
+        </DialogClose>
         <DialogDescription className="sr-only">
           Manage your profile, notifications, appearance, and preferences.
         </DialogDescription>
