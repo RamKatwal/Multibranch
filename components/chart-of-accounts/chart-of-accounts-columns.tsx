@@ -109,7 +109,7 @@ export function createChartOfAccountColumns({
         <DataTableColumnHeader column={column} title="Account Category" />
       ),
       cell: ({ row }) => (
-        <Badge variant="outline">{row.getValue("category")}</Badge>
+        <Badge variant="outline" size="20">{row.getValue("category")}</Badge>
       ),
     },
     {

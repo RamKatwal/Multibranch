@@ -81,7 +81,7 @@ export function CustomerBillAgeingTable({
                   {formatReportNumber(row.remainingBalance)}
                 </td>
                 <td className={bodyCell}>
-                  <Badge className={STATUS_BADGE_CLASSNAME[row.status]}>
+                  <Badge variant="strong" color="primary" size="20" className={STATUS_BADGE_CLASSNAME[row.status]}>
                     {row.status}
                   </Badge>
                 </td>

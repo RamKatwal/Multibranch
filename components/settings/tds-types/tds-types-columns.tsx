@@ -61,7 +61,7 @@ export function createTdsTypeColumns({
       cell: ({ row }) => {
         const status = row.original.status
         return (
-          <Badge variant={status === "active" ? "secondary" : "outline"}>
+          <Badge variant={status === "active" ? "soft" : "outline"} size="20">
             {tdsTypeStatusLabels[status]}
           </Badge>
         )

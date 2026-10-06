@@ -53,7 +53,7 @@ export function createDocumentTemplateColumns({
           <div className="flex min-w-0 items-center gap-2">
             <span className="truncate font-medium">{template.name}</span>
             {template.isDefault ? (
-              <Badge variant="secondary" className="shrink-0">
+              <Badge variant="soft" size="20" className="shrink-0">
                 Default
               </Badge>
             ) : null}
@@ -80,7 +80,7 @@ export function createDocumentTemplateColumns({
       cell: ({ row }) => {
         const status = row.original.status
         return (
-          <Badge variant={status === "active" ? "secondary" : "outline"}>
+          <Badge variant={status === "active" ? "soft" : "outline"} size="20">
             {documentTemplateStatusLabels[status]}
           </Badge>
         )

@@ -54,7 +54,7 @@ export function ProfileSettingsPanel({ className }: ProfileSettingsPanelProps) {
       <SettingsField
         label="Email address"
         description="Used for sign-in and notifications."
-        badge={<Badge className="bg-success/10 text-success">Verified</Badge>}
+        badge={<Badge variant="strong" color="primary" size="20" className="bg-success/10 text-success">Verified</Badge>}
       >
         <Input defaultValue={currentUser.email} type="email" />
       </SettingsField>

@@ -63,7 +63,7 @@ export function createCostTermColumns({
       cell: ({ row }) => {
         const status = row.original.status
         return (
-          <Badge variant={status === "active" ? "secondary" : "outline"}>
+          <Badge variant={status === "active" ? "soft" : "outline"} size="20">
             {costTermStatusLabels[status]}
           </Badge>
         )

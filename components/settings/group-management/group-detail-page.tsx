@@ -140,7 +140,7 @@ export function GroupDetailPage({ groupId }: { groupId: string }) {
         title={isNewGroup ? "New Group" : configuration.name}
         badge={
           canCustomizeDashboard ? (
-            <Badge variant="secondary">Main admin</Badge>
+            <Badge variant="soft" size="20">Main admin</Badge>
           ) : null
         }
         breadcrumb={

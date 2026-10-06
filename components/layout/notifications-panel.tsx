@@ -219,7 +219,8 @@ function NotificationItem({
               {notification.badges.map((badge) => (
                 <Badge
                   key={`${badge.label}-${badge.tone}`}
-                  variant="secondary"
+                  variant="soft"
+                  size="20"
                   className={cn("h-5 rounded-md px-1.5 text-[10px]", badgeToneClass[badge.tone])}
                 >
                   {badge.label}
@@ -304,7 +305,7 @@ export function NotificationsPanel({
             <DrawerTitle className="text-base font-semibold">
               Notifications
             </DrawerTitle>
-            <Badge className="size-5 justify-center rounded-full p-0 text-[10px]">
+            <Badge variant="strong" color="primary" size="20" className="size-5 justify-center rounded-full p-0 text-[10px]">
               {unreadCount || notifications.length}
             </Badge>
             <DrawerDescription className="sr-only">

@@ -76,7 +76,8 @@ export function UserActivitiesSettingsPanel({
               </p>
             </div>
             <Badge
-              variant="secondary"
+              variant="soft"
+              size="20"
               className={cn("shrink-0 capitalize", statusStyles[activity.status])}
             >
               {activity.status}

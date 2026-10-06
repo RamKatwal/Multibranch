@@ -107,7 +107,7 @@ export function createChequeColumns({
         <DataTableColumnHeader column={column} title="Direction" />
       ),
       cell: ({ row }) => (
-        <Badge variant="outline">
+        <Badge variant="outline" size="20">
           {chequeDirectionLabels[row.getValue<Cheque["direction"]>("direction")]}
         </Badge>
       ),
@@ -163,7 +163,7 @@ export function createChequeColumns({
       cell: ({ row }) => {
         const status = row.getValue<ChequeStatus>("status")
         return (
-          <Badge variant="outline" className={cn(statusBadgeClass[status])}>
+          <Badge variant="outline" size="20" className={cn(statusBadgeClass[status])}>
             {chequeStatusLabels[status]}
           </Badge>
         )

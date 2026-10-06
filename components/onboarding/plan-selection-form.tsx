@@ -355,7 +355,8 @@ export default function PlanSelectionForm() {
                         </h3>
                         {plan.badge === "default" ? (
                           <Badge
-                            variant="secondary"
+                            variant="soft"
+                            size="20"
                             className="h-5 rounded-md px-1.5 text-[10px] font-medium"
                           >
                             Default

@@ -126,7 +126,7 @@ export function createBankAccountColumns({
         <DataTableColumnHeader column={column} title="Type" />
       ),
       cell: ({ row }) => (
-        <Badge variant="outline">
+        <Badge variant="outline" size="20">
           {bankAccountTypeLabels[row.getValue<BankAccount["accountType"]>("accountType")]}
         </Badge>
       ),

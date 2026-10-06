@@ -137,6 +137,7 @@ export function createPurchaseExpenseColumns({
         return (
           <Badge
             variant="outline"
+            size="20"
             className={paymentStatusBadgeClassName[paymentStatus]}
           >
             {purchaseExpensePaymentStatusLabels[paymentStatus]}

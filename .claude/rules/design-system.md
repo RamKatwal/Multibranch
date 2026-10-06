@@ -80,16 +80,16 @@ re-add with the CLI) · ⏳ shadcn on Base UI (migrate) · ➖ no Radian equival
 
 | Here (`components/ui`) | Status | Radian target | Notes |
 |---|---|---|---|
-| `spinner`, `carousel`, `tooltip`, `popover` | ✅ | same name | |
+| `spinner`, `carousel`, `tooltip`, `popover`, `badge` | ✅ | same name | |
 | `dropdown-menu` | ✅ | `dropdown-menu` | `DropdownMenuSeparator` is `DropdownMenuDivider`; local `variant="destructive"` on items (§9) |
 | `button` | ✅ | `button` (`Button`, `IconButton`, `ButtonGroup`, `CompactButton`) | `children` optional (transitional, §9) |
-| `badge`, `input`, `checkbox`, `switch`, `avatar`, `breadcrumb`, `collapsible`, `label`, `skeleton` | ⏳ | same name | |
+| `input`, `checkbox`, `switch`, `avatar`, `breadcrumb`, `collapsible`, `label`, `skeleton` | ⏳ | same name | |
 | `textarea` | ⏳ | `text-area` | |
 | `native-select` | ⏳ | `select` | |
 | `tabs` | ⏳ | `tabs`, plus `toggle-group` for filter rows | Keep the `ui-tabs.mdc` look |
 | `dialog` | ✅ | `dialog` | Header / Body / Footer bring the padding and dividers; close button lives in `DialogTitle` |
-| `drawer`, `sidebar` | ⏳ | same name | Triggers switch from `render={…}` to `asChild` |
-| `sheet` | ⏳ | `drawer` | |
+| `sheet`, `drawer` | ➖ | — | **Staying on Base UI by decision** (§9). Don't migrate |
+| `sidebar` | ⏳ | `sidebar` | Its mobile view uses `sheet`; decide before migrating |
 | `separator` | ⏳ | `divider` | |
 | `command` (69%), `form` (75%) | ⏳ | same name | |
 | `card`, `chart`, `divider`, `otp-field` | 🟡 | same name | 87–98% the same |
@@ -218,3 +218,14 @@ select, slider, stepper, table, text-area, toggle, toggle-group.
   `ui/command.tsx` the title moved inside `DialogContent` (Radix requires it). Sheet and Drawer are next.
 - 2026-10-06: Radian's `Button` is `w-fit`. A button that must fill its grid cell or column needs
   `w-full` (found in the Create dialog tiles after the Button migration).
+- 2026-10-06: **Sheet and Drawer are not migrated** (owner's decision). `components/ui/sheet.tsx` and
+  `drawer.tsx` stay on Base UI: the keyboard-shortcuts sheet, notifications panel, user detail sheet and
+  the sidebar's mobile view keep working as they are. Consequences: `@base-ui/react` stays a dependency,
+  the `children`-optional edit in `button.tsx` stays (their close buttons are `render={<IconButton/>}`),
+  and the sidebar needs a decision on its mobile sheet before it can move to Radian.
+- 2026-10-06: **Badge migrated to Radian.** Mapping at size `"20"` (the old badge height): default →
+  `variant="strong" color="primary"`, `secondary` → `soft` (neutral), `outline` → `outline` (neutral),
+  `destructive` → `soft` + `color="error"`; 44 badges in 35 files. Badges are now 6px-radius (were pills).
+  Status badges still get their colors from className maps (`statusBadgeClassName`, `STATUS_BADGE_CLASSNAME`…,
+  about 15 files with default-palette classes). Next step: replace those maps with Radian
+  `variant="soft" color="success|warning|error|info|neutral"`, one status → color map per module.

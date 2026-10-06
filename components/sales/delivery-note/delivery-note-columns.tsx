@@ -107,7 +107,7 @@ export function createDeliveryNoteColumns({
       cell: ({ row }) => {
         const status = row.original.invoiceStatus
         return (
-          <Badge variant="outline" className="font-normal">
+          <Badge variant="outline" size="20" className="font-normal">
             {deliveryNoteInvoiceStatusLabels[status]}
           </Badge>
         )

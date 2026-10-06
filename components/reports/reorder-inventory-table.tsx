@@ -80,7 +80,7 @@ export function ReorderInventoryTable({
                 </td>
                 <td className={cn(bodyCell, "text-right tabular-nums")}>
                   {row.isBelowReorder ? (
-                    <Badge variant="destructive">
+                    <Badge variant="soft" color="error" size="20">
                       {formatReportNumber(row.closingStock)}
                     </Badge>
                   ) : (

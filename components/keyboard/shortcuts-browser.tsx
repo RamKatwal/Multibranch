@@ -163,7 +163,8 @@ export function ShortcutsBrowser({
                           </span>
                           {shortcut.availability === "planned" ? (
                             <Badge
-                              variant="secondary"
+                              variant="soft"
+                              size="20"
                               className="shrink-0 text-[10px]"
                             >
                               Soon

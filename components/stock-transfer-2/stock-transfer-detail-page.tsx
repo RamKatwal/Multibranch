@@ -163,6 +163,7 @@ export function StockTransferDetailPage({
         badge={
           <Badge
             variant="outline"
+            size="20"
             className={cn(stockTransferStatusBadgeClassName[transfer.status])}
           >
             {stockTransferStatusLabels[transfer.status]}
