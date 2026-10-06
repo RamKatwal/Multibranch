@@ -151,8 +151,6 @@
   --trial-accent: var(--primary);
   --trial-surface: var(--elevation-level1);
   --trial-glow: color-mix(in oklch, var(--trial-accent) 8%, var(--trial-surface));
-
-  --radius: 0.625rem;
 }
 
 /* -------------------------------------------------------------------------- */

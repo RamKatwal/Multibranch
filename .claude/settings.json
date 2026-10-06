@@ -1,0 +1,28 @@
+{
+  "enabledPlugins": {
+    "figma@claude-plugins-official": true,
+    "ui-design@designer-skills": true,
+    "frontend-design@claude-plugins-official": true
+  },
+  "permissions": {
+    "allow": [
+      "Bash(npm run lint:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npx eslint:*)",
+      "Bash(npx radianui@latest add:*)",
+      "Bash(npx radianui@latest info:*)",
+      "Bash(npx radianui@latest search:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [{ "type": "command", "command": "node .claude/hooks/verify.mjs", "timeout": 180 }]
+      }
+    ]
+  }
+}

@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Multibranch (Omniverse)
 
-## Getting Started
+ERP for Nepal-based multi-branch businesses: inventory, purchase, sales, accounting and reports.
+Live at https://multibranch-kohl.vercel.app/.
 
-First, run the development server:
+## Stack
+
+Next.js 16 · React 19 · TypeScript · Tailwind CSS v4 · Radian UI (radianui.com) · TanStack Table ·
+react-hook-form + zod · Lucide icons
+
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses the [`geist`](https://www.npmjs.com/package/geist) package to load [Geist Sans](https://vercel.com/font), a font family from Vercel.
+- `npm run dev` — dev server
+- `npm run build` — production build
+- `npm run lint` — ESLint, including the architecture and styling rules in `eslint.boundaries.mjs`
+- `npx tsc --noEmit` — type check
+- `npx radianui@latest add <name>` — add a Radian UI component to `components/ui`
 
-## Learn More
+## Design system
 
-To learn more about Next.js, take a look at the following resources:
+UI is built with **Radian**: the React components in `components/ui` come from the Radian CLI and match
+the Radian Figma library one to one (same components, props and tokens), so pages designed in Figma
+map directly to code. The move from the older shadcn components is in progress, one primitive per PR.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `.claude/rules/design-system.md` — tokens, components, the code ↔ Figma mapping, migration status and
+  the decisions log. Read first.
+- `.claude/CLAUDE.md` and `.claude/` — Claude Code rules, skills, agents and hooks.
+- `.cursor/rules/` — Cursor rules (Radian Figma library, tabs).
