@@ -6,6 +6,7 @@ import { TriangleAlertIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
+  DialogBody,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -62,13 +63,15 @@ export function DeactivateRoleDialog({
         </DialogHeader>
 
         {isBlocked ? (
-          <ul className="max-h-40 overflow-auto rounded-lg border bg-muted/40 px-3 py-2 text-sm">
-            {assignedUsers.map((user) => (
-              <li key={user.id} className="truncate py-0.5">
-                {user.name}
-              </li>
-            ))}
-          </ul>
+          <DialogBody>
+            <ul className="max-h-40 overflow-auto rounded-lg border bg-muted/40 px-3 py-2 text-sm">
+              {assignedUsers.map((user) => (
+                <li key={user.id} className="truncate py-0.5">
+                  {user.name}
+                </li>
+              ))}
+            </ul>
+          </DialogBody>
         ) : null}
 
         <DialogFooter>

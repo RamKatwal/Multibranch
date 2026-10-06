@@ -412,12 +412,13 @@ export function UserFormDialog({
   }
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={onOpenChange}
-      disablePointerDismissal={roleDialogOpen}
-    >
-      <FormDialogContent size="2xl">
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <FormDialogContent
+        size="2xl"
+        onInteractOutside={(event) => {
+          if (roleDialogOpen) event.preventDefault()
+        }}
+      >
         <FormDialogHeader>
           <FormDialogTitle>
             {isEdit ? "Edit User" : "Create User"}
