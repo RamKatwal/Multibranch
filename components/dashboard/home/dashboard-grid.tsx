@@ -29,7 +29,7 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
+  DropdownMenuDivider,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { BankCashBalanceWidget } from "@/components/dashboard/home/widgets/bank-cash-balance"
@@ -342,24 +342,22 @@ export function DashboardGrid({
     !embedded && isFullscreen && exitFullscreen ? (
       <div className="flex items-center justify-end gap-2">
         <DropdownMenu>
-          <DropdownMenuTrigger
-            render={
-              <Button
-                type="button"
-                variant="outline"
-                color="neutral"
-                size="32"
-                aria-label="More actions"
-              />
-            }
-          >
-            <MoreHorizontal />
-            More actions
+          <DropdownMenuTrigger asChild>
+            <Button
+              type="button"
+              variant="outline"
+              color="neutral"
+              size="32"
+              aria-label="More actions"
+            >
+              <MoreHorizontal />
+              More actions
+            </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-52">
             <DropdownMenuGroup>
               <DropdownMenuLabel>More actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
+              <DropdownMenuDivider />
               {!readOnly && !isLayoutEditing ? (
                 <DropdownMenuItem onClick={handleStartEditing}>
                   <LayoutGrid />

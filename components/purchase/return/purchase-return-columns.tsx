@@ -16,7 +16,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
+  DropdownMenuDivider,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { formatCurrency, formatDate } from "@/lib/format"
@@ -102,17 +102,15 @@ export const purchaseReturnColumns: ColumnDef<PurchaseReturn>[] = [
           Preview
         </Button>
         <DropdownMenu>
-          <DropdownMenuTrigger
-            render={
-              <IconButton
-                variant="ghost"
-                color="neutral"
-                size="32"
-                aria-label={`Actions for ${row.original.id}`}
-              />
-            }
-          >
-            <MoreVerticalIcon />
+          <DropdownMenuTrigger asChild>
+            <IconButton
+              variant="ghost"
+              color="neutral"
+              size="32"
+              aria-label={`Actions for ${row.original.id}`}
+            >
+              <MoreVerticalIcon />
+            </IconButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem>
@@ -127,7 +125,7 @@ export const purchaseReturnColumns: ColumnDef<PurchaseReturn>[] = [
               <CopyIcon />
               Duplicate
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
+            <DropdownMenuDivider />
             <DropdownMenuItem variant="destructive">
               <Trash2Icon />
               Delete

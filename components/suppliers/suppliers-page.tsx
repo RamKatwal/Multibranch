@@ -211,15 +211,13 @@ export function SuppliersPage() {
 
             {/* Create Supplier Dropdown Options */}
             <DropdownMenu>
-              <DropdownMenuTrigger
-                render={
-                  <Button size="32" className="gap-1.5">
-                    <PlusIcon className="size-4" />
-                    Create Supplier
-                    <ChevronDownIcon className="size-3.5 opacity-70" />
-                  </Button>
-                }
-              />
+              <DropdownMenuTrigger asChild>
+                <Button size="32" className="gap-1.5">
+                  <PlusIcon className="size-4" />
+                  Create Supplier
+                  <ChevronDownIcon className="size-3.5 opacity-70" />
+                </Button>
+              </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-52 p-1">
                 <DropdownMenuItem
                   onClick={() => setCreateDialogOpen(true)}
@@ -271,29 +269,27 @@ export function SuppliersPage() {
 
             {/* Multi-Filter: Branch */}
             <DropdownMenu>
-              <DropdownMenuTrigger
-                render={
-                  <Button
-                    variant="outline"
-                    color="neutral"
-                    size="32"
-                    className={cn(
-                      "h-8 gap-1.5 text-xs font-normal",
-                      branchFilter !== "all" &&
-                        "border-primary bg-primary/5 font-medium text-primary"
-                    )}
-                  >
-                    <GitBranchIcon className="size-3.5" />
-                    <span className="max-w-[120px] truncate">
-                      {branchFilter === "all"
-                        ? "Branch: All"
-                        : availableBranches.find((b) => b.id === branchFilter)
-                            ?.name ?? "Branch"}
-                    </span>
-                    <ChevronDownIcon className="size-3 opacity-60" />
-                  </Button>
-                }
-              />
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  color="neutral"
+                  size="32"
+                  className={cn(
+                    "h-8 gap-1.5 text-xs font-normal",
+                    branchFilter !== "all" &&
+                      "border-primary bg-primary/5 font-medium text-primary"
+                  )}
+                >
+                  <GitBranchIcon className="size-3.5" />
+                  <span className="max-w-[120px] truncate">
+                    {branchFilter === "all"
+                      ? "Branch: All"
+                      : availableBranches.find((b) => b.id === branchFilter)
+                          ?.name ?? "Branch"}
+                  </span>
+                  <ChevronDownIcon className="size-3 opacity-60" />
+                </Button>
+              </DropdownMenuTrigger>
               <DropdownMenuContent
                 align="start"
                 className="thin-scrollbar max-h-60 min-w-48 overflow-y-auto"
@@ -330,30 +326,28 @@ export function SuppliersPage() {
 
             {/* Multi-Filter: Type */}
             <DropdownMenu>
-              <DropdownMenuTrigger
-                render={
-                  <Button
-                    variant="outline"
-                    color="neutral"
-                    size="32"
-                    className={cn(
-                      "h-8 gap-1.5 text-xs font-normal",
-                      typeFilter !== "all" &&
-                        "border-primary bg-primary/5 font-medium text-primary"
-                    )}
-                  >
-                    <UserIcon className="size-3.5" />
-                    <span>
-                      {typeFilter === "all"
-                        ? "Type: All"
-                        : typeFilter === "company"
-                          ? "Type: Company"
-                          : "Type: Individual"}
-                    </span>
-                    <ChevronDownIcon className="size-3 opacity-60" />
-                  </Button>
-                }
-              />
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  color="neutral"
+                  size="32"
+                  className={cn(
+                    "h-8 gap-1.5 text-xs font-normal",
+                    typeFilter !== "all" &&
+                      "border-primary bg-primary/5 font-medium text-primary"
+                  )}
+                >
+                  <UserIcon className="size-3.5" />
+                  <span>
+                    {typeFilter === "all"
+                      ? "Type: All"
+                      : typeFilter === "company"
+                        ? "Type: Company"
+                        : "Type: Individual"}
+                  </span>
+                  <ChevronDownIcon className="size-3 opacity-60" />
+                </Button>
+              </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="min-w-36">
                 <DropdownMenuItem
                   onClick={() => {
@@ -396,28 +390,26 @@ export function SuppliersPage() {
 
             {/* Multi-Filter: Category */}
             <DropdownMenu>
-              <DropdownMenuTrigger
-                render={
-                  <Button
-                    variant="outline"
-                    color="neutral"
-                    size="32"
-                    className={cn(
-                      "h-8 gap-1.5 text-xs font-normal",
-                      categoryFilter !== "All" &&
-                        "border-primary bg-primary/5 font-medium text-primary"
-                    )}
-                  >
-                    <FilterIcon className="size-3.5" />
-                    <span className="max-w-[130px] truncate">
-                      {categoryFilter === "All"
-                        ? "Category: All"
-                        : categoryFilter}
-                    </span>
-                    <ChevronDownIcon className="size-3 opacity-60" />
-                  </Button>
-                }
-              />
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  color="neutral"
+                  size="32"
+                  className={cn(
+                    "h-8 gap-1.5 text-xs font-normal",
+                    categoryFilter !== "All" &&
+                      "border-primary bg-primary/5 font-medium text-primary"
+                  )}
+                >
+                  <FilterIcon className="size-3.5" />
+                  <span className="max-w-[130px] truncate">
+                    {categoryFilter === "All"
+                      ? "Category: All"
+                      : categoryFilter}
+                  </span>
+                  <ChevronDownIcon className="size-3 opacity-60" />
+                </Button>
+              </DropdownMenuTrigger>
               <DropdownMenuContent
                 align="start"
                 className="thin-scrollbar max-h-60 min-w-48 overflow-y-auto"

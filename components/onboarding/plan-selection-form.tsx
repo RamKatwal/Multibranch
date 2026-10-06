@@ -413,19 +413,17 @@ export default function PlanSelectionForm() {
                   </span>
                 </div>
                 <DropdownMenu>
-                  <DropdownMenuTrigger
-                    render={
-                      <Button
-                        type="button"
-                        variant="outline"
-                        color="neutral"
-                        className="h-9 min-w-36 justify-between gap-2 px-3 text-sm font-normal"
-                        disabled={isFreeTrial}
-                      />
-                    }
-                  >
-                    {isFreeTrial ? "14 days" : selectedPeriodLabel}
-                    <ChevronDown className="size-3.5 opacity-60" />
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      color="neutral"
+                      className="h-9 min-w-36 justify-between gap-2 px-3 text-sm font-normal"
+                      disabled={isFreeTrial}
+                    >
+                      {isFreeTrial ? "14 days" : selectedPeriodLabel}
+                      <ChevronDown className="size-3.5 opacity-60" />
+                    </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="min-w-36">
                     {PAYMENT_PERIODS.map((period) => (

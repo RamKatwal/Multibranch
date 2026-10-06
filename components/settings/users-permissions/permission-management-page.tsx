@@ -23,7 +23,7 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
+  DropdownMenuDivider,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Label } from "@/components/ui/label"
@@ -70,32 +70,30 @@ function AccessSelect({
 
   return (
     <DropdownMenu modal={false}>
-      <DropdownMenuTrigger
-        disabled={isDisabled}
-        render={
-          <Button
-            id={id}
-            type="button"
-            variant="outline"
-            color="neutral"
-            size="32"
-            disabled={isDisabled}
-            className={cn(
-              "h-8 w-44 justify-between gap-2 px-2.5 font-normal",
-              className
-            )}
-          />
-        }
-      >
-        <span
+      <DropdownMenuTrigger asChild
+        disabled={isDisabled}>
+        <Button
+          id={id}
+          type="button"
+          variant="outline"
+          color="neutral"
+          size="32"
+          disabled={isDisabled}
           className={cn(
-            "min-w-0 truncate",
-            !selected && "text-muted-foreground"
+            "h-8 w-44 justify-between gap-2 px-2.5 font-normal",
+            className
           )}
         >
-          {selected?.label ?? placeholder}
-        </span>
-        <ChevronsUpDown className="size-3.5 shrink-0 opacity-50" />
+          <span
+            className={cn(
+              "min-w-0 truncate",
+              !selected && "text-muted-foreground"
+            )}
+          >
+            {selected?.label ?? placeholder}
+          </span>
+          <ChevronsUpDown className="size-3.5 shrink-0 opacity-50" />
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="start"
@@ -177,32 +175,30 @@ function BranchAccessSelect({
 
   return (
     <DropdownMenu modal={false}>
-      <DropdownMenuTrigger
-        disabled={isDisabled}
-        render={
-          <Button
-            id={id}
-            type="button"
-            variant="outline"
-            color="neutral"
-            size="32"
-            disabled={isDisabled}
-            className={cn(
-              "h-8 w-72 justify-between gap-2 px-2.5 font-normal",
-              className
-            )}
-          />
-        }
-      >
-        <span
+      <DropdownMenuTrigger asChild
+        disabled={isDisabled}>
+        <Button
+          id={id}
+          type="button"
+          variant="outline"
+          color="neutral"
+          size="32"
+          disabled={isDisabled}
           className={cn(
-            "min-w-0 truncate",
-            !selected && "text-muted-foreground"
+            "h-8 w-72 justify-between gap-2 px-2.5 font-normal",
+            className
           )}
         >
-          {selected ? formatBranchOption(selected) : placeholder}
-        </span>
-        <ChevronsUpDown className="size-3.5 shrink-0 opacity-50" />
+          <span
+            className={cn(
+              "min-w-0 truncate",
+              !selected && "text-muted-foreground"
+            )}
+          >
+            {selected ? formatBranchOption(selected) : placeholder}
+          </span>
+          <ChevronsUpDown className="size-3.5 shrink-0 opacity-50" />
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="start"
@@ -213,7 +209,7 @@ function BranchAccessSelect({
         ) : (
           groups.map((group, index) => (
             <React.Fragment key={group.company.id}>
-              {index > 0 ? <DropdownMenuSeparator /> : null}
+              {index > 0 ? <DropdownMenuDivider /> : null}
               <DropdownMenuGroup>
                 <DropdownMenuLabel className="flex items-center gap-2 text-foreground">
                   <CompanyLogo

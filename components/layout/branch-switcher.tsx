@@ -196,40 +196,38 @@ export function BranchSwitcher({ className }: { className?: string }) {
   return (
     <>
       <DropdownMenu open={isDropdownOpen} onOpenChange={onDropdownOpenChange}>
-        <DropdownMenuTrigger
-          render={
-            <SidebarMenuButton
-              size="lg"
-              tooltip={{
-                children: (
-                  <>
-                    <span>{activeBranch.name}</span>
-                    <kbd
-                      data-slot="kbd"
-                      className="pointer-events-none ml-1 inline-flex h-5 items-center rounded border border-background/20 bg-background/15 px-1.5 font-mono text-[10px] font-medium text-background"
-                    >
-                      {formatShortcutLabel([...switchShortcut], isMac)}
-                    </kbd>
-                  </>
-                ),
-              }}
-              className={cn(
-                "h-12 cursor-pointer gap-2.5 rounded-lg px-2 data-popup-open:bg-sidebar-accent",
-                className
-              )}
-            />
-          }
-        >
-          <BranchMark branch={activeBranch} />
-          <div className="grid min-w-0 flex-1 text-left leading-tight group-data-[collapsible=icon]:hidden">
-            <span className="truncate text-sm font-medium text-sidebar-foreground">
-              {activeBranch.name}
-            </span>
-            <span className="truncate text-[11px] text-sidebar-foreground/50">
-              {getBranchLocation(activeBranch)}
-            </span>
-          </div>
-          <ChevronsUpDown className="ml-auto size-3.5 shrink-0 text-sidebar-foreground/40 group-data-[collapsible=icon]:hidden" />
+        <DropdownMenuTrigger asChild>
+          <SidebarMenuButton
+            size="lg"
+            tooltip={{
+              children: (
+                <>
+                  <span>{activeBranch.name}</span>
+                  <kbd
+                    data-slot="kbd"
+                    className="pointer-events-none ml-1 inline-flex h-5 items-center rounded border border-background/20 bg-background/15 px-1.5 font-mono text-[10px] font-medium text-background"
+                  >
+                    {formatShortcutLabel([...switchShortcut], isMac)}
+                  </kbd>
+                </>
+              ),
+            }}
+            className={cn(
+              "h-12 cursor-pointer gap-2.5 rounded-lg px-2 data-popup-open:bg-sidebar-accent",
+              className
+            )}
+          >
+            <BranchMark branch={activeBranch} />
+            <div className="grid min-w-0 flex-1 text-left leading-tight group-data-[collapsible=icon]:hidden">
+              <span className="truncate text-sm font-medium text-sidebar-foreground">
+                {activeBranch.name}
+              </span>
+              <span className="truncate text-[11px] text-sidebar-foreground/50">
+                {getBranchLocation(activeBranch)}
+              </span>
+            </div>
+            <ChevronsUpDown className="ml-auto size-3.5 shrink-0 text-sidebar-foreground/40 group-data-[collapsible=icon]:hidden" />
+          </SidebarMenuButton>
         </DropdownMenuTrigger>
 
         <DropdownMenuContent

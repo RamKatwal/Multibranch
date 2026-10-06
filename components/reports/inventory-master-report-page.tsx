@@ -162,17 +162,15 @@ export function InventoryMasterReportPage() {
               <DropdownMenu>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <DropdownMenuTrigger
-                      render={
-                        <IconButton
-                          variant="outline"
-                          color="neutral"
-                          size="32"
-                          aria-label="Row size"
-                        />
-                      }
-                    >
-                      <Rows3Icon />
+                    <DropdownMenuTrigger asChild>
+                      <IconButton
+                        variant="outline"
+                        color="neutral"
+                        size="32"
+                        aria-label="Row size"
+                      >
+                        <Rows3Icon />
+                      </IconButton>
                     </DropdownMenuTrigger>
                   </TooltipTrigger>
                   <TooltipContent>Row size</TooltipContent>

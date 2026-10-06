@@ -127,24 +127,22 @@ function CompactRoleDropdown({
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger
-        disabled={roles.length === 0}
-        render={
-          <button
-            type="button"
-            aria-label={ariaLabel}
-            aria-invalid={invalid}
-            className={cn(
-              "flex h-7 w-full cursor-pointer items-center justify-between gap-1 rounded-md border border-input bg-transparent px-2 text-left text-xs shadow-xs outline-none transition-[color,box-shadow] select-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:bg-input/30",
-              selected ? "text-foreground" : "text-muted-foreground"
-            )}
-          />
-        }
-      >
-        <span className="min-w-0 truncate">
-          {selected?.name ?? "Select role…"}
-        </span>
-        <ChevronDownIcon className="size-3.5 shrink-0 opacity-50" />
+      <DropdownMenuTrigger asChild
+        disabled={roles.length === 0}>
+        <button
+          type="button"
+          aria-label={ariaLabel}
+          aria-invalid={invalid}
+          className={cn(
+            "flex h-7 w-full cursor-pointer items-center justify-between gap-1 rounded-md border border-input bg-transparent px-2 text-left text-xs shadow-xs outline-none transition-[color,box-shadow] select-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:bg-input/30",
+            selected ? "text-foreground" : "text-muted-foreground"
+          )}
+        >
+          <span className="min-w-0 truncate">
+            {selected?.name ?? "Select role…"}
+          </span>
+          <ChevronDownIcon className="size-3.5 shrink-0 opacity-50" />
+        </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-40">
         {roles.map((role) => (

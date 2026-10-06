@@ -170,28 +170,26 @@ export function StockAdjustmentPage() {
             <div className="hidden h-4 w-px bg-border sm:block" />
 
             <DropdownMenu>
-              <DropdownMenuTrigger
-                render={
-                  <Button
-                    variant="outline"
-                    color="neutral"
-                    size="32"
-                    className={cn(
-                      "h-8 gap-1.5 text-xs font-normal",
-                      typeFilter !== "all" &&
-                        "border-primary bg-primary/5 font-medium text-primary"
-                    )}
-                  >
-                    <span>
-                      Type:{" "}
-                      {typeFilter === "all"
-                        ? "All"
-                        : stockAdjustmentTypeLabels[typeFilter]}
-                    </span>
-                    <ChevronDownIcon className="size-3 opacity-60" />
-                  </Button>
-                }
-              />
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  color="neutral"
+                  size="32"
+                  className={cn(
+                    "h-8 gap-1.5 text-xs font-normal",
+                    typeFilter !== "all" &&
+                      "border-primary bg-primary/5 font-medium text-primary"
+                  )}
+                >
+                  <span>
+                    Type:{" "}
+                    {typeFilter === "all"
+                      ? "All"
+                      : stockAdjustmentTypeLabels[typeFilter]}
+                  </span>
+                  <ChevronDownIcon className="size-3 opacity-60" />
+                </Button>
+              </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="min-w-40">
                 <DropdownMenuItem
                   className="cursor-pointer text-xs"
