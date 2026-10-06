@@ -85,31 +85,30 @@ export function ProductItemSelect<TProduct extends SelectableProduct>({
     <div className={cn("relative w-full", className)}>
       <Popover open={open} onOpenChange={handleOpenChange}>
         <PopoverTrigger
-          nativeButton={false}
+          asChild
           disabled={disabled}
-          render={
-            <Input
-              role="combobox"
-              aria-expanded={open}
-              aria-autocomplete="list"
-              aria-invalid={ariaInvalid}
-              disabled={disabled}
-              autoComplete="off"
-              placeholder={open ? "Search items…" : placeholder}
-              className="cursor-pointer pr-9"
-              value={open ? query : (selected?.name ?? "")}
-              onChange={(event) => {
-                setQuery(event.target.value)
-                if (!open) setOpen(true)
-              }}
-            />
-          }
-        />
+        >
+          <Input
+            role="combobox"
+            aria-expanded={open}
+            aria-autocomplete="list"
+            aria-invalid={ariaInvalid}
+            disabled={disabled}
+            autoComplete="off"
+            placeholder={open ? "Search items…" : placeholder}
+            className="cursor-pointer pr-9"
+            value={open ? query : (selected?.name ?? "")}
+            onChange={(event) => {
+              setQuery(event.target.value)
+              if (!open) setOpen(true)
+            }}
+          />
+        </PopoverTrigger>
         <PopoverContent
           align="start"
           sideOffset={6}
-          initialFocus={false}
-          className="w-(--anchor-width) min-w-72 p-0"
+          onOpenAutoFocus={(event) => event.preventDefault()}
+          className="w-(--radix-popover-trigger-width) min-w-72 p-0"
         >
           <Command shouldFilter={false}>
             <CommandList className="max-h-64">

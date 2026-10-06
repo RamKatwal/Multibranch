@@ -41,23 +41,21 @@ export function ReportAsOfFilter({
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger
-        render={
-          <Button
-            variant="outline"
-            color="neutral"
-            size="32"
-            className={cn(
-              "h-8 gap-1.5 text-xs font-normal",
-              isActive && "border-primary bg-primary/5 font-medium text-primary"
-            )}
-          >
-            <CalendarIcon className="size-3.5" />
-            <span className="max-w-[160px] truncate">As of: {label}</span>
-            <ChevronDownIcon className="size-3 opacity-60" />
-          </Button>
-        }
-      />
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          color="neutral"
+          size="32"
+          className={cn(
+            "h-8 gap-1.5 text-xs font-normal",
+            isActive && "border-primary bg-primary/5 font-medium text-primary"
+          )}
+        >
+          <CalendarIcon className="size-3.5" />
+          <span className="max-w-[160px] truncate">As of: {label}</span>
+          <ChevronDownIcon className="size-3 opacity-60" />
+        </Button>
+      </PopoverTrigger>
       <PopoverContent align="start" className="w-56 min-w-56 p-1">
         {REPORT_AS_OF_PRESETS.map((option) => (
           <button

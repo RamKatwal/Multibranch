@@ -80,14 +80,14 @@ re-add with the CLI) · ⏳ shadcn on Base UI (migrate) · ➖ no Radian equival
 
 | Here (`components/ui`) | Status | Radian target | Notes |
 |---|---|---|---|
-| `spinner`, `carousel`, `tooltip` | ✅ | same name | |
+| `spinner`, `carousel`, `tooltip`, `popover` | ✅ | same name | |
 | `dropdown-menu` | ✅ | `dropdown-menu` | `DropdownMenuSeparator` is `DropdownMenuDivider`; local `variant="destructive"` on items (§9) |
 | `button` | ✅ | `button` (`Button`, `IconButton`, `ButtonGroup`, `CompactButton`) | `children` optional (transitional, §9) |
 | `badge`, `input`, `checkbox`, `switch`, `avatar`, `breadcrumb`, `collapsible`, `label`, `skeleton` | ⏳ | same name | |
 | `textarea` | ⏳ | `text-area` | |
 | `native-select` | ⏳ | `select` | |
 | `tabs` | ⏳ | `tabs`, plus `toggle-group` for filter rows | Keep the `ui-tabs.mdc` look |
-| `dialog`, `drawer`, `popover`, `sidebar` | ⏳ | same name | Triggers switch from `render={…}` to `asChild` |
+| `dialog`, `drawer`, `sidebar` | ⏳ | same name | Triggers switch from `render={…}` to `asChild` |
 | `sheet` | ⏳ | `drawer` | |
 | `separator` | ⏳ | `divider` | |
 | `command` (69%), `form` (75%) | ⏳ | same name | |
@@ -198,3 +198,11 @@ select, slider, stepper, table, text-area, toggle, toggle-group.
   tokens) for the 23 Delete-style actions; reapply it if the file is re-added with the CLI. Radian's menu
   look: 6px item radius, 20px icons in `fg-secondary`, `elevation-level2` panel, width at least the trigger.
   Radix menus open on pointerdown, so scripted tests must send a pointer event, not `.click()`.
+- 2026-10-06: **Popover migrated to Radian** (Radix). Triggers moved to `asChild` (13). Base UI-only props
+  were mapped: `w-(--anchor-width)` → `w-(--radix-popover-trigger-width)`, `initialFocus={false}` →
+  `onOpenAutoFocus={(event) => event.preventDefault()}`, `nativeButton={false}` removed. Radian's content has
+  `p-4`, `w-72` and `align="center"` by default; every call site sets its own align, width and padding.
+  The reports sidebar flyout used Base UI's `openOnHover`, which Radix Popover lacks: `HoverPopover` in
+  `report-list-panel.tsx` opens on hover (80ms) and closes after leaving (120ms), and click still toggles.
+  A Radix popover inside a Base UI dialog (user form → companies and branches) works: picking options
+  doesn't close the dialog.
