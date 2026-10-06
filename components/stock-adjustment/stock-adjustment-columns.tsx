@@ -104,7 +104,8 @@ export function createStockAdjustmentColumns({
           <div className="flex items-center justify-end">
             <Button
               variant="ghost"
-              size="sm"
+              color="neutral"
+              size="32"
               className="h-7 text-destructive hover:bg-destructive/10 hover:text-destructive"
               onClick={(event) => {
                 event.stopPropagation()

@@ -179,7 +179,7 @@ export function ChequesPage() {
         title="Cheques"
         count={`${cheques.length} cheques`}
         actions={
-          <Button size="sm" onClick={openCreate}>
+          <Button size="32" onClick={openCreate}>
             <PlusIcon />
             Record Cheque
           </Button>

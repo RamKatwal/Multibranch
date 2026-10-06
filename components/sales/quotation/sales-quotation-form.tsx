@@ -8,7 +8,7 @@ import { toast } from "sonner"
 import { z } from "zod"
 
 import { ProductItemSelect } from "@/components/stock-transfer/product-item-select"
-import { Button } from "@/components/ui/button"
+import { Button, IconButton } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import {
   Form,
@@ -294,7 +294,7 @@ export function SalesQuotationForm({
                     Rate prefills from the product and can be edited per line.
                   </p>
                 </div>
-                <Button type="button" variant="outline" size="sm" onClick={addRow}>
+                <Button type="button" variant="outline" color="neutral" size="32" onClick={addRow}>
                   <PlusIcon className="size-4" />
                   Add
                 </Button>
@@ -359,17 +359,18 @@ export function SalesQuotationForm({
                       <div className="flex h-9 items-center justify-end font-medium tabular-nums">
                         {formatCurrency(rowAmount(row))}
                       </div>
-                      <Button
+                      <IconButton
                         type="button"
                         variant="ghost"
-                        size="icon-sm"
+                        color="neutral"
+                        size="32"
                         className="text-muted-foreground hover:text-destructive"
                         onClick={() => removeRow(row.key)}
                         disabled={rows.length === 1}
                         aria-label="Remove item"
                       >
                         <Trash2Icon className="size-3.5" />
-                      </Button>
+                      </IconButton>
                     </div>
                   ))}
                 </div>
@@ -410,7 +411,7 @@ export function SalesQuotationForm({
         </Card>
 
         <div className="flex justify-end gap-2">
-          <Button type="button" variant="outline" onClick={onCancel}>
+          <Button type="button" variant="outline" color="neutral" onClick={onCancel}>
             Cancel
           </Button>
           <Button type="submit">{submitLabel}</Button>

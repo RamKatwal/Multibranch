@@ -29,7 +29,7 @@ import {
 import { ReportListPanel } from "@/components/reports/report-list-panel"
 import { ReportSupplierFilter } from "@/components/reports/report-supplier-filter"
 import { SupplierBillAgeingTable } from "@/components/reports/supplier-bill-ageing-table"
-import { Button } from "@/components/ui/button"
+import { Button, IconButton } from "@/components/ui/button"
 import { ButtonGroup } from "@/components/ui/button-group"
 import {
   DropdownMenu,
@@ -90,20 +90,23 @@ export function SupplierBillAgeingReportPage() {
           breadcrumb={
             <Button
               variant="ghost"
-              size="sm"
+              color="neutral"
+              size="32"
               className="-ml-2 h-7 w-fit px-2 text-muted-foreground"
-              nativeButton={false}
-              render={<Link href="/reports" />}
+              asChild
             >
-              <ArrowLeftIcon />
-              Back to reports
+              <Link href="/reports">
+                <ArrowLeftIcon />
+                Back to reports
+              </Link>
             </Button>
           }
           title="Supplier Bill Ageing"
           actions={
             <Button
               variant="outline"
-              size="sm"
+              color="neutral"
+              size="32"
               onClick={() => toast.info("Export is coming soon.")}
             >
               <DownloadIcon />
@@ -136,7 +139,8 @@ export function SupplierBillAgeingReportPage() {
               {isAnyFilterActive ? (
                 <Button
                   variant="ghost"
-                  size="sm"
+                  color="neutral"
+                  size="32"
                   className="h-8 gap-1 px-2 text-xs text-muted-foreground hover:text-foreground"
                   onClick={clearFilters}
                 >
@@ -153,9 +157,10 @@ export function SupplierBillAgeingReportPage() {
                     render={
                       <TooltipTrigger
                         render={
-                          <Button
+                          <IconButton
                             variant="outline"
-                            size="icon-sm"
+                            color="neutral"
+                            size="32"
                             aria-label="Row size"
                           />
                         }
@@ -189,9 +194,10 @@ export function SupplierBillAgeingReportPage() {
               <Tooltip>
                 <TooltipTrigger
                   render={
-                    <Button
+                    <IconButton
                       variant="outline"
-                      size="icon-sm"
+                      color="neutral"
+                      size="32"
                       aria-label={
                         isFullscreen ? "Exit full screen" : "Full screen"
                       }

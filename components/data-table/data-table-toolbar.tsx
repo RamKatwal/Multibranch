@@ -10,7 +10,7 @@ import {
   SearchIcon,
 } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
+import { Button, IconButton } from "@/components/ui/button"
 import { ButtonGroup } from "@/components/ui/button-group"
 import {
   DropdownMenu,
@@ -93,9 +93,10 @@ export function DataTableToolbar<TData>({
               render={
                 <TooltipTrigger
                   render={
-                    <Button
+                    <IconButton
                       variant="outline"
-                      size="icon-sm"
+                      color="neutral"
+                      size="32"
                       aria-label="Row size"
                     />
                   }
@@ -129,9 +130,10 @@ export function DataTableToolbar<TData>({
         <Tooltip>
           <TooltipTrigger
             render={
-              <Button
+              <IconButton
                 variant="outline"
-                size="icon-sm"
+                color="neutral"
+                size="32"
                 aria-label={isFullscreen ? "Exit full screen" : "Full screen"}
                 aria-pressed={isFullscreen}
                 onClick={onToggleFullscreen}
@@ -152,7 +154,8 @@ export function DataTableToolbar<TData>({
                 render={
                   <Button
                     variant="outline"
-                    size="sm"
+                    color="neutral"
+                    size="32"
                     aria-label="Filter"
                     aria-pressed={isFiltered}
                     className={cn(isFiltered && "border-foreground/20 bg-muted")}
@@ -189,7 +192,7 @@ export function DataTableToolbar<TData>({
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Button variant="outline" size="sm">
+            <Button variant="outline" color="neutral" size="32">
               <FilterIcon />
               Filter
             </Button>

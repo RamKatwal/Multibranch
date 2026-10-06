@@ -32,7 +32,8 @@ export function ReportFiscalYearFilter({
         render={
           <Button
             variant="outline"
-            size="sm"
+            color="neutral"
+            size="32"
             className={cn("h-8 gap-1.5 text-xs font-normal", className)}
           >
             <CalendarRangeIcon className="size-3.5" />

@@ -149,13 +149,14 @@ export function UnitPage() {
           <>
             <Button
               variant="outline"
-              size="sm"
+              color="neutral"
+              size="32"
               onClick={() => toast.info("Export is coming soon.")}
             >
               <DownloadIcon />
               Export
             </Button>
-            <Button size="sm" onClick={openCreate}>
+            <Button size="32" onClick={openCreate}>
               <PlusIcon />
               Create Unit
             </Button>

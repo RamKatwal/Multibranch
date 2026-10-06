@@ -81,11 +81,12 @@ export function DeactivateRoleDialog({
               <Button
                 type="button"
                 variant="outline"
+                color="neutral"
                 onClick={() => onOpenChange(false)}
               >
                 Cancel
               </Button>
-              <Button type="button" variant="destructive" onClick={onConfirm}>
+              <Button type="button" variant="soft" color="error" onClick={onConfirm}>
                 Deactivate
               </Button>
             </>

@@ -125,14 +125,15 @@ export function StockAdjustmentPage() {
           <>
             <Button
               variant="outline"
-              size="sm"
+              color="neutral"
+              size="32"
               onClick={() => toast.info("Export is coming soon.")}
             >
               <DownloadIcon />
               Export
             </Button>
             <Button
-              size="sm"
+              size="32"
               onClick={() => router.push("/inventory/stock-adjustment/create")}
             >
               <PlusIcon />
@@ -173,7 +174,8 @@ export function StockAdjustmentPage() {
                 render={
                   <Button
                     variant="outline"
-                    size="sm"
+                    color="neutral"
+                    size="32"
                     className={cn(
                       "h-8 gap-1.5 text-xs font-normal",
                       typeFilter !== "all" &&

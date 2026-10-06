@@ -198,7 +198,7 @@ export function PermissionGroupsPage() {
         title="User Roles"
         count={`${groups.length} roles`}
         actions={
-          <Button size="sm" onClick={openCreate}>
+          <Button size="32" onClick={openCreate}>
             <PlusIcon />
             Add User Role
           </Button>

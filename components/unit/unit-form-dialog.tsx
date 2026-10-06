@@ -153,6 +153,7 @@ export function UnitFormDialog({
               <Button
                 type="button"
                 variant="outline"
+                color="neutral"
                 onClick={() => onOpenChange(false)}
               >
                 Cancel

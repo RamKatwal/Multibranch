@@ -8,7 +8,7 @@ import { toast } from "sonner"
 import { z } from "zod"
 
 import { ProductItemSelect } from "@/components/stock-transfer-2/product-item-select"
-import { Button } from "@/components/ui/button"
+import { Button, IconButton } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -290,7 +290,7 @@ export function StockTransferForm({
           description="Pick products from the catalog. Rate fills from cost price."
         >
           <div className="mb-3 flex items-center justify-end">
-            <Button type="button" variant="outline" size="sm" onClick={addRow}>
+            <Button type="button" variant="outline" color="neutral" size="32" onClick={addRow}>
               <PlusIcon className="size-4" />
               Add line
             </Button>
@@ -374,17 +374,18 @@ export function StockTransferForm({
                 </div>
 
                 <div className="flex justify-end md:pt-0.5">
-                  <Button
+                  <IconButton
                     type="button"
                     variant="ghost"
-                    size="icon-sm"
+                    color="neutral"
+                    size="32"
                     className="text-muted-foreground hover:text-destructive"
                     onClick={() => removeRow(row.key)}
                     disabled={rows.length === 1}
                     aria-label="Remove item"
                   >
                     <Trash2Icon className="size-3.5" />
-                  </Button>
+                  </IconButton>
                 </div>
               </div>
             ))}
@@ -425,7 +426,7 @@ export function StockTransferForm({
         </FormSection>
 
         <div className="flex justify-end gap-2">
-          <Button type="button" variant="outline" onClick={onCancel}>
+          <Button type="button" variant="outline" color="neutral" onClick={onCancel}>
             Cancel
           </Button>
           <Button type="submit">{submitLabel}</Button>

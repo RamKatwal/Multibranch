@@ -139,10 +139,12 @@ export function StockTransferDetailPage({
         </p>
         <Button
           variant="outline"
-          nativeButton={false}
-          render={<Link href="/inventory/stock-transfer" />}
+          color="neutral"
+          asChild
         >
-          Back to transfers
+          <Link href="/inventory/stock-transfer">
+            Back to transfers
+          </Link>
         </Button>
       </div>
     )
@@ -186,13 +188,15 @@ export function StockTransferDetailPage({
         breadcrumb={
           <Button
             variant="ghost"
-            size="sm"
+            color="neutral"
+            size="32"
             className="-ml-2 h-7 w-fit px-2 text-muted-foreground"
-            nativeButton={false}
-            render={<Link href="/inventory/stock-transfer" />}
+            asChild
           >
-            <ArrowLeftIcon />
-            Back to transfers
+            <Link href="/inventory/stock-transfer">
+              <ArrowLeftIcon />
+              Back to transfers
+            </Link>
           </Button>
         }
         actions={
@@ -200,7 +204,8 @@ export function StockTransferDetailPage({
             {canEdit ? (
               <Button
                 variant="outline"
-                size="sm"
+                color="neutral"
+                size="32"
                 onClick={() =>
                   router.push(
                     `/inventory/stock-transfer/${encodeURIComponent(transfer.id)}/edit`
@@ -215,26 +220,27 @@ export function StockTransferDetailPage({
               <>
                 <Button
                   variant="outline"
-                  size="sm"
+                  color="neutral"
+                  size="32"
                   onClick={() => openAction("reject")}
                 >
                   <XIcon />
                   Reject
                 </Button>
-                <Button size="sm" onClick={() => openAction("approve")}>
+                <Button size="32" onClick={() => openAction("approve")}>
                   <CheckIcon />
                   Approve
                 </Button>
               </>
             ) : null}
             {canDispatch ? (
-              <Button size="sm" onClick={() => openAction("dispatch")}>
+              <Button size="32" onClick={() => openAction("dispatch")}>
                 <TruckIcon />
                 Dispatch
               </Button>
             ) : null}
             {canReceive ? (
-              <Button size="sm" onClick={() => openAction("receive")}>
+              <Button size="32" onClick={() => openAction("receive")}>
                 <CheckIcon />
                 Confirm receipt
               </Button>
@@ -242,7 +248,8 @@ export function StockTransferDetailPage({
             {canReturn ? (
               <Button
                 variant="outline"
-                size="sm"
+                color="neutral"
+                size="32"
                 onClick={() => openAction("return")}
               >
                 <Undo2Icon />

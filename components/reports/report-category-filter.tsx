@@ -41,7 +41,8 @@ export function ReportCategoryFilter({
         render={
           <Button
             variant="outline"
-            size="sm"
+            color="neutral"
+            size="32"
             className={cn(
               "h-8 gap-1.5 text-xs font-normal",
               isActive && "border-primary bg-primary/5 font-medium text-primary",

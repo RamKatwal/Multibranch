@@ -325,7 +325,7 @@ export default function BranchesSetupForm() {
             </p>
             <Button
               type="button"
-              size="sm"
+              size="32"
               disabled={isLoading || rows.length === 0}
               onClick={handleCreateBranches}
             >

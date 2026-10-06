@@ -28,13 +28,15 @@ export function CreateStockAdjustmentPage() {
         breadcrumb={
           <Button
             variant="ghost"
-            size="sm"
+            color="neutral"
+            size="32"
             className="-ml-2 h-7 w-fit px-2 text-muted-foreground"
-            nativeButton={false}
-            render={<Link href="/inventory/stock-adjustment" />}
+            asChild
           >
-            <ArrowLeftIcon />
-            Back to adjustments
+            <Link href="/inventory/stock-adjustment">
+              <ArrowLeftIcon />
+              Back to adjustments
+            </Link>
           </Button>
         }
       />

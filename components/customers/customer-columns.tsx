@@ -170,7 +170,8 @@ export function createCustomerColumns({
           <div className="flex items-center justify-end gap-1">
             <Button
               variant="ghost"
-              size="sm"
+              color="neutral"
+              size="32"
               className="h-7 px-2 text-xs font-normal text-muted-foreground hover:text-foreground"
               onClick={() => onEdit(customer)}
             >
@@ -180,7 +181,8 @@ export function createCustomerColumns({
             {isActive ? (
               <Button
                 variant="ghost"
-                size="sm"
+                color="neutral"
+                size="32"
                 className="h-7 px-2 text-xs font-normal text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
                 onClick={() => onDeactivate(customer)}
               >
@@ -190,7 +192,8 @@ export function createCustomerColumns({
             ) : (
               <Button
                 variant="ghost"
-                size="sm"
+                color="neutral"
+                size="32"
                 className="h-7 px-2 text-xs font-normal text-muted-foreground hover:bg-success/10 hover:text-success"
                 onClick={() => onActivate(customer)}
               >

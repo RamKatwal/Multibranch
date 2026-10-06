@@ -30,7 +30,8 @@ export function PeriodSelect({
         render={
           <Button
             variant="outline"
-            size="sm"
+            color="neutral"
+            size="32"
             className="h-7 gap-1 px-2.5 text-xs font-normal"
           />
         }

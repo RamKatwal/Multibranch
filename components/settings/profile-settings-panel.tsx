@@ -35,11 +35,11 @@ export function ProfileSettingsPanel({ className }: ProfileSettingsPanelProps) {
             </AvatarFallback>
           </Avatar>
           <div className="flex items-center gap-2">
-            <Button type="button" variant="outline" size="sm">
+            <Button type="button" variant="outline" color="neutral" size="32">
               <Upload className="size-3.5" />
               Change
             </Button>
-            <Button type="button" variant="outline" size="sm">
+            <Button type="button" variant="outline" color="neutral" size="32">
               <X className="size-3.5" />
               Remove
             </Button>
@@ -114,6 +114,7 @@ export function ProfileSettingsPanel({ className }: ProfileSettingsPanelProps) {
           <Button
             type="button"
             variant="outline"
+            color="neutral"
             className="text-destructive hover:bg-destructive/10 hover:text-destructive"
             onClick={() => router.push("/signup")}
           >

@@ -80,8 +80,8 @@ re-add with the CLI) · ⏳ shadcn on Base UI (migrate) · ➖ no Radian equival
 
 | Here (`components/ui`) | Status | Radian target | Notes |
 |---|---|---|---|
-| `spinner` | ✅ | `spinner` | |
-| `button` | ⏳ | `button` (`Button`, `IconButton`, `ButtonGroup`, `CompactButton`) | Pilot: `fix/button-radian` |
+| `spinner`, `carousel` | ✅ | same name | |
+| `button` | ✅ | `button` (`Button`, `IconButton`, `ButtonGroup`, `CompactButton`) | `children` optional (transitional, §9) |
 | `badge`, `input`, `checkbox`, `switch`, `avatar`, `breadcrumb`, `collapsible`, `label`, `skeleton` | ⏳ | same name | |
 | `textarea` | ⏳ | `text-area` | |
 | `native-select` | ⏳ | `select` | |
@@ -90,7 +90,7 @@ re-add with the CLI) · ⏳ shadcn on Base UI (migrate) · ➖ no Radian equival
 | `sheet` | ⏳ | `drawer` | |
 | `separator` | ⏳ | `divider` | |
 | `command` (69%), `form` (75%) | ⏳ | same name | |
-| `card`, `carousel`, `chart`, `divider`, `otp-field` | 🟡 | same name | 87–98% the same |
+| `card`, `chart`, `divider`, `otp-field` | 🟡 | same name | 87–98% the same |
 | `button-group` | ➖ | `ButtonGroup` in `button`, or `toggle-group` | |
 | `input-group` | ➖ | check Radian `input` slots when migrating it | |
 | `form-dialog` | ➖ | — | Local composite; belongs in tier 2 |
@@ -167,3 +167,16 @@ select, slider, stepper, table, text-area, toggle, toggle-group.
   them, and settle `--background`/`--muted` in the token codemod.
 - 2026-10-05: `toast()` is **not** centralized: `components/ui/sonner.tsx` exports only `Toaster`, and
   97 files import `toast` from `sonner` directly (`design-system-map.md` said otherwise).
+- 2026-10-06: **Button migrated to Radian** (`npx radianui@latest add button`). Codemod over 533
+  call sites in 194 files: `default` → strong/primary (the defaults), `outline`/`ghost` → same variant +
+  `color="neutral"`, `secondary` → soft/neutral, `destructive` → soft/error, `link` → link; sizes
+  `sm` → `"32"`, `lg` → `"40"`, default → `"36"`; `icon`/`icon-sm`/`icon-lg` → `IconButton` 36/32/40
+  (149 of them); Base UI `render={<Link/>}` + `nativeButton={false}` → `asChild` wrapping the `Link` (77).
+  Visual change: size-32 buttons use Radian/Figma type (14px text, 18px icons instead of 12px/14px).
+  `className` height/padding/text overrides on Buttons were kept as they were; replacing them with the
+  matching Radian `size` is a follow-up. Carousel was re-added from the CLI (it imports `IconButton`).
+- 2026-10-06: Transitional edit in `components/ui/button.tsx`: `children` is optional on `Button` and
+  `IconButton` (upstream: required), because 131 Buttons are Base UI trigger render props
+  (`<TooltipTrigger render={<IconButton …/>}>`) that receive their children from the trigger.
+  Restore upstream when tooltip, dropdown-menu, dialog, popover and drawer are Radian (`asChild`).
+  Re-adding a primitive that depends on `button` with `--overwrite` rewrites `button.tsx`: reapply this.

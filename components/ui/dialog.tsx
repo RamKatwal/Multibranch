@@ -5,7 +5,7 @@ import { Dialog as DialogPrimitive } from "@base-ui/react/dialog"
 import { m, useReducedMotion } from "framer-motion"
 
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { Button, IconButton } from "@/components/ui/button"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Cancel01Icon } from "@hugeicons/core-free-icons"
 import {
@@ -97,10 +97,11 @@ function DialogContent({
           <DialogPrimitive.Close
             data-slot="dialog-close"
             render={
-              <Button
+              <IconButton
                 variant="ghost"
+                color="neutral"
                 className="absolute top-2 right-2"
-                size="icon-sm"
+                size="32"
               />
             }
           >
@@ -142,7 +143,7 @@ function DialogFooter({
     >
       {children}
       {showCloseButton && (
-        <DialogPrimitive.Close render={<Button variant="outline" />}>
+        <DialogPrimitive.Close render={<Button variant="outline" color="neutral" />}>
           Close
         </DialogPrimitive.Close>
       )}

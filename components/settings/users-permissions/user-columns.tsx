@@ -17,7 +17,7 @@ import {
   groupedBranchAccessSearchText,
   userAccessSearchText,
 } from "@/components/settings/users-permissions/grouped-branch-chips"
-import { Button } from "@/components/ui/button"
+import { IconButton } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -135,9 +135,10 @@ export function createUserColumns({
             <DropdownMenu>
               <DropdownMenuTrigger
                 render={
-                  <Button
+                  <IconButton
                     variant="ghost"
-                    size="icon-sm"
+                    color="neutral"
+                    size="32"
                     aria-label={`Actions for ${user.name}`}
                   />
                 }

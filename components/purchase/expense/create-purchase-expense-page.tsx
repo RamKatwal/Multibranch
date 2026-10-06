@@ -42,13 +42,15 @@ export function CreatePurchaseExpensePage() {
   const backButton = (
     <Button
       variant="ghost"
-      size="sm"
+      color="neutral"
+      size="32"
       className="-ml-2 h-7 w-fit px-2 text-muted-foreground"
-      nativeButton={false}
-      render={<Link href={backHref} />}
+      asChild
     >
-      <ArrowLeftIcon />
-      Back to expenses
+      <Link href={backHref}>
+        <ArrowLeftIcon />
+        Back to expenses
+      </Link>
     </Button>
   )
 

@@ -200,11 +200,11 @@ export function SuppliersPage() {
         count={`${suppliers.length} suppliers`}
         actions={
           <>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" color="neutral" size="32">
               <DownloadIcon />
               Export
             </Button>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" color="neutral" size="32">
               <UploadIcon />
               Import
             </Button>
@@ -213,7 +213,7 @@ export function SuppliersPage() {
             <DropdownMenu>
               <DropdownMenuTrigger
                 render={
-                  <Button size="sm" className="gap-1.5">
+                  <Button size="32" className="gap-1.5">
                     <PlusIcon className="size-4" />
                     Create Supplier
                     <ChevronDownIcon className="size-3.5 opacity-70" />
@@ -275,7 +275,8 @@ export function SuppliersPage() {
                 render={
                   <Button
                     variant="outline"
-                    size="sm"
+                    color="neutral"
+                    size="32"
                     className={cn(
                       "h-8 gap-1.5 text-xs font-normal",
                       branchFilter !== "all" &&
@@ -333,7 +334,8 @@ export function SuppliersPage() {
                 render={
                   <Button
                     variant="outline"
-                    size="sm"
+                    color="neutral"
+                    size="32"
                     className={cn(
                       "h-8 gap-1.5 text-xs font-normal",
                       typeFilter !== "all" &&
@@ -398,7 +400,8 @@ export function SuppliersPage() {
                 render={
                   <Button
                     variant="outline"
-                    size="sm"
+                    color="neutral"
+                    size="32"
                     className={cn(
                       "h-8 gap-1.5 text-xs font-normal",
                       categoryFilter !== "All" &&
@@ -441,7 +444,8 @@ export function SuppliersPage() {
             {isAnyFilterActive ? (
               <Button
                 variant="ghost"
-                size="sm"
+                color="neutral"
+                size="32"
                 className="h-8 gap-1 px-2 text-xs text-muted-foreground hover:text-foreground"
                 onClick={handleResetFilters}
               >

@@ -9,7 +9,7 @@ import { CompanyAvatar } from "@/components/company-logo"
 import { CompanyDetailField } from "@/components/settings/company-configuration/company-detail-field"
 import { CompanyConfigurationFormDialog } from "@/components/settings/company-configuration/company-configuration-form-dialog"
 import { PageHeader } from "@/components/layout/page-header"
-import { Button } from "@/components/ui/button"
+import { Button, IconButton } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { appBrand } from "@/config/navigation"
 import {
@@ -119,10 +119,12 @@ export function CompanyConfigurationPage({
         {backHref ? (
           <Button
             variant="outline"
-            nativeButton={false}
-            render={<Link href={backHref} />}
+            color="neutral"
+            asChild
           >
-            {backLabel ?? "Go back"}
+            <Link href={backHref}>
+              {backLabel ?? "Go back"}
+            </Link>
           </Button>
         ) : null}
       </div>
@@ -168,10 +170,11 @@ export function CompanyConfigurationPage({
                   className="sr-only"
                   onChange={handleLogoChange}
                 />
-                <Button
+                <IconButton
                   type="button"
-                  size="icon-sm"
+                  size="32"
                   variant="outline"
+                  color="neutral"
                   disabled={logoBusy}
                   className="absolute -right-1 -bottom-1 size-7 rounded-full bg-background shadow-xs"
                   aria-label="Change company image"
@@ -179,7 +182,7 @@ export function CompanyConfigurationPage({
                   onClick={() => logoInputRef.current?.click()}
                 >
                   <CameraIcon className="size-3.5" />
-                </Button>
+                </IconButton>
               </div>
               <div className="min-w-0">
                 <h2 className="text-lg font-semibold tracking-tight">
@@ -194,7 +197,7 @@ export function CompanyConfigurationPage({
 
             <Button
               type="button"
-              size="sm"
+              size="32"
               onClick={() => setEditOpen(true)}
             >
               <PencilIcon className="size-4" />

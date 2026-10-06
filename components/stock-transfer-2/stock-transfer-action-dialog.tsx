@@ -181,13 +181,15 @@ export function StockTransferActionDialog({
               <Button
                 type="button"
                 variant="outline"
+                color="neutral"
                 onClick={() => onOpenChange(false)}
               >
                 Cancel
               </Button>
               <Button
                 type="button"
-                variant={copy.destructive ? "destructive" : "default"}
+                variant={copy.destructive ? "soft" : "strong"}
+                color={copy.destructive ? "error" : "primary"}
                 onClick={handleConfirm}
               >
                 {copy.confirmLabel}

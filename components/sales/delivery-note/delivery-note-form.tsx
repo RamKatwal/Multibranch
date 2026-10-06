@@ -218,7 +218,7 @@ export function DeliveryNoteForm({
         </Card>
 
         <div className="flex justify-end gap-2">
-          <Button type="button" variant="outline" onClick={onCancel}>
+          <Button type="button" variant="outline" color="neutral" onClick={onCancel}>
             Cancel
           </Button>
           <Button type="submit">{submitLabel}</Button>

@@ -126,7 +126,7 @@ export function PaymentTermsPage() {
         title="Payment Terms"
         count={`${terms.length} terms`}
         actions={
-          <Button size="sm" onClick={openCreate}>
+          <Button size="32" onClick={openCreate}>
             <PlusIcon />
             Add Payment Term
           </Button>

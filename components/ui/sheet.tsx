@@ -5,7 +5,7 @@ import { Dialog as SheetPrimitive } from "@base-ui/react/dialog"
 import { m, useReducedMotion } from "framer-motion"
 
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { IconButton } from "@/components/ui/button"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Cancel01Icon } from "@hugeicons/core-free-icons"
 import {
@@ -98,10 +98,11 @@ function SheetContent({
           <SheetPrimitive.Close
             data-slot="sheet-close"
             render={
-              <Button
+              <IconButton
                 variant="ghost"
+                color="neutral"
                 className="absolute top-4 right-4"
-                size="icon-sm"
+                size="32"
               />
             }
           >

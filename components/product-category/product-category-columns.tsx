@@ -10,7 +10,7 @@ import {
 } from "lucide-react"
 
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header"
-import { Button } from "@/components/ui/button"
+import { IconButton } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
   DropdownMenu,
@@ -116,9 +116,10 @@ export function createProductCategoryColumns({
             <DropdownMenu>
               <DropdownMenuTrigger
                 render={
-                  <Button
+                  <IconButton
                     variant="ghost"
-                    size="icon-sm"
+                    color="neutral"
+                    size="32"
                     aria-label={`Actions for ${category.name}`}
                   />
                 }

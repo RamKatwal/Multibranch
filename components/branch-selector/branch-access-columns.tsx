@@ -101,8 +101,9 @@ export function getBranchAccessColumns({
       cell: ({ row }) => (
         <div className="flex items-center justify-end">
           <Button
-            size="sm"
+            size="32"
             variant="outline"
+            color="neutral"
             className="border-primary text-primary hover:bg-primary/10 hover:text-primary"
             onClick={() => onAccessPortal(row.original)}
           >

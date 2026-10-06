@@ -12,7 +12,7 @@ import {
 } from "lucide-react"
 import { toast } from "sonner"
 
-import { Button } from "@/components/ui/button"
+import { Button, IconButton } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
   DropdownMenu,
@@ -128,7 +128,8 @@ export function ProductListPanel({
               render={
                 <Button
                   variant="ghost"
-                  size="sm"
+                  color="neutral"
+                  size="32"
                   className="h-8 min-w-0 flex-1 justify-start gap-1 px-2 font-semibold"
                 />
               }
@@ -152,21 +153,22 @@ export function ProductListPanel({
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Button
-            size="icon-sm"
+          <IconButton
+            size="32"
             className="size-8 shrink-0"
             aria-label="Create product"
             onClick={() => toast.info("Product creation is coming soon.")}
           >
             <PlusIcon />
-          </Button>
+          </IconButton>
 
           <DropdownMenu>
             <DropdownMenuTrigger
               render={
-                <Button
-                  size="icon-sm"
+                <IconButton
+                  size="32"
                   variant="outline"
+                  color="neutral"
                   className="size-8 shrink-0"
                   aria-label="More list actions"
                 />

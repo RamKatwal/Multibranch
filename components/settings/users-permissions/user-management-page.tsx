@@ -250,7 +250,7 @@ export function UserManagementPage({
         title="User Management"
         count={`${users.length} users`}
         actions={
-          <Button size="sm" onClick={openCreate}>
+          <Button size="32" onClick={openCreate}>
             <PlusIcon />
             Add User
           </Button>

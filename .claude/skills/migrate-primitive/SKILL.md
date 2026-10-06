@@ -21,6 +21,9 @@ One primitive per branch and PR: `fix/<name>-radian`.
    (icon-only `Button` → `IconButton`), convert `render={<Link …/>}` + `nativeButton={false}` to
    `asChild` wrapping the `Link`, and fix imports. Make the script print every case it can't map
    (`variant={expr}`, spread props) and do those by hand.
+   When mapping sizes, take the control's effective size from its `className` (`size-N`, `h-N`), pick
+   the Radian `size` that matches, and delete the override class. Strip size and color classes from
+   icons inside Radian `Button`/`IconButton`/`Badge`.
 5. **Verify:** `npx tsc --noEmit` and lint on the changed files (the Stop hook runs both), then
    `npm run build`.
 6. **Look at it:** run the app and screenshot the 3–4 pages that use the primitive most, light and

@@ -29,7 +29,7 @@ import {
 import { PageHeader } from "@/components/layout/page-header"
 import { ProductListPanel } from "@/components/products/product-list-panel"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import { Button, IconButton } from "@/components/ui/button"
 import {
   Card,
   CardAction,
@@ -220,13 +220,14 @@ function TransactionsCard({
           {ledgerHref ? (
             <Button
               variant="link"
-              size="sm"
+              size="32"
               className="h-auto gap-1 px-0 text-xs"
-              nativeButton={false}
-              render={<Link href={ledgerHref} />}
+              asChild
             >
-              Product ledger
-              <ArrowRightIcon className="size-3.5" />
+              <Link href={ledgerHref}>
+                Product ledger
+                <ArrowRightIcon className="size-3.5" />
+              </Link>
             </Button>
           ) : null}
         </div>
@@ -625,10 +626,12 @@ export function ProductDetailPage({ productId }: { productId: string }) {
       </p>
       <Button
         variant="outline"
-        nativeButton={false}
-        render={<Link href="/inventory/products" />}
+        color="neutral"
+        asChild
       >
-        Back to Products
+        <Link href="/inventory/products">
+          Back to Products
+        </Link>
       </Button>
     </div>
   )
@@ -694,20 +697,22 @@ export function ProductDetailPage({ productId }: { productId: string }) {
           breadcrumb={
             <Button
               variant="link"
-              size="sm"
+              size="32"
               className="mb-0.5 h-auto self-start px-0 text-muted-foreground md:hidden"
-              nativeButton={false}
-              render={<Link href="/inventory/products" />}
+              asChild
             >
-              <ArrowLeftIcon />
-              Products
+              <Link href="/inventory/products">
+                <ArrowLeftIcon />
+                Products
+              </Link>
             </Button>
           }
           actions={
             <>
               <Button
-                size="sm"
+                size="32"
                 variant="outline"
+                color="neutral"
                 onClick={() => toast.info("Product editing is coming soon.")}
               >
                 <PencilIcon />
@@ -717,8 +722,9 @@ export function ProductDetailPage({ productId }: { productId: string }) {
                 <DropdownMenuTrigger
                   render={
                     <Button
-                      size="sm"
+                      size="32"
                       variant="outline"
+                      color="neutral"
                       aria-label="More actions"
                     />
                   }
@@ -746,16 +752,18 @@ export function ProductDetailPage({ productId }: { productId: string }) {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-              <Button
-                size="icon-sm"
+              <IconButton
+                size="32"
                 variant="ghost"
+                color="neutral"
                 className="size-8"
                 aria-label="Close product detail"
-                nativeButton={false}
-                render={<Link href="/inventory/products" />}
+                asChild
               >
-                <XIcon />
-              </Button>
+                <Link href="/inventory/products">
+                  <XIcon />
+                </Link>
+              </IconButton>
             </>
           }
         />

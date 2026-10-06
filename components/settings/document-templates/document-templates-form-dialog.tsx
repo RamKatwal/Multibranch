@@ -175,6 +175,7 @@ export function DocumentTemplateFormDialog({
               <Button
                 type="button"
                 variant="outline"
+                color="neutral"
                 onClick={() => onOpenChange(false)}
               >
                 Cancel

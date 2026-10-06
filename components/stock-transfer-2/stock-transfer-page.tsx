@@ -161,7 +161,7 @@ export function StockTransferPage() {
         actions={
           isHeadOffice ? null : (
             <Button
-              size="sm"
+              size="32"
               onClick={() => router.push("/inventory/stock-transfer-2/create")}
             >
               <PlusIcon />

@@ -186,7 +186,8 @@ export function createStockTransferColumns({
             {role === "head-office" && status === "approved" ? (
               <Button
                 variant="ghost"
-                size="sm"
+                color="neutral"
+                size="32"
                 className="h-7 px-2 text-xs font-normal text-muted-foreground hover:bg-info/10 hover:text-info"
                 onClick={() => onDispatch(transfer)}
               >
@@ -198,7 +199,8 @@ export function createStockTransferColumns({
             {role === "branch" && status === "requested" ? (
               <Button
                 variant="ghost"
-                size="sm"
+                color="neutral"
+                size="32"
                 className="h-7 px-2 text-xs font-normal text-muted-foreground hover:text-foreground"
                 onClick={() => onEdit(transfer)}
               >
@@ -210,7 +212,8 @@ export function createStockTransferColumns({
             {role === "branch" && status === "in-transit" ? (
               <Button
                 variant="ghost"
-                size="sm"
+                color="neutral"
+                size="32"
                 className="h-7 px-2 text-xs font-normal text-muted-foreground hover:bg-success/10 hover:text-success"
                 onClick={() => onReceive(transfer)}
               >
@@ -222,7 +225,8 @@ export function createStockTransferColumns({
             {role === "branch" && status === "completed" ? (
               <Button
                 variant="ghost"
-                size="sm"
+                color="neutral"
+                size="32"
                 className="h-7 px-2 text-xs font-normal text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
                 onClick={() => onReturn(transfer)}
               >

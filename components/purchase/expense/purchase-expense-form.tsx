@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
 
-import { Button } from "@/components/ui/button"
+import { Button, IconButton } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import {
   Form,
@@ -457,7 +457,7 @@ export function PurchaseExpenseForm({
             <div className="flex flex-col gap-2">
               <div className="flex items-center justify-between gap-3">
                 <p className="text-sm font-medium">Expense lines</p>
-                <Button type="button" variant="outline" size="sm" onClick={addRow}>
+                <Button type="button" variant="outline" color="neutral" size="32" onClick={addRow}>
                   <PlusIcon className="size-4" />
                   Add
                 </Button>
@@ -555,17 +555,18 @@ export function PurchaseExpenseForm({
                         aria-label={`Description for line ${index + 1}`}
                       />
 
-                      <Button
+                      <IconButton
                         type="button"
                         variant="ghost"
-                        size="icon-sm"
+                        color="neutral"
+                        size="32"
                         className="text-muted-foreground hover:text-destructive"
                         onClick={() => removeRow(row.key)}
                         disabled={rows.length === 1}
                         aria-label="Remove line"
                       >
                         <Trash2Icon className="size-3.5" />
-                      </Button>
+                      </IconButton>
                     </div>
                   ))}
                 </div>
@@ -650,7 +651,7 @@ export function PurchaseExpenseForm({
         </Card>
 
         <div className="flex justify-end gap-2">
-          <Button type="button" variant="outline" onClick={onCancel}>
+          <Button type="button" variant="outline" color="neutral" onClick={onCancel}>
             Cancel
           </Button>
           <Button type="submit">{submitLabel}</Button>
