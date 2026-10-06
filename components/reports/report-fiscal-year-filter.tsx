@@ -28,20 +28,18 @@ export function ReportFiscalYearFilter({
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger
-        render={
-          <Button
-            variant="outline"
-            color="neutral"
-            size="32"
-            className={cn("h-8 gap-1.5 text-xs font-normal", className)}
-          >
-            <CalendarRangeIcon className="size-3.5" />
-            <span>As of: {value}</span>
-            <ChevronDownIcon className="size-3 opacity-60" />
-          </Button>
-        }
-      />
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          color="neutral"
+          size="32"
+          className={cn("h-8 gap-1.5 text-xs font-normal", className)}
+        >
+          <CalendarRangeIcon className="size-3.5" />
+          <span>As of: {value}</span>
+          <ChevronDownIcon className="size-3 opacity-60" />
+        </Button>
+      </PopoverTrigger>
       <PopoverContent align="start" className="w-48 min-w-48 p-1">
         {options.map((option) => (
           <button

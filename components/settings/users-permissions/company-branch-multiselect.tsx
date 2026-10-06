@@ -135,56 +135,56 @@ export function CompanyBranchMultiselect({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger
+        asChild
         disabled={disabled || (allowedSet !== null && companies.length === 0)}
-        render={
-          <button
-            id={id}
-            type="button"
-            disabled={disabled || (allowedSet !== null && companies.length === 0)}
-            aria-invalid={ariaInvalid}
-            aria-haspopup="dialog"
-            className={cn(
-              "flex min-h-9 w-full cursor-pointer justify-between gap-2 rounded-md border border-input bg-transparent px-3 py-1.5 text-left text-sm shadow-xs outline-none transition-[color,box-shadow] select-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 md:text-sm dark:bg-input/30 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40",
-              selectedGroups.length === 0
-                ? "items-center text-muted-foreground"
-                : "items-start",
-              className
-            )}
-          />
-        }
       >
-        <span className="flex min-w-0 flex-1 flex-col items-start gap-1.5 py-0.5 text-left">
-          {selectedGroups.length === 0 ? (
-            <span>{placeholder}</span>
-          ) : (
-            selectedGroups.map((group) => (
-              <span key={group.companyId} className="flex flex-col items-start gap-1">
-                <StatusChip
-                  label={group.companyName}
-                  tone={getCompanyTone(group.companyId)}
-                />
-                <span className="flex flex-wrap items-center gap-1">
-                  {group.branches.map((branch) => (
-                    <RemovableStatusChip
-                      key={branch.id}
-                      label={branchChipLabel(branch)}
-                      tone={getCompanyTone(branch.companyId)}
-                      removeLabel={`Remove ${group.companyName} ${branchChipLabel(branch)}`}
-                      onRemove={(event) => removeBranch(branch.id, event)}
-                    />
-                  ))}
-                </span>
-              </span>
-            ))
+        <button
+          id={id}
+          type="button"
+          disabled={disabled || (allowedSet !== null && companies.length === 0)}
+          aria-invalid={ariaInvalid}
+          aria-haspopup="dialog"
+          className={cn(
+            "flex min-h-9 w-full cursor-pointer justify-between gap-2 rounded-md border border-input bg-transparent px-3 py-1.5 text-left text-sm shadow-xs outline-none transition-[color,box-shadow] select-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 md:text-sm dark:bg-input/30 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40",
+            selectedGroups.length === 0
+              ? "items-center text-muted-foreground"
+              : "items-start",
+            className
           )}
-        </span>
-        <ChevronsUpDownIcon className="mt-0.5 size-4 shrink-0 opacity-50" />
+        >
+          <span className="flex min-w-0 flex-1 flex-col items-start gap-1.5 py-0.5 text-left">
+            {selectedGroups.length === 0 ? (
+              <span>{placeholder}</span>
+            ) : (
+              selectedGroups.map((group) => (
+                <span key={group.companyId} className="flex flex-col items-start gap-1">
+                  <StatusChip
+                    label={group.companyName}
+                    tone={getCompanyTone(group.companyId)}
+                  />
+                  <span className="flex flex-wrap items-center gap-1">
+                    {group.branches.map((branch) => (
+                      <RemovableStatusChip
+                        key={branch.id}
+                        label={branchChipLabel(branch)}
+                        tone={getCompanyTone(branch.companyId)}
+                        removeLabel={`Remove ${group.companyName} ${branchChipLabel(branch)}`}
+                        onRemove={(event) => removeBranch(branch.id, event)}
+                      />
+                    ))}
+                  </span>
+                </span>
+              ))
+            )}
+          </span>
+          <ChevronsUpDownIcon className="mt-0.5 size-4 shrink-0 opacity-50" />
+        </button>
       </PopoverTrigger>
 
       <PopoverContent
         align="start"
         sideOffset={6}
-        className="w-[var(--anchor-width)] p-0"
+        className="w-(--radix-popover-trigger-width) p-0"
       >
         <Command>
           <CommandInput placeholder="Search companies or branches…" />

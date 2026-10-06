@@ -68,31 +68,31 @@ export function ProductItemSelect({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger
+        asChild
         disabled={disabled}
-        render={
-          <button
-            type="button"
-            role="combobox"
-            aria-expanded={open}
-            aria-invalid={ariaInvalid}
-            disabled={disabled}
-            className={cn(
-              "flex h-9 w-full cursor-pointer items-center justify-between gap-2 rounded-md border border-input bg-transparent px-3 text-left text-sm shadow-xs outline-none transition-[color,box-shadow] select-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:bg-input/30",
-              !selected && "text-muted-foreground",
-              className
-            )}
-          />
-        }
       >
-        <span className="flex min-w-0 items-center gap-2">
-          <PackageIcon className="size-3.5 shrink-0 text-muted-foreground" />
-          <span className="truncate">
-            {selected ? selected.name : placeholder}
+        <button
+          type="button"
+          role="combobox"
+          aria-expanded={open}
+          aria-invalid={ariaInvalid}
+          disabled={disabled}
+          className={cn(
+            "flex h-9 w-full cursor-pointer items-center justify-between gap-2 rounded-md border border-input bg-transparent px-3 text-left text-sm shadow-xs outline-none transition-[color,box-shadow] select-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:bg-input/30",
+            !selected && "text-muted-foreground",
+            className
+          )}
+        >
+          <span className="flex min-w-0 items-center gap-2">
+            <PackageIcon className="size-3.5 shrink-0 text-muted-foreground" />
+            <span className="truncate">
+              {selected ? selected.name : placeholder}
+            </span>
           </span>
-        </span>
-        <ChevronsUpDownIcon className="size-3.5 shrink-0 opacity-50" />
+          <ChevronsUpDownIcon className="size-3.5 shrink-0 opacity-50" />
+        </button>
       </PopoverTrigger>
-      <PopoverContent align="start" sideOffset={6} className="p-0">
+      <PopoverContent align="start" sideOffset={6} className="w-(--radix-popover-trigger-width) min-w-72 p-0">
         <Command shouldFilter={false}>
           <div className="border-b p-2">
             <input

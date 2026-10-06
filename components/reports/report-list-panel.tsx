@@ -303,25 +303,20 @@ function CollapsedRail({
           )
 
           return (
-            <Popover key={category.id}>
-              <PopoverTrigger
-                openOnHover
-                delay={80}
-                closeDelay={120}
-                render={
-                  <IconButton
-                    variant="ghost"
-                    color="neutral"
-                    size="32"
-                    aria-label={category.title}
-                    className={cn(
-                      "size-9",
-                      hasActive && "bg-primary/10 text-primary"
-                    )}
-                  />
-                }
-              >
-                <Icon className="size-4" />
+            <HoverPopover key={category.id}>
+              <PopoverTrigger asChild>
+                <IconButton
+                  variant="ghost"
+                  color="neutral"
+                  size="32"
+                  aria-label={category.title}
+                  className={cn(
+                    "size-9",
+                    hasActive && "bg-primary/10 text-primary"
+                  )}
+                >
+                  <Icon className="size-4" />
+                </IconButton>
               </PopoverTrigger>
               <PopoverContent
                 side="right"
@@ -344,10 +339,38 @@ function CollapsedRail({
                   ))}
                 </ul>
               </PopoverContent>
-            </Popover>
+            </HoverPopover>
           )
         })}
       </div>
     </>
+  )
+}
+
+/** A Popover that also opens while the pointer is over its trigger or content (click still toggles). */
+function HoverPopover({ children }: { children: React.ReactNode }) {
+  const [open, setOpen] = React.useState(false)
+  const timer = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+  const schedule = (next: boolean, delay: number) => {
+    if (timer.current) clearTimeout(timer.current)
+    timer.current = setTimeout(() => setOpen(next), delay)
+  }
+  React.useEffect(
+    () => () => {
+      if (timer.current) clearTimeout(timer.current)
+    },
+    []
+  )
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <div
+        className="contents"
+        onPointerEnter={() => schedule(true, 80)}
+        onPointerLeave={() => schedule(false, 120)}
+      >
+        {children}
+      </div>
+    </Popover>
   )
 }
