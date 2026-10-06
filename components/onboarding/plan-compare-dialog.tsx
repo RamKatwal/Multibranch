@@ -238,8 +238,9 @@ export function PlanCompareDialog({
                     {onSelectPlan ? (
                       <Button
                         type="button"
-                        size="sm"
-                        variant={isSelected ? "default" : "outline"}
+                        size="32"
+                        variant={isSelected ? "strong" : "outline"}
+                        color={isSelected ? "primary" : "neutral"}
                         className="h-7 w-full max-w-[7.5rem] text-xs"
                         onClick={() => handleSelect(plan.id)}
                       >

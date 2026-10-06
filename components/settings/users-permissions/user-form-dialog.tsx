@@ -16,7 +16,7 @@ import {
   dataTableClassNames,
   getDataTableHeaderCellClass,
 } from "@/components/data-table/data-table-styles"
-import { Button } from "@/components/ui/button"
+import { Button, IconButton } from "@/components/ui/button"
 import { Dialog } from "@/components/ui/dialog"
 import {
   DropdownMenu,
@@ -583,7 +583,8 @@ export function UserFormDialog({
                     <Button
                       type="button"
                       variant="ghost"
-                      size="sm"
+                      color="neutral"
+                      size="32"
                       className="h-7 px-2 text-xs"
                       onClick={() => setRoleDialogOpen(true)}
                     >
@@ -686,10 +687,11 @@ export function UserFormDialog({
                                   )}
                                 </td>
                                 <td className="h-auto min-h-8 w-10 px-1 py-1.5 align-middle">
-                                  <Button
+                                  <IconButton
                                     type="button"
                                     variant="ghost"
-                                    size="icon-sm"
+                                    color="neutral"
+                                    size="32"
                                     className="size-7"
                                     aria-label={`Remove ${group.companyName} ${branchChipLabel(branch)}`}
                                     onClick={() =>
@@ -701,7 +703,7 @@ export function UserFormDialog({
                                     }
                                   >
                                     <XIcon />
-                                  </Button>
+                                  </IconButton>
                                 </td>
                               </tr>
                             )
@@ -725,6 +727,7 @@ export function UserFormDialog({
               <Button
                 type="button"
                 variant="outline"
+                color="neutral"
                 onClick={() => onOpenChange(false)}
               >
                 Cancel

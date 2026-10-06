@@ -201,15 +201,15 @@ export function ProductsPage() {
         count={`${scopedProducts.length} products`}
         actions={
           <>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" color="neutral" size="32">
               <DownloadIcon />
               Export
             </Button>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" color="neutral" size="32">
               <UploadIcon />
               Import
             </Button>
-            <Button size="sm">
+            <Button size="32">
               <PlusIcon />
               Create Product
             </Button>
@@ -249,7 +249,8 @@ export function ProductsPage() {
                 render={
                   <Button
                     variant="outline"
-                    size="sm"
+                    color="neutral"
+                    size="32"
                     className={cn(
                       "h-8 gap-1.5 text-xs font-normal",
                       branchFilter !== defaultBranchFilter &&
@@ -307,7 +308,8 @@ export function ProductsPage() {
                 render={
                   <Button
                     variant="outline"
-                    size="sm"
+                    color="neutral"
+                    size="32"
                     className={cn(
                       "h-8 gap-1.5 text-xs font-normal",
                       typeFilter !== "all" &&
@@ -372,7 +374,8 @@ export function ProductsPage() {
                 render={
                   <Button
                     variant="outline"
-                    size="sm"
+                    color="neutral"
+                    size="32"
                     className={cn(
                       "h-8 gap-1.5 text-xs font-normal",
                       categoryFilter !== "All" &&
@@ -415,7 +418,8 @@ export function ProductsPage() {
             {isAnyFilterActive ? (
               <Button
                 variant="ghost"
-                size="sm"
+                color="neutral"
+                size="32"
                 className="h-8 gap-1 px-2 text-xs text-muted-foreground hover:text-foreground"
                 onClick={handleResetFilters}
               >

@@ -48,10 +48,12 @@ export function EditStockTransferPage({ transferId }: { transferId: string }) {
         <h1 className="text-xl font-semibold">Transfer not found</h1>
         <Button
           variant="outline"
-          nativeButton={false}
-          render={<Link href="/inventory/stock-transfer-2" />}
+          color="neutral"
+          asChild
         >
-          Back to transfers
+          <Link href="/inventory/stock-transfer-2">
+            Back to transfers
+          </Link>
         </Button>
       </div>
     )
@@ -68,14 +70,13 @@ export function EditStockTransferPage({ transferId }: { transferId: string }) {
         </p>
         <Button
           variant="outline"
-          nativeButton={false}
-          render={
-            <Link
-              href={`/inventory/stock-transfer-2/${encodeURIComponent(transfer.id)}`}
-            />
-          }
+          color="neutral"
+          asChild
         >
-          View transfer
+          <Link
+              href={`/inventory/stock-transfer-2/${encodeURIComponent(transfer.id)}`}>
+            View transfer
+          </Link>
         </Button>
       </div>
     )
@@ -90,13 +91,15 @@ export function EditStockTransferPage({ transferId }: { transferId: string }) {
         breadcrumb={
           <Button
             variant="ghost"
-            size="sm"
+            color="neutral"
+            size="32"
             className="-ml-2 h-7 w-fit px-2 text-muted-foreground"
-            nativeButton={false}
-            render={<Link href={detailHref} />}
+            asChild
           >
-            <ArrowLeftIcon />
-            Back to detail
+            <Link href={detailHref}>
+              <ArrowLeftIcon />
+              Back to detail
+            </Link>
           </Button>
         }
       />

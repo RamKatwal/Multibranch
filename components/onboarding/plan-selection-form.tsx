@@ -12,7 +12,7 @@ import { ChevronDown } from "lucide-react"
 
 import { PlanCompareDialog } from "@/components/onboarding/plan-compare-dialog"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import { Button, IconButton } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
   DropdownMenu,
@@ -66,28 +66,30 @@ function NumberStepper({
     <div className="flex items-center justify-between gap-4">
       <span className="text-sm font-medium text-foreground">{label}</span>
       <div className="flex items-center gap-1">
-        <Button
+        <IconButton
           type="button"
           variant="outline"
-          size="icon-sm"
+          color="neutral"
+          size="32"
           aria-label={`Decrease ${label}`}
           disabled={value <= min}
           onClick={() => onChange(Math.max(min, value - 1))}
         >
           <HugeiconsIcon icon={Remove01Icon} className="size-3.5" />
-        </Button>
+        </IconButton>
         <span className="min-w-8 text-center text-sm font-semibold tabular-nums">
           {value}
         </span>
-        <Button
+        <IconButton
           type="button"
           variant="outline"
-          size="icon-sm"
+          color="neutral"
+          size="32"
           aria-label={`Increase ${label}`}
           onClick={() => onChange(value + 1)}
         >
           <HugeiconsIcon icon={Add01Icon} className="size-3.5" />
-        </Button>
+        </IconButton>
       </div>
     </div>
   )
@@ -416,6 +418,7 @@ export default function PlanSelectionForm() {
                       <Button
                         type="button"
                         variant="outline"
+                        color="neutral"
                         className="h-9 min-w-36 justify-between gap-2 px-3 text-sm font-normal"
                         disabled={isFreeTrial}
                       />

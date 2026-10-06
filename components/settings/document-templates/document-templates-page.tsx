@@ -147,7 +147,7 @@ export function DocumentTemplatesPage() {
         title="Document Template"
         count={`${templates.length} templates`}
         actions={
-          <Button size="sm" onClick={openCreate}>
+          <Button size="32" onClick={openCreate}>
             <PlusIcon />
             Add Template
           </Button>

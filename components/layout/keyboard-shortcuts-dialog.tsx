@@ -12,7 +12,7 @@ import {
 import { ShortcutsBrowser } from "@/components/keyboard/shortcuts-browser"
 import { transitions, withReducedMotion } from "@/lib/motion"
 import { useKeyboardShortcuts } from "@/components/layout/keyboard-shortcuts-provider"
-import { Button } from "@/components/ui/button"
+import { IconButton } from "@/components/ui/button"
 import {
   Sheet,
   SheetClose,
@@ -181,19 +181,20 @@ export function KeyboardShortcutsDialog() {
               data-no-drag="true"
               className="flex shrink-0 cursor-default items-center gap-1"
             >
-              <Button
+              <IconButton
                 variant="ghost"
-                size="icon-sm"
+                color="neutral"
+                size="32"
                 aria-label={
                   expanded ? "Collapse panel" : "Expand to full screen"
                 }
                 onClick={() => setExpanded((current) => !current)}
               >
                 {expanded ? <ChevronDownIcon /> : <ChevronUpIcon />}
-              </Button>
+              </IconButton>
               <SheetClose
                 render={
-                  <Button variant="ghost" size="icon-sm" aria-label="Close" />
+                  <IconButton variant="ghost" color="neutral" size="32" aria-label="Close" />
                 }
               >
                 <HugeiconsIcon icon={Cancel01Icon} strokeWidth={2} />

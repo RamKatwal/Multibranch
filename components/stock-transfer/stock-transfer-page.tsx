@@ -189,7 +189,7 @@ export function StockTransferPage() {
         count={`${involvedTransfers.length} transfers`}
         actions={
           canCreate ? (
-            <Button size="sm" onClick={() => router.push(createHref)}>
+            <Button size="32" onClick={() => router.push(createHref)}>
               <PlusIcon />
               New Stock In
             </Button>

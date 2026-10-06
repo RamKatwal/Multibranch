@@ -2,7 +2,7 @@
 
 import { CheckSquareIcon, SquareIcon } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
+import { IconButton } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
   Tabs,
@@ -161,10 +161,11 @@ function ModulePermissionTable({
               <Tooltip>
                 <TooltipTrigger
                   render={
-                    <Button
+                    <IconButton
                       type="button"
                       variant="ghost"
-                      size="icon-sm"
+                      color="neutral"
+                      size="32"
                       className="mx-auto"
                       disabled={readOnly}
                       aria-label={selectAllLabel}

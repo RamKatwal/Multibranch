@@ -225,6 +225,7 @@ export function ProductConfigurationFormDialog({
               <Button
                 type="button"
                 variant="outline"
+                color="neutral"
                 onClick={() => onOpenChange(false)}
               >
                 Cancel

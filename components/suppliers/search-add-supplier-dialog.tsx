@@ -171,8 +171,9 @@ export function SearchAddSupplierDialog({
                       <div className="shrink-0">
                         {isAlreadyAdded ? (
                           <Button
-                            size="sm"
+                            size="32"
                             variant="outline"
+                            color="neutral"
                             className="h-7 cursor-default gap-1 border-emerald-500/30 bg-emerald-500/10 px-2.5 text-xs font-medium text-emerald-600 hover:bg-emerald-500/10 hover:text-emerald-600 dark:border-emerald-400/30 dark:bg-emerald-500/20 dark:text-emerald-400 dark:hover:bg-emerald-500/20 dark:hover:text-emerald-400"
                           >
                             <CheckIcon className="size-3.5" />
@@ -180,8 +181,7 @@ export function SearchAddSupplierDialog({
                           </Button>
                         ) : (
                           <Button
-                            size="sm"
-                            variant="default"
+                            size="32"
                             className="h-7 gap-1 px-2.5 text-xs font-medium"
                             onClick={() => setConfirmSupplier(supplier)}
                           >
@@ -222,6 +222,7 @@ export function SearchAddSupplierDialog({
             <Button
               type="button"
               variant="outline"
+              color="neutral"
               onClick={() => setConfirmSupplier(null)}
             >
               Cancel

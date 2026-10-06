@@ -8,7 +8,7 @@ import {
   SearchIcon,
 } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
+import { IconButton } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
   Popover,
@@ -164,15 +164,16 @@ export function ReportListPanel({ activeHref, className }: ReportListPanelProps)
           <div className="flex shrink-0 flex-col gap-2 border-b px-3 py-2.5">
             <div className="flex items-center justify-between gap-1 pl-1">
               <p className="text-xs font-semibold">All Reports</p>
-              <Button
+              <IconButton
                 variant="ghost"
-                size="icon-sm"
+                color="neutral"
+                size="32"
                 className="size-7 text-muted-foreground"
                 aria-label="Collapse reports list"
                 onClick={toggleCollapsed}
               >
                 <PanelLeftCloseIcon className="size-4" />
-              </Button>
+              </IconButton>
             </div>
             <div className="relative">
               <SearchIcon className="pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-muted-foreground" />
@@ -282,15 +283,16 @@ function CollapsedRail({
   return (
     <>
       <div className="flex h-[3.25rem] shrink-0 items-center justify-center border-b">
-        <Button
+        <IconButton
           variant="ghost"
-          size="icon-sm"
+          color="neutral"
+          size="32"
           className="size-8 text-muted-foreground"
           aria-label="Expand reports list"
           onClick={onExpand}
         >
           <PanelLeftOpenIcon className="size-4" />
-        </Button>
+        </IconButton>
       </div>
 
       <div className="thin-scrollbar flex min-h-0 flex-1 flex-col items-center gap-1 overflow-y-auto py-2">
@@ -307,9 +309,10 @@ function CollapsedRail({
                 delay={80}
                 closeDelay={120}
                 render={
-                  <Button
+                  <IconButton
                     variant="ghost"
-                    size="icon-sm"
+                    color="neutral"
+                    size="32"
                     aria-label={category.title}
                     className={cn(
                       "size-9",

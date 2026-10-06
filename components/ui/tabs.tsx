@@ -101,7 +101,7 @@ function TabsTrigger({
     <TabsPrimitive.Tab
       data-slot="tabs-trigger"
       className={cn(
-        buttonVariants({ variant: "outline", size: "sm" }),
+        buttonVariants({ variant: "outline", color: "neutral", size: "32" }),
         "group/tabs-trigger bg-card",
         "data-active:border-transparent data-active:bg-primary data-active:text-primary-foreground data-active:hover:bg-primary/80",
         "dark:data-active:border-transparent dark:data-active:bg-primary dark:data-active:text-primary-foreground",

@@ -4,7 +4,7 @@ import * as React from "react"
 import { MagicWand01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 
-import { Button } from "@/components/ui/button"
+import { IconButton } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -114,9 +114,9 @@ export function DemoFillFab({
         <Tooltip>
           <TooltipTrigger
             render={
-              <Button
+              <IconButton
                 type="button"
-                size="icon-sm"
+                size="32"
                 onClick={action.onFill}
                 className={fabClassName}
                 aria-label={`${action.label} (${shortcutLabel})`}
@@ -143,9 +143,9 @@ export function DemoFillFab({
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
-          <Button
+          <IconButton
             type="button"
-            size="icon-sm"
+            size="32"
             className={fabClassName}
             aria-label="Fill demo login"
           />

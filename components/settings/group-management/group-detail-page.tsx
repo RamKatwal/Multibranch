@@ -123,10 +123,12 @@ export function GroupDetailPage({ groupId }: { groupId: string }) {
         </p>
         <Button
           variant="outline"
-          nativeButton={false}
-          render={<Link href="/configurations/users/group-management" />}
+          color="neutral"
+          asChild
         >
-          Back to groups
+          <Link href="/configurations/users/group-management">
+            Back to groups
+          </Link>
         </Button>
       </div>
     )
@@ -144,18 +146,19 @@ export function GroupDetailPage({ groupId }: { groupId: string }) {
         breadcrumb={
           <Button
             variant="link"
-            size="sm"
+            size="32"
             className="mb-0.5 h-auto self-start px-0 text-muted-foreground"
-            nativeButton={false}
-            render={<Link href="/configurations/users/group-management" />}
+            asChild
           >
-            <ArrowLeft />
-            Group Management
+            <Link href="/configurations/users/group-management">
+              <ArrowLeft />
+              Group Management
+            </Link>
           </Button>
         }
         actions={
           <Button
-            size="sm"
+            size="32"
             onClick={handleSave}
             disabled={!configuration.name.trim()}
           >

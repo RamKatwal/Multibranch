@@ -8,7 +8,7 @@ import {
   type DataTableRowSize,
 } from "@/components/data-table/data-table-styles"
 import { CityLocationInput } from "@/components/onboarding/city-location-input"
-import { Button } from "@/components/ui/button"
+import { IconButton } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
   generateBranchCode,
@@ -189,10 +189,11 @@ export function QuickBranchesTable({
                 <div className="flex items-center justify-between gap-1">
                   <span>Location</span>
                   {onSameAddressForAll ? (
-                    <Button
+                    <IconButton
                       type="button"
                       variant="ghost"
-                      size="icon-sm"
+                      color="neutral"
+                      size="32"
                       className="size-6 shrink-0 text-muted-foreground hover:text-foreground"
                       disabled={disabled || sameAddressDisabled}
                       title="Same address for all"
@@ -200,7 +201,7 @@ export function QuickBranchesTable({
                       onClick={onSameAddressForAll}
                     >
                       <MoreVerticalIcon className="size-3.5" />
-                    </Button>
+                    </IconButton>
                   ) : null}
                 </div>
               </th>

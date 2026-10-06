@@ -4,7 +4,7 @@ import type { ColumnDef } from "@tanstack/react-table"
 import { PencilIcon } from "lucide-react"
 
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header"
-import { Button } from "@/components/ui/button"
+import { IconButton } from "@/components/ui/button"
 import { documentTypeLabels } from "@/types/document-type"
 import {
   formatTransactionNumber,
@@ -74,14 +74,15 @@ export function createTransactionNumberingColumns({
       header: () => <span className="sr-only">Actions</span>,
       cell: ({ row }) => (
         <div className="flex items-center justify-end">
-          <Button
+          <IconButton
             variant="ghost"
-            size="icon-sm"
+            color="neutral"
+            size="32"
             aria-label={`Edit numbering for ${documentTypeLabels[row.original.documentType]}`}
             onClick={() => onEdit(row.original)}
           >
             <PencilIcon />
-          </Button>
+          </IconButton>
         </div>
       ),
       enableSorting: false,

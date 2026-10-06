@@ -127,11 +127,11 @@ export function PurchaseExpensePage() {
         count={`${expenses.length} expenses`}
         actions={
           <>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" color="neutral" size="32">
               <DownloadIcon />
               Export
             </Button>
-            <Button size="sm" onClick={() => openForm()}>
+            <Button size="32" onClick={() => openForm()}>
               <PlusIcon />
               Create Expense
             </Button>

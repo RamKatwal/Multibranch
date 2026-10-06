@@ -20,7 +20,7 @@ import {
 } from "lucide-react"
 
 import { useKeyboardShortcuts } from "@/components/layout/keyboard-shortcuts-provider"
-import { Button } from "@/components/ui/button"
+import { IconButton } from "@/components/ui/button"
 import {
   Command,
   CommandDialog,
@@ -254,15 +254,15 @@ export function CommandSearch({ className }: { className?: string }) {
 
   return (
     <>
-      <Button
+      <IconButton
         variant="outline"
-        size="icon"
+        color="neutral"
         aria-label="Search"
         className="sm:hidden"
         onClick={() => setCommandOpen(true)}
       >
         <SearchIcon />
-      </Button>
+      </IconButton>
 
       <button
         type="button"

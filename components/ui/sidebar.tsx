@@ -7,7 +7,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { Button, IconButton } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import {
@@ -259,11 +259,12 @@ function SidebarTrigger({
   const { toggleSidebar } = useSidebar()
 
   return (
-    <Button
+    <IconButton
       data-sidebar="trigger"
       data-slot="sidebar-trigger"
       variant="ghost"
-      size="icon-sm"
+      color="neutral"
+      size="32"
       className={cn(className)}
       onClick={(event) => {
         onClick?.(event)
@@ -273,7 +274,7 @@ function SidebarTrigger({
     >
       <PanelLeft className="size-4" strokeWidth={1.75} />
       <span className="sr-only">Toggle Sidebar</span>
-    </Button>
+    </IconButton>
   )
 }
 

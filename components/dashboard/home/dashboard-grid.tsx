@@ -261,7 +261,8 @@ export function DashboardGrid({
       <Button
         type="button"
         variant="outline"
-        size="sm"
+        color="neutral"
+        size="32"
         className="shadow-sm"
         onClick={() => setIsAddWidgetsOpen(true)}
       >
@@ -271,7 +272,8 @@ export function DashboardGrid({
       <Button
         type="button"
         variant="outline"
-        size="sm"
+        color="neutral"
+        size="32"
         className="shadow-sm"
         onClick={handleCancelEditing}
       >
@@ -280,7 +282,7 @@ export function DashboardGrid({
       </Button>
       <Button
         type="button"
-        size="sm"
+        size="32"
         className="shadow-sm"
         disabled={!isDirty}
         onClick={handleSaveLayout}
@@ -301,7 +303,8 @@ export function DashboardGrid({
             <Button
               type="button"
               variant="outline"
-              size="sm"
+              color="neutral"
+              size="32"
               className="shadow-md"
               onClick={handleResetLayout}
             >
@@ -312,7 +315,8 @@ export function DashboardGrid({
           <Button
             type="button"
             variant="outline"
-            size="sm"
+            color="neutral"
+            size="32"
             className="shadow-md"
             onClick={handleStartEditing}
           >
@@ -343,7 +347,8 @@ export function DashboardGrid({
               <Button
                 type="button"
                 variant="outline"
-                size="sm"
+                color="neutral"
+                size="32"
                 aria-label="More actions"
               />
             }

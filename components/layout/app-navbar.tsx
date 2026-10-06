@@ -24,7 +24,7 @@ import { NotificationsPanel } from "@/components/layout/notifications-panel"
 import { useSettingsModal } from "@/components/settings/settings-modal-provider"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import { IconButton } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -82,10 +82,10 @@ export function AppNavbar() {
 
         <CommandSearch />
 
-        <Button
+        <IconButton
           type="button"
           variant="outline"
-          size="icon"
+          color="neutral"
           className="relative group"
           aria-label="Notifications"
           aria-expanded={notificationsOpen}
@@ -100,7 +100,7 @@ export function AppNavbar() {
           <span className="pointer-events-none absolute left-1/2 top-full mt-2 hidden -translate-x-1/2 rounded-md bg-black px-2 py-1 text-[11px] text-white group-hover:block">
             Notifications
           </span>
-        </Button>
+        </IconButton>
         <NotificationsPanel
           open={notificationsOpen}
           onOpenChange={setNotificationsOpen}

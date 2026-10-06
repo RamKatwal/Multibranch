@@ -164,13 +164,14 @@ export function BranchManagementPage() {
               </span>
             ) : null}
             <Button
-              size="sm"
+              size="32"
               variant="outline"
+              color="neutral"
               onClick={() => setQuickSetupOpen(true)}
             >
               Quick branch setup
             </Button>
-            <Button size="sm" disabled={limitReached} onClick={openCreate}>
+            <Button size="32" disabled={limitReached} onClick={openCreate}>
               <PlusIcon />
               Add Branch
             </Button>

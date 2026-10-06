@@ -115,7 +115,7 @@ export function SettingsModal() {
             </div>
 
             <div className="flex items-center justify-end gap-2 border-t px-5 py-4">
-              <Button type="button" variant="outline" onClick={closeSettings}>
+              <Button type="button" variant="outline" color="neutral" onClick={closeSettings}>
                 Cancel
               </Button>
               <Button type="button" onClick={closeSettings}>

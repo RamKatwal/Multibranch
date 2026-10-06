@@ -42,13 +42,15 @@ export function CreateDeliveryNotePage() {
   const backButton = (
     <Button
       variant="ghost"
-      size="sm"
+      color="neutral"
+      size="32"
       className="-ml-2 h-7 w-fit px-2 text-muted-foreground"
-      nativeButton={false}
-      render={<Link href={backHref} />}
+      asChild
     >
-      <ArrowLeftIcon />
-      Back to delivery notes
+      <Link href={backHref}>
+        <ArrowLeftIcon />
+        Back to delivery notes
+      </Link>
     </Button>
   )
 

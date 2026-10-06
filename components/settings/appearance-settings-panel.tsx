@@ -48,7 +48,8 @@ export function AppearanceSettingsPanel({
           <Button
             type="button"
             variant="ghost"
-            size="sm"
+            color="neutral"
+            size="32"
             className="h-7 text-xs text-muted-foreground"
             onClick={resetAppearance}
           >
@@ -142,13 +143,13 @@ export function AppearanceSettingsPanel({
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
-              <Button type="button" size="sm">
+              <Button type="button" size="32">
                 Primary
               </Button>
-              <Button type="button" size="sm" variant="outline">
+              <Button type="button" size="32" variant="outline" color="neutral">
                 Outline
               </Button>
-              <Button type="button" size="sm" variant="secondary">
+              <Button type="button" size="32" variant="soft" color="neutral">
                 Secondary
               </Button>
               <span className="inline-flex overflow-hidden rounded-md border text-xs">

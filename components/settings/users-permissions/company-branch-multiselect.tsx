@@ -234,7 +234,7 @@ export function CompanyBranchMultiselect({
                 : "Pick any companies and branches"
               : `${value.companyIds.length} compan${value.companyIds.length === 1 ? "y" : "ies"}, ${value.branchIds.length} branch${value.branchIds.length === 1 ? "" : "es"}`}
           </p>
-          <Button type="button" size="sm" onClick={() => setOpen(false)}>
+          <Button type="button" size="32" onClick={() => setOpen(false)}>
             Done
           </Button>
         </div>

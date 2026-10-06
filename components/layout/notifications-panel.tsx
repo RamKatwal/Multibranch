@@ -12,7 +12,7 @@ import {
 
 import { Avatar, AvatarFallback, AvatarGroup } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import { Button, IconButton } from "@/components/ui/button"
 import {
   Drawer,
   DrawerClose,
@@ -242,8 +242,9 @@ function NotificationItem({
             {notification.actions.map((action) => (
               <Button
                 key={action.id}
-                size="sm"
-                variant={action.variant === "primary" ? "default" : "outline"}
+                size="32"
+                variant={action.variant === "primary" ? "strong" : "outline"}
+                color={action.variant === "primary" ? "primary" : "neutral"}
                 className="h-7 px-2.5 text-xs"
               >
                 {action.label}
@@ -311,19 +312,20 @@ export function NotificationsPanel({
             </DrawerDescription>
           </div>
           <div className="flex items-center gap-1">
-            <Button
+            <IconButton
               type="button"
               variant="ghost"
-              size="icon-sm"
+              color="neutral"
+              size="32"
               aria-label="Mark all as read"
               disabled={unreadCount === 0}
               onClick={markAllAsRead}
             >
               <CheckCheckIcon className="size-4" />
-            </Button>
+            </IconButton>
             <DrawerClose
               render={
-                <Button type="button" variant="ghost" size="icon-sm" />
+                <IconButton type="button" variant="ghost" color="neutral" size="32" />
               }
             >
               <HugeiconsIcon icon={Cancel01Icon} strokeWidth={2} />

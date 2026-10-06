@@ -77,7 +77,8 @@ function AccessSelect({
             id={id}
             type="button"
             variant="outline"
-            size="sm"
+            color="neutral"
+            size="32"
             disabled={isDisabled}
             className={cn(
               "h-8 w-44 justify-between gap-2 px-2.5 font-normal",
@@ -183,7 +184,8 @@ function BranchAccessSelect({
             id={id}
             type="button"
             variant="outline"
-            size="sm"
+            color="neutral"
+            size="32"
             disabled={isDisabled}
             className={cn(
               "h-8 w-72 justify-between gap-2 px-2.5 font-normal",
@@ -401,11 +403,11 @@ export function PermissionManagementPage() {
         actions={
           isEditing ? (
             <>
-              <Button size="sm" variant="outline" onClick={handleCancel}>
+              <Button size="32" variant="outline" color="neutral" onClick={handleCancel}>
                 Cancel
               </Button>
               <Button
-                size="sm"
+                size="32"
                 onClick={handleSaveClick}
                 disabled={!canConfigure}
               >
@@ -415,7 +417,7 @@ export function PermissionManagementPage() {
             </>
           ) : (
             <Button
-              size="sm"
+              size="32"
               onClick={handleEdit}
               disabled={!canConfigure}
             >
@@ -511,6 +513,7 @@ export function PermissionManagementPage() {
             <Button
               type="button"
               variant="outline"
+              color="neutral"
               onClick={() => setConfirmOpen(false)}
             >
               Cancel

@@ -67,7 +67,7 @@ export function CreateDialog() {
     <Dialog open={createOpen} onOpenChange={setCreateOpen}>
       <DialogTrigger
         render={
-          <Button size="sm" className="gap-1.5 px-2.5" />
+          <Button size="32" className="gap-1.5 px-2.5" />
         }
       >
         <Plus className="size-3.5" />
@@ -104,30 +104,29 @@ export function CreateDialog() {
                     <Button
                       key={item.label}
                       variant="outline"
+                      color="neutral"
                       className="h-auto justify-start gap-2.5 px-3 py-2.5 text-sm font-normal"
-                      nativeButton={false}
-                      render={
-                        <Link
-                          href={item.href}
-                          onClick={() => setCreateOpen(false)}
-                        />
-                      }
+                      asChild
                     >
-                      {Icon ? (
-                        <Icon className="size-4 shrink-0 text-foreground" />
-                      ) : null}
-                      <span className="min-w-0 flex-1 truncate text-left">
-                        {item.label}
-                      </span>
-                      {item.shortcut ? (
-                        <kbd
-                          className={cn(
-                            "pointer-events-none ml-auto shrink-0 rounded border bg-muted px-1.5 py-0.5 font-mono text-[10px] font-medium text-muted-foreground"
-                          )}
-                        >
-                          {displayShortcut(item.shortcut, isMac)}
-                        </kbd>
-                      ) : null}
+                      <Link
+                          href={item.href}
+                          onClick={() => setCreateOpen(false)}>
+                        {Icon ? (
+                          <Icon className="size-4 shrink-0 text-foreground" />
+                        ) : null}
+                        <span className="min-w-0 flex-1 truncate text-left">
+                          {item.label}
+                        </span>
+                        {item.shortcut ? (
+                          <kbd
+                            className={cn(
+                              "pointer-events-none ml-auto shrink-0 rounded border bg-muted px-1.5 py-0.5 font-mono text-[10px] font-medium text-muted-foreground"
+                            )}
+                          >
+                            {displayShortcut(item.shortcut, isMac)}
+                          </kbd>
+                        ) : null}
+                      </Link>
                     </Button>
                   )
                 })}

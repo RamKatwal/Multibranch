@@ -41,7 +41,7 @@ export function ProductConfigurationPage() {
       <PageHeader
         title="Product Configuration"
         actions={
-          <Button type="button" size="sm" onClick={() => setEditOpen(true)}>
+          <Button type="button" size="32" onClick={() => setEditOpen(true)}>
             <PencilIcon className="size-4" />
             Edit
           </Button>

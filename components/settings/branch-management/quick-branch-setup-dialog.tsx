@@ -252,7 +252,8 @@ export function QuickBranchSetupDialog({
                 <Button
                   type="button"
                   variant="ghost"
-                  size="sm"
+                  color="neutral"
+                  size="32"
                   className="h-7 shrink-0 text-xs"
                   disabled={isSaving}
                   onClick={fillDemoBranches}
@@ -289,6 +290,7 @@ export function QuickBranchSetupDialog({
               <Button
                 type="button"
                 variant="outline"
+                color="neutral"
                 disabled={isSaving}
                 onClick={() => onOpenChange(false)}
               >

@@ -47,13 +47,15 @@ export function CreateStockTransferPage() {
   const backButton = (
     <Button
       variant="ghost"
-      size="sm"
+      color="neutral"
+      size="32"
       className="-ml-2 h-7 w-fit px-2 text-muted-foreground"
-      nativeButton={false}
-      render={<Link href="/inventory/stock-transfer-2" />}
+      asChild
     >
-      <ArrowLeftIcon />
-      Back to transfers
+      <Link href="/inventory/stock-transfer-2">
+        <ArrowLeftIcon />
+        Back to transfers
+      </Link>
     </Button>
   )
 

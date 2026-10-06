@@ -17,7 +17,7 @@ import {
   useDataTable,
   useDataTableFullscreen,
 } from "@/components/data-table/data-table"
-import { Button } from "@/components/ui/button"
+import { Button, IconButton } from "@/components/ui/button"
 import { enterCompanyPortal } from "@/lib/companies/portal-context"
 import {
   getDemoUserBranchAccess,
@@ -68,8 +68,9 @@ function BranchAccessGridCard({
 
       <div className="mt-4 border-t pt-4">
         <Button
-          size="sm"
+          size="32"
           variant="outline"
+          color="neutral"
           className="w-full"
           onClick={() => onAccessPortal(item)}
         >
@@ -124,12 +125,14 @@ export function BranchSelectorPage() {
           <AppBrand href="/branch-selector" size={28} />
           <Button
             variant="ghost"
-            size="sm"
-            nativeButton={false}
-            render={<Link href="/signin" />}
+            color="neutral"
+            size="32"
+            asChild
           >
-            <LogOut data-icon="inline-start" className="size-3.5" />
-            Sign out
+            <Link href="/signin">
+              <LogOut data-icon="inline-start" className="size-3.5" />
+              Sign out
+            </Link>
           </Button>
         </div>
       </header>
@@ -141,10 +144,11 @@ export function BranchSelectorPage() {
               Select a branch ({branches.length})
             </h1>
             <div className="flex items-center rounded-md border bg-background p-0.5">
-              <Button
+              <IconButton
                 type="button"
                 variant="ghost"
-                size="icon-sm"
+                color="neutral"
+                size="32"
                 aria-label="Grid view"
                 aria-pressed={viewMode === "grid"}
                 onClick={() => setViewMode("grid")}
@@ -155,11 +159,12 @@ export function BranchSelectorPage() {
                 )}
               >
                 <LayoutGrid className="size-3.5" />
-              </Button>
-              <Button
+              </IconButton>
+              <IconButton
                 type="button"
                 variant="ghost"
-                size="icon-sm"
+                color="neutral"
+                size="32"
                 aria-label="List view"
                 aria-pressed={viewMode === "list"}
                 onClick={() => setViewMode("list")}
@@ -170,7 +175,7 @@ export function BranchSelectorPage() {
                 )}
               >
                 <List className="size-3.5" />
-              </Button>
+              </IconButton>
             </div>
           </div>
           <p className="text-sm text-muted-foreground">

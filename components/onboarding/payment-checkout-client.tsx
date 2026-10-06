@@ -151,6 +151,7 @@ export default function PaymentCheckoutClient() {
         <Button
           type="button"
           variant="outline"
+          color="neutral"
           className="h-11"
           disabled={!!busy || !intentId}
           onClick={() => finish("failed")}

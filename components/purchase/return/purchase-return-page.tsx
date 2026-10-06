@@ -72,11 +72,11 @@ export function PurchaseReturnPage() {
         count={`${mockPurchaseReturns.length} returns`}
         actions={
           <>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" color="neutral" size="32">
               <DownloadIcon />
               Export
             </Button>
-            <Button size="sm">
+            <Button size="32">
               <PlusIcon />
               Create Purchase Return
             </Button>

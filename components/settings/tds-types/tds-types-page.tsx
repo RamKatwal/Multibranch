@@ -115,7 +115,7 @@ export function TdsTypesPage() {
         title="TDS Type"
         count={`${types.length} types`}
         actions={
-          <Button size="sm" onClick={openCreate}>
+          <Button size="32" onClick={openCreate}>
             <PlusIcon />
             Add TDS Type
           </Button>

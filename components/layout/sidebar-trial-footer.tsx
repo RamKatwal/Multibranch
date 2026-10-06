@@ -99,13 +99,14 @@ export function SidebarTrialFooter({
       </div>
 
       <Button
-        size="sm"
+        size="32"
         className="w-full"
-        nativeButton={false}
-        render={<Link href={href} />}
+        asChild
       >
-        <Zap />
-        Select a Plan
+        <Link href={href}>
+          <Zap />
+          Select a Plan
+        </Link>
       </Button>
     </div>
   )

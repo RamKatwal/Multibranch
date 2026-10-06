@@ -61,12 +61,13 @@ export function GroupManagementPage() {
         count={`${groups.length} roles`}
         actions={
           <Button
-            size="sm"
-            nativeButton={false}
-            render={<Link href="/configurations/users/group-management/new" />}
+            size="32"
+            asChild
           >
-            <PlusIcon />
-            New Role
+            <Link href="/configurations/users/group-management/new">
+              <PlusIcon />
+              New Role
+            </Link>
           </Button>
         }
       />

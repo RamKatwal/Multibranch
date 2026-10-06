@@ -140,7 +140,8 @@ export function RoleSelect({
               <Button
                 type="button"
                 variant="ghost"
-                size="sm"
+                color="neutral"
+                size="32"
                 className="h-8 w-full justify-start font-normal"
                 onClick={handleCreateNew}
               >

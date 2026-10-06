@@ -105,7 +105,7 @@ export function AddWidgetsDialog({
         </div>
 
         <DialogFooter className="border-t px-5 py-3 sm:justify-end">
-          <Button type="button" size="sm" onClick={() => onOpenChange(false)}>
+          <Button type="button" size="32" onClick={() => onOpenChange(false)}>
             Done
           </Button>
         </DialogFooter>

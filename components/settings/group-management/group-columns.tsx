@@ -10,7 +10,7 @@ import {
 } from "lucide-react"
 
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header"
-import { Button } from "@/components/ui/button"
+import { IconButton } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -47,9 +47,10 @@ export const groupColumns: ColumnDef<Group>[] = [
         <DropdownMenu>
           <DropdownMenuTrigger
             render={
-              <Button
+              <IconButton
                 variant="ghost"
-                size="icon-sm"
+                color="neutral"
+                size="32"
                 aria-label={`Actions for ${row.original.name}`}
               />
             }

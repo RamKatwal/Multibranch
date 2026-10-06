@@ -4,7 +4,7 @@ import * as React from "react"
 import { Monitor, Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 
-import { Button } from "@/components/ui/button"
+import { IconButton } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,15 +31,16 @@ export function ModeToggle() {
 
   if (!mounted) {
     return (
-      <Button
+      <IconButton
         variant="ghost"
-        size="icon-sm"
+        color="neutral"
+        size="32"
         className="relative text-muted-foreground"
         aria-label="Toggle theme"
         disabled
       >
         <Sun className="size-4" />
-      </Button>
+      </IconButton>
     )
   }
 
@@ -50,9 +51,10 @@ export function ModeToggle() {
           render={
             <TooltipTrigger
               render={
-                <Button
+                <IconButton
                   variant="ghost"
-                  size="icon-sm"
+                  color="neutral"
+                  size="32"
                   className="relative text-muted-foreground hover:text-foreground"
                   aria-label="Toggle theme"
                 />
