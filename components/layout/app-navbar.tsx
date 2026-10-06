@@ -93,7 +93,7 @@ export function AppNavbar() {
         >
           <BellIcon />
           {unreadCount > 0 ? (
-            <Badge className="absolute -top-1.5 -right-1.5 size-4 justify-center rounded-full border-2 border-background p-0 text-[10px]">
+            <Badge variant="strong" color="primary" size="20" className="absolute -top-1.5 -right-1.5 size-4 justify-center rounded-full border-2 border-background p-0 text-[10px]">
               {unreadCount}
             </Badge>
           ) : null}
@@ -139,7 +139,7 @@ export function AppNavbar() {
                         {currentUser.name}
                       </span>
                       {isMainAdmin(currentUser) ? (
-                        <Badge variant="secondary">Admin</Badge>
+                        <Badge variant="soft" size="20">Admin</Badge>
                       ) : null}
                     </span>
                     <span className="truncate text-xs text-muted-foreground">

@@ -48,7 +48,7 @@ export function createBranchColumns({
           <div className="flex min-w-0 items-center gap-2">
             <span className="truncate font-medium">{branch.name}</span>
             {isHeadOfficeBranch(branch) ? (
-              <Badge variant="secondary" className="shrink-0">
+              <Badge variant="soft" size="20" className="shrink-0">
                 Head Office
               </Badge>
             ) : null}
@@ -75,7 +75,7 @@ export function createBranchColumns({
       cell: ({ row }) => {
         const status = row.original.status
         return (
-          <Badge variant={status === "active" ? "secondary" : "outline"}>
+          <Badge variant={status === "active" ? "soft" : "outline"} size="20">
             {branchStatusLabels[status]}
           </Badge>
         )

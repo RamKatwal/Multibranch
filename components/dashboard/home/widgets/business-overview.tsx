@@ -87,6 +87,9 @@ function KpiStatCard({
           </p>
           {!isLayoutEditing ? (
             <Badge
+              variant="strong"
+              color="primary"
+              size="20"
               className={cn(
                 "dashboard-no-drag h-5 rounded-full px-1.5 text-[10px] font-medium",
                 trendBadgeClass(stat.trend)

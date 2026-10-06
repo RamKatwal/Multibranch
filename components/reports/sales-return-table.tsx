@@ -120,7 +120,7 @@ export function SalesReturnTable({
                     {formatReportNumber(row.vatAmount)}
                   </td>
                   <td className={bodyCell}>
-                    <Badge className={row.statusBadgeClassName}>
+                    <Badge variant="strong" color="primary" size="20" className={row.statusBadgeClassName}>
                       {row.statusLabel}
                     </Badge>
                   </td>

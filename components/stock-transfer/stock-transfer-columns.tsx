@@ -110,6 +110,7 @@ export function createStockTransferColumns({
       cell: ({ row }) => (
         <Badge
           variant="outline"
+          size="20"
           className={cn(stockTransferStatusBadgeClassName[row.original.status])}
         >
           {stockTransferStatusLabels[row.original.status]}

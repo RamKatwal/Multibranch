@@ -78,7 +78,9 @@ export function UserDetailSheet({
                   </p>
                 </div>
                 <Badge
-                  variant={user.status === "active" ? "default" : "secondary"}
+                  variant={user.status === "active" ? "strong" : "soft"}
+                  color={user.status === "active" ? "primary" : "neutral"}
+                  size="20"
                   className="shrink-0"
                 >
                   {user.status === "active" ? "Active" : "Inactive"}

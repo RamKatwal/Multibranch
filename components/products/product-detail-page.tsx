@@ -265,6 +265,7 @@ function TransactionsCard({
                   <td className={getDataTableBodyCellClass()}>
                     <Badge
                       variant="outline"
+                      size="20"
                       className={transactionTypeBadgeClassName(txn.type)}
                     >
                       {txn.type}
@@ -352,6 +353,7 @@ function StockTransfersCard({
                   <td className={getDataTableBodyCellClass()}>
                     <Badge
                       variant="outline"
+                      size="20"
                       className={stockTransferTypeBadgeClassName(transfer.type)}
                     >
                       {transfer.type === "in" ? "Stock In" : "Stock Out"}
@@ -371,6 +373,7 @@ function StockTransfersCard({
                   <td className={getDataTableBodyCellClass()}>
                     <Badge
                       variant="outline"
+                      size="20"
                       className={stockTransferStatusBadgeClassName[transfer.status]}
                     >
                       {stockTransferStatusLabels[transfer.status]}
@@ -689,6 +692,7 @@ export function ProductDetailPage({ productId }: { productId: string }) {
           badge={
             <Badge
               variant="outline"
+              size="20"
               className={statusBadgeClassName(product.status)}
             >
               {productStatusLabels[product.status]}
@@ -879,6 +883,7 @@ export function ProductDetailPage({ productId }: { productId: string }) {
                   action={
                     <Badge
                       variant="outline"
+                      size="20"
                       className="border-primary/30 bg-primary/5 text-primary"
                     >
                       {product.id}

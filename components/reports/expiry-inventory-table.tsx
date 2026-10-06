@@ -89,7 +89,7 @@ export function ExpiryInventoryTable({
                   </td>
                   <td className={cn(bodyCell, "text-right tabular-nums")}>
                     {isExpired || isNearExpiry ? (
-                      <Badge variant={isExpired ? "destructive" : "outline"}>
+                      <Badge variant={isExpired ? "soft" : "outline"} color={isExpired ? "error" : "neutral"} size="20">
                         {row.remainingDays}
                       </Badge>
                     ) : (
