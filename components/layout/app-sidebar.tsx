@@ -31,7 +31,7 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
+  DropdownMenuDivider,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
@@ -123,13 +123,11 @@ function HomeMoreActions() {
     <DropdownMenu>
       <Tooltip>
         <TooltipTrigger asChild>
-          <DropdownMenuTrigger
-            render={
-              <SidebarMenuAction showOnHover aria-label="More actions" />
-            }
-          >
-            <MoreHorizontal />
-            <span className="sr-only">More actions</span>
+          <DropdownMenuTrigger asChild>
+            <SidebarMenuAction showOnHover aria-label="More actions">
+              <MoreHorizontal />
+              <span className="sr-only">More actions</span>
+            </SidebarMenuAction>
           </DropdownMenuTrigger>
         </TooltipTrigger>
         <TooltipContent side="right">More actions</TooltipContent>
@@ -141,7 +139,7 @@ function HomeMoreActions() {
       >
         <DropdownMenuGroup>
           <DropdownMenuLabel>More actions</DropdownMenuLabel>
-          <DropdownMenuSeparator />
+          <DropdownMenuDivider />
           {canEdit ? (
             <DropdownMenuItem onClick={() => layoutActions?.startEditing()}>
               <LayoutGrid />

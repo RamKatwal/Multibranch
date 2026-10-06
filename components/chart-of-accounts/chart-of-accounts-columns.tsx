@@ -18,7 +18,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
+  DropdownMenuDivider,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import type { ChartOfAccount } from "@/lib/mock/chart-of-accounts"
@@ -144,17 +144,15 @@ export function createChartOfAccountColumns({
         return (
           <div className="flex items-center justify-end">
             <DropdownMenu>
-              <DropdownMenuTrigger
-                render={
-                  <IconButton
-                    variant="ghost"
-                    color="neutral"
-                    size="32"
-                    aria-label={`Actions for ${account.name}`}
-                  />
-                }
-              >
-                <MoreVerticalIcon />
+              <DropdownMenuTrigger asChild>
+                <IconButton
+                  variant="ghost"
+                  color="neutral"
+                  size="32"
+                  aria-label={`Actions for ${account.name}`}
+                >
+                  <MoreVerticalIcon />
+                </IconButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => onEdit(account)}>
@@ -172,7 +170,7 @@ export function createChartOfAccountColumns({
                     Activate
                   </DropdownMenuItem>
                 )}
-                <DropdownMenuSeparator />
+                <DropdownMenuDivider />
                 <DropdownMenuItem
                   variant="destructive"
                   onClick={() => onDelete(account)}

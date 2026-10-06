@@ -136,17 +136,15 @@ export function DemoFillFab({
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger
-        render={
-          <IconButton
-            type="button"
-            size="32"
-            className={fabClassName}
-            aria-label="Fill demo login"
-          />
-        }
-      >
-        <HugeiconsIcon icon={MagicWand01Icon} className="size-4 shrink-0" />
+      <DropdownMenuTrigger asChild>
+        <IconButton
+          type="button"
+          size="32"
+          className={fabClassName}
+          aria-label="Fill demo login"
+        >
+          <HugeiconsIcon icon={MagicWand01Icon} className="size-4 shrink-0" />
+        </IconButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" side="top" sideOffset={8} className="min-w-52">
         {resolved.map((action) => {

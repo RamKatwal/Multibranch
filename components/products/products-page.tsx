@@ -245,29 +245,27 @@ export function ProductsPage() {
             <div className="hidden h-4 w-px bg-border sm:block" />
 
             <DropdownMenu>
-              <DropdownMenuTrigger
-                render={
-                  <Button
-                    variant="outline"
-                    color="neutral"
-                    size="32"
-                    className={cn(
-                      "h-8 gap-1.5 text-xs font-normal",
-                      branchFilter !== defaultBranchFilter &&
-                        "border-primary bg-primary/5 font-medium text-primary"
-                    )}
-                  >
-                    <GitBranchIcon className="size-3.5" />
-                    <span className="max-w-[120px] truncate">
-                      {branchFilter === "all"
-                        ? "Branch: All"
-                        : liveBranches.find((b) => b.id === branchFilter)
-                            ?.name ?? "Branch"}
-                    </span>
-                    <ChevronDownIcon className="size-3 opacity-60" />
-                  </Button>
-                }
-              />
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  color="neutral"
+                  size="32"
+                  className={cn(
+                    "h-8 gap-1.5 text-xs font-normal",
+                    branchFilter !== defaultBranchFilter &&
+                      "border-primary bg-primary/5 font-medium text-primary"
+                  )}
+                >
+                  <GitBranchIcon className="size-3.5" />
+                  <span className="max-w-[120px] truncate">
+                    {branchFilter === "all"
+                      ? "Branch: All"
+                      : liveBranches.find((b) => b.id === branchFilter)
+                          ?.name ?? "Branch"}
+                  </span>
+                  <ChevronDownIcon className="size-3 opacity-60" />
+                </Button>
+              </DropdownMenuTrigger>
               <DropdownMenuContent
                 align="start"
                 className="thin-scrollbar max-h-60 min-w-48 overflow-y-auto"
@@ -304,30 +302,28 @@ export function ProductsPage() {
 
             {/* Multi-Filter: Type */}
             <DropdownMenu>
-              <DropdownMenuTrigger
-                render={
-                  <Button
-                    variant="outline"
-                    color="neutral"
-                    size="32"
-                    className={cn(
-                      "h-8 gap-1.5 text-xs font-normal",
-                      typeFilter !== "all" &&
-                        "border-primary bg-primary/5 font-medium text-primary"
-                    )}
-                  >
-                    <PackageIcon className="size-3.5" />
-                    <span>
-                      {typeFilter === "all"
-                        ? "Type: All"
-                        : typeFilter === "goods"
-                          ? "Type: Goods"
-                          : "Type: Service"}
-                    </span>
-                    <ChevronDownIcon className="size-3 opacity-60" />
-                  </Button>
-                }
-              />
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  color="neutral"
+                  size="32"
+                  className={cn(
+                    "h-8 gap-1.5 text-xs font-normal",
+                    typeFilter !== "all" &&
+                      "border-primary bg-primary/5 font-medium text-primary"
+                  )}
+                >
+                  <PackageIcon className="size-3.5" />
+                  <span>
+                    {typeFilter === "all"
+                      ? "Type: All"
+                      : typeFilter === "goods"
+                        ? "Type: Goods"
+                        : "Type: Service"}
+                  </span>
+                  <ChevronDownIcon className="size-3 opacity-60" />
+                </Button>
+              </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="min-w-36">
                 <DropdownMenuItem
                   onClick={() => {
@@ -370,28 +366,26 @@ export function ProductsPage() {
 
             {/* Multi-Filter: Category */}
             <DropdownMenu>
-              <DropdownMenuTrigger
-                render={
-                  <Button
-                    variant="outline"
-                    color="neutral"
-                    size="32"
-                    className={cn(
-                      "h-8 gap-1.5 text-xs font-normal",
-                      categoryFilter !== "All" &&
-                        "border-primary bg-primary/5 font-medium text-primary"
-                    )}
-                  >
-                    <FilterIcon className="size-3.5" />
-                    <span className="max-w-[130px] truncate">
-                      {categoryFilter === "All"
-                        ? "Category: All"
-                        : categoryFilter}
-                    </span>
-                    <ChevronDownIcon className="size-3 opacity-60" />
-                  </Button>
-                }
-              />
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  color="neutral"
+                  size="32"
+                  className={cn(
+                    "h-8 gap-1.5 text-xs font-normal",
+                    categoryFilter !== "All" &&
+                      "border-primary bg-primary/5 font-medium text-primary"
+                  )}
+                >
+                  <FilterIcon className="size-3.5" />
+                  <span className="max-w-[130px] truncate">
+                    {categoryFilter === "All"
+                      ? "Category: All"
+                      : categoryFilter}
+                  </span>
+                  <ChevronDownIcon className="size-3 opacity-60" />
+                </Button>
+              </DropdownMenuTrigger>
               <DropdownMenuContent
                 align="start"
                 className="thin-scrollbar max-h-60 min-w-48 overflow-y-auto"

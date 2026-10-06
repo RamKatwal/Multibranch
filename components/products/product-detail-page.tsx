@@ -41,7 +41,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
+  DropdownMenuDivider,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
@@ -719,17 +719,15 @@ export function ProductDetailPage({ productId }: { productId: string }) {
                 Edit
               </Button>
               <DropdownMenu>
-                <DropdownMenuTrigger
-                  render={
-                    <Button
-                      size="32"
-                      variant="outline"
-                      color="neutral"
-                      aria-label="More actions"
-                    />
-                  }
-                >
-                  <MoreHorizontalIcon />
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    size="32"
+                    variant="outline"
+                    color="neutral"
+                    aria-label="More actions"
+                  >
+                    <MoreHorizontalIcon />
+                  </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="min-w-48">
                   <DropdownMenuItem
@@ -742,7 +740,7 @@ export function ProductDetailPage({ productId }: { productId: string }) {
                     {isActive ? <EyeOffIcon /> : <EyeIcon />}
                     {isActive ? "Deactivate" : "Activate"}
                   </DropdownMenuItem>
-                  <DropdownMenuSeparator />
+                  <DropdownMenuDivider />
                   <DropdownMenuItem
                     variant="destructive"
                     onClick={() => toast.info("Delete is coming soon.")}

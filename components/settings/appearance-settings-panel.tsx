@@ -267,22 +267,20 @@ function ThemePicker({
         if (!next) setQuery("")
       }}
     >
-      <DropdownMenuTrigger
-        render={
-          <button
-            type="button"
-            className={cn(
-              "flex h-9 w-full items-center gap-2 rounded-lg border border-input bg-transparent px-2.5 text-left text-sm outline-none transition-colors",
-              "hover:bg-muted/50 focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
-            )}
-          />
-        }
-      >
-        {selected ? (
-          <ThemeSwatch swatch={selected.swatch} surface={selected.surface} />
-        ) : null}
-        <span className="min-w-0 flex-1 truncate">{selected?.label ?? "Theme"}</span>
-        <ChevronsUpDownIcon className="size-3.5 shrink-0 text-muted-foreground" />
+      <DropdownMenuTrigger asChild>
+        <button
+          type="button"
+          className={cn(
+            "flex h-9 w-full items-center gap-2 rounded-lg border border-input bg-transparent px-2.5 text-left text-sm outline-none transition-colors",
+            "hover:bg-muted/50 focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
+          )}
+        >
+          {selected ? (
+            <ThemeSwatch swatch={selected.swatch} surface={selected.surface} />
+          ) : null}
+          <span className="min-w-0 flex-1 truncate">{selected?.label ?? "Theme"}</span>
+          <ChevronsUpDownIcon className="size-3.5 shrink-0 text-muted-foreground" />
+        </button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end" className="w-64 p-0" sideOffset={6}>
@@ -364,26 +362,24 @@ function FontPicker({
         if (!next) setQuery("")
       }}
     >
-      <DropdownMenuTrigger
-        render={
-          <button
-            type="button"
-            className={cn(
-              "flex h-9 w-full items-center gap-2 rounded-lg border border-input bg-transparent px-2.5 text-left text-sm outline-none transition-colors",
-              "hover:bg-muted/50 focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
-            )}
-          />
-        }
-      >
-        <span
-          className="flex size-5 shrink-0 items-center justify-center rounded-md border bg-muted/50 text-[10px] font-semibold"
-          style={{ fontFamily: selected?.previewFamily }}
-          aria-hidden
+      <DropdownMenuTrigger asChild>
+        <button
+          type="button"
+          className={cn(
+            "flex h-9 w-full items-center gap-2 rounded-lg border border-input bg-transparent px-2.5 text-left text-sm outline-none transition-colors",
+            "hover:bg-muted/50 focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
+          )}
         >
-          Aa
-        </span>
-        <span className="min-w-0 flex-1 truncate">{selected?.label ?? "Font"}</span>
-        <ChevronsUpDownIcon className="size-3.5 shrink-0 text-muted-foreground" />
+          <span
+            className="flex size-5 shrink-0 items-center justify-center rounded-md border bg-muted/50 text-[10px] font-semibold"
+            style={{ fontFamily: selected?.previewFamily }}
+            aria-hidden
+          >
+            Aa
+          </span>
+          <span className="min-w-0 flex-1 truncate">{selected?.label ?? "Font"}</span>
+          <ChevronsUpDownIcon className="size-3.5 shrink-0 text-muted-foreground" />
+        </button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end" className="w-64 p-0" sideOffset={6}>

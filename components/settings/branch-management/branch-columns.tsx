@@ -15,7 +15,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
+  DropdownMenuDivider,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { canDeactivateBranch, isHeadOfficeBranch } from "@/lib/branches/head-office"
@@ -100,17 +100,15 @@ export function createBranchColumns({
         return (
           <div className="flex items-center justify-end">
             <DropdownMenu>
-              <DropdownMenuTrigger
-                render={
-                  <IconButton
-                    variant="ghost"
-                    color="neutral"
-                    size="32"
-                    aria-label={`Actions for ${branch.name}`}
-                  />
-                }
-              >
-                <MoreVerticalIcon />
+              <DropdownMenuTrigger asChild>
+                <IconButton
+                  variant="ghost"
+                  color="neutral"
+                  size="32"
+                  aria-label={`Actions for ${branch.name}`}
+                >
+                  <MoreVerticalIcon />
+                </IconButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => onEdit(branch)}>
@@ -119,7 +117,7 @@ export function createBranchColumns({
                 </DropdownMenuItem>
                 {isHeadOffice ? null : (
                   <>
-                    <DropdownMenuSeparator />
+                    <DropdownMenuDivider />
                     {showDeactivate ? (
                       <DropdownMenuItem
                         variant="destructive"

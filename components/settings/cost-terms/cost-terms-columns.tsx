@@ -16,7 +16,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
+  DropdownMenuDivider,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { costTermStatusLabels, type CostTerm } from "@/types/cost-term"
@@ -79,17 +79,15 @@ export function createCostTermColumns({
         return (
           <div className="flex items-center justify-end">
             <DropdownMenu>
-              <DropdownMenuTrigger
-                render={
-                  <IconButton
-                    variant="ghost"
-                    color="neutral"
-                    size="32"
-                    aria-label={`Actions for ${term.name}`}
-                  />
-                }
-              >
-                <MoreVerticalIcon />
+              <DropdownMenuTrigger asChild>
+                <IconButton
+                  variant="ghost"
+                  color="neutral"
+                  size="32"
+                  aria-label={`Actions for ${term.name}`}
+                >
+                  <MoreVerticalIcon />
+                </IconButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => onEdit(term)}>
@@ -107,7 +105,7 @@ export function createCostTermColumns({
                     Activate
                   </DropdownMenuItem>
                 )}
-                <DropdownMenuSeparator />
+                <DropdownMenuDivider />
                 <DropdownMenuItem
                   variant="destructive"
                   onClick={() => onDelete(term)}

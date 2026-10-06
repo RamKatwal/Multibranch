@@ -16,7 +16,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
+  DropdownMenuDivider,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { paymentTermStatusLabels, type PaymentTerm } from "@/types/payment-term"
@@ -93,17 +93,15 @@ export function createPaymentTermColumns({
         return (
           <div className="flex items-center justify-end">
             <DropdownMenu>
-              <DropdownMenuTrigger
-                render={
-                  <IconButton
-                    variant="ghost"
-                    color="neutral"
-                    size="32"
-                    aria-label={`Actions for ${term.name}`}
-                  />
-                }
-              >
-                <MoreVerticalIcon />
+              <DropdownMenuTrigger asChild>
+                <IconButton
+                  variant="ghost"
+                  color="neutral"
+                  size="32"
+                  aria-label={`Actions for ${term.name}`}
+                >
+                  <MoreVerticalIcon />
+                </IconButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => onEdit(term)}>
@@ -121,7 +119,7 @@ export function createPaymentTermColumns({
                     Activate
                   </DropdownMenuItem>
                 )}
-                <DropdownMenuSeparator />
+                <DropdownMenuDivider />
                 <DropdownMenuItem
                   variant="destructive"
                   onClick={() => onDelete(term)}

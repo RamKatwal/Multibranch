@@ -30,7 +30,7 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuSeparator,
+  DropdownMenuDivider,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
@@ -107,23 +107,21 @@ export function AppNavbar() {
         />
 
         <DropdownMenu>
-          <DropdownMenuTrigger
-            render={
-              <button
-                type="button"
-                className="inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring/30 relative group [&_*]:cursor-pointer"
-                aria-label="User menu"
-              />
-            }
-          >
-            <Avatar className="size-9 cursor-pointer">
-              <AvatarFallback className="cursor-pointer text-xs">
-                {currentUser.initials}
-              </AvatarFallback>
-            </Avatar>
-            <span className="pointer-events-none absolute left-1/2 top-full mt-2 hidden -translate-x-1/2 rounded-md bg-black px-2 py-1 text-[11px] text-white group-hover:block">
-              Profile
-            </span>
+          <DropdownMenuTrigger asChild>
+            <button
+              type="button"
+              className="inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring/30 relative group [&_*]:cursor-pointer"
+              aria-label="User menu"
+            >
+              <Avatar className="size-9 cursor-pointer">
+                <AvatarFallback className="cursor-pointer text-xs">
+                  {currentUser.initials}
+                </AvatarFallback>
+              </Avatar>
+              <span className="pointer-events-none absolute left-1/2 top-full mt-2 hidden -translate-x-1/2 rounded-md bg-black px-2 py-1 text-[11px] text-white group-hover:block">
+                Profile
+              </span>
+            </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-64">
             <DropdownMenuGroup>
@@ -150,7 +148,7 @@ export function AppNavbar() {
                   </div>
                 </div>
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
+              <DropdownMenuDivider />
               <DropdownMenuItem onClick={() => openSettings("profile")}>
                 <User />
                 Profile
@@ -173,7 +171,7 @@ export function AppNavbar() {
                 Settings
                 <DropdownMenuShortcut>⌘,</DropdownMenuShortcut>
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
+              <DropdownMenuDivider />
               <div
                 className="flex items-center justify-between gap-2 rounded-md px-1.5 py-1.5 text-sm"
                 onPointerDown={(event) => event.preventDefault()}
@@ -211,7 +209,7 @@ export function AppNavbar() {
                   })}
                 </div>
               </div>
-              <DropdownMenuSeparator />
+              <DropdownMenuDivider />
               <DropdownMenuItem onClick={() => router.push("/signup")}>
                 <LogOut />
                 Sign Out

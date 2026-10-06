@@ -15,7 +15,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
+  DropdownMenuDivider,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import type { Group } from "@/types/group"
@@ -45,34 +45,30 @@ export const groupColumns: ColumnDef<Group>[] = [
     cell: ({ row }) => (
       <div className="flex items-center justify-end">
         <DropdownMenu>
-          <DropdownMenuTrigger
-            render={
-              <IconButton
-                variant="ghost"
-                color="neutral"
-                size="32"
-                aria-label={`Actions for ${row.original.name}`}
-              />
-            }
-          >
-            <MoreVerticalIcon />
+          <DropdownMenuTrigger asChild>
+            <IconButton
+              variant="ghost"
+              color="neutral"
+              size="32"
+              aria-label={`Actions for ${row.original.name}`}
+            >
+              <MoreVerticalIcon />
+            </IconButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem>
               <UsersIcon />
               View members
             </DropdownMenuItem>
-            <DropdownMenuItem
-              render={
-                <Link
-                  href={`/configurations/users/group-management/${row.original.id}`}
-                />
-              }
-            >
-              <PencilIcon />
-              Edit permissions & dashboard
+            <DropdownMenuItem asChild>
+              <Link
+                href={`/configurations/users/group-management/${row.original.id}`}
+              >
+                <PencilIcon />
+                Edit permissions & dashboard
+              </Link>
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
+            <DropdownMenuDivider />
             <DropdownMenuItem variant="destructive">
               <Trash2Icon />
               Delete

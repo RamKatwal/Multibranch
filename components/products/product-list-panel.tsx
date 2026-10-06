@@ -124,18 +124,16 @@ export function ProductListPanel({
       <div className="flex shrink-0 flex-col gap-2 border-b px-3 py-2.5">
         <div className="flex items-center gap-1.5">
           <DropdownMenu>
-            <DropdownMenuTrigger
-              render={
-                <Button
-                  variant="ghost"
-                  color="neutral"
-                  size="32"
-                  className="h-8 min-w-0 flex-1 justify-start gap-1 px-2 font-semibold"
-                />
-              }
-            >
-              <span className="truncate">{listFilterLabels[listFilter]}</span>
-              <ChevronDownIcon className="size-3.5 shrink-0 opacity-60" />
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                color="neutral"
+                size="32"
+                className="h-8 min-w-0 flex-1 justify-start gap-1 px-2 font-semibold"
+              >
+                <span className="truncate">{listFilterLabels[listFilter]}</span>
+                <ChevronDownIcon className="size-3.5 shrink-0 opacity-60" />
+              </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="min-w-48">
               {(Object.keys(listFilterLabels) as ListFilter[]).map((key) => (
@@ -163,18 +161,16 @@ export function ProductListPanel({
           </IconButton>
 
           <DropdownMenu>
-            <DropdownMenuTrigger
-              render={
-                <IconButton
-                  size="32"
-                  variant="outline"
-                  color="neutral"
-                  className="size-8 shrink-0"
-                  aria-label="More list actions"
-                />
-              }
-            >
-              <MoreHorizontalIcon />
+            <DropdownMenuTrigger asChild>
+              <IconButton
+                size="32"
+                variant="outline"
+                color="neutral"
+                className="size-8 shrink-0"
+                aria-label="More list actions"
+              >
+                <MoreHorizontalIcon />
+              </IconButton>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="min-w-44">
               <DropdownMenuItem

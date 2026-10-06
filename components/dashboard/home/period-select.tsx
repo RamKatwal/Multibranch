@@ -26,18 +26,16 @@ export function PeriodSelect({
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger
-        render={
-          <Button
-            variant="outline"
-            color="neutral"
-            size="32"
-            className="h-7 gap-1 px-2.5 text-xs font-normal"
-          />
-        }
-      >
-        {current}
-        <ChevronDown className="size-3 opacity-60" />
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="outline"
+          color="neutral"
+          size="32"
+          className="h-7 gap-1 px-2.5 text-xs font-normal"
+        >
+          {current}
+          <ChevronDown className="size-3 opacity-60" />
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-36">
         {periods.map((period) => (

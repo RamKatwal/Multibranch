@@ -81,12 +81,13 @@ re-add with the CLI) · ⏳ shadcn on Base UI (migrate) · ➖ no Radian equival
 | Here (`components/ui`) | Status | Radian target | Notes |
 |---|---|---|---|
 | `spinner`, `carousel`, `tooltip` | ✅ | same name | |
+| `dropdown-menu` | ✅ | `dropdown-menu` | `DropdownMenuSeparator` is `DropdownMenuDivider`; local `variant="destructive"` on items (§9) |
 | `button` | ✅ | `button` (`Button`, `IconButton`, `ButtonGroup`, `CompactButton`) | `children` optional (transitional, §9) |
 | `badge`, `input`, `checkbox`, `switch`, `avatar`, `breadcrumb`, `collapsible`, `label`, `skeleton` | ⏳ | same name | |
 | `textarea` | ⏳ | `text-area` | |
 | `native-select` | ⏳ | `select` | |
 | `tabs` | ⏳ | `tabs`, plus `toggle-group` for filter rows | Keep the `ui-tabs.mdc` look |
-| `dialog`, `drawer`, `dropdown-menu`, `popover`, `sidebar` | ⏳ | same name | Triggers switch from `render={…}` to `asChild` |
+| `dialog`, `drawer`, `popover`, `sidebar` | ⏳ | same name | Triggers switch from `render={…}` to `asChild` |
 | `sheet` | ⏳ | `drawer` | |
 | `separator` | ⏳ | `divider` | |
 | `command` (69%), `form` (75%) | ⏳ | same name | |
@@ -189,3 +190,11 @@ select, slider, stepper, table, text-area, toggle, toggle-group.
   `TooltipProvider` is gone (Radian's `Tooltip` includes its provider, delay 0, as before). The sidebar's
   `SidebarMenuButton` now wraps its rendered element in `TooltipTrigger asChild`. Radian's content is
   13px with an 8px offset (was 12px, 4px) and isn't portaled.
+- 2026-10-06: **DropdownMenu migrated to Radian** (Radix). Triggers and the one link item moved from
+  `render={<X/>}` to `asChild` (94), so the report toolbars are now fully Radix:
+  `<TooltipTrigger asChild><DropdownMenuTrigger asChild><IconButton>`. `DropdownMenuSeparator` is renamed
+  `DropdownMenuDivider` (Radian's name; 31 uses). Items keep `onClick` (Radix fires it on select).
+  Local addition to Radian's `DropdownMenuItem`: `variant="destructive"` (error text, icon and hover
+  tokens) for the 23 Delete-style actions; reapply it if the file is re-added with the CLI. Radian's menu
+  look: 6px item radius, 20px icons in `fg-secondary`, `elevation-level2` panel, width at least the trigger.
+  Radix menus open on pointerdown, so scripted tests must send a pointer event, not `.click()`.

@@ -11,7 +11,7 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
+  DropdownMenuDivider,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
@@ -48,19 +48,17 @@ export function ModeToggle() {
     <DropdownMenu>
       <Tooltip>
         <TooltipTrigger asChild>
-          <DropdownMenuTrigger
-            render={
-              <IconButton
-                variant="ghost"
-                color="neutral"
-                size="32"
-                className="relative text-muted-foreground hover:text-foreground"
-                aria-label="Toggle theme"
-              />
-            }
-          >
-            <Sun className="size-4 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-            <Moon className="absolute size-4 scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+          <DropdownMenuTrigger asChild>
+            <IconButton
+              variant="ghost"
+              color="neutral"
+              size="32"
+              className="relative text-muted-foreground hover:text-foreground"
+              aria-label="Toggle theme"
+            >
+              <Sun className="size-4 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+              <Moon className="absolute size-4 scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+            </IconButton>
           </DropdownMenuTrigger>
         </TooltipTrigger>
         <TooltipContent>Toggle theme</TooltipContent>
@@ -79,7 +77,7 @@ export function ModeToggle() {
             <Monitor className="text-muted-foreground" />
             System
           </DropdownMenuItem>
-          <DropdownMenuSeparator />
+          <DropdownMenuDivider />
           <DropdownMenuLabel className="flex items-center justify-between font-normal text-muted-foreground">
             Toggle theme
             <DropdownMenuShortcut>D</DropdownMenuShortcut>

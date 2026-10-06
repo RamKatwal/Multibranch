@@ -16,7 +16,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
+  DropdownMenuDivider,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { tdsTypeStatusLabels, type TdsType } from "@/types/tds-type"
@@ -77,17 +77,15 @@ export function createTdsTypeColumns({
         return (
           <div className="flex items-center justify-end">
             <DropdownMenu>
-              <DropdownMenuTrigger
-                render={
-                  <IconButton
-                    variant="ghost"
-                    color="neutral"
-                    size="32"
-                    aria-label={`Actions for ${type.name}`}
-                  />
-                }
-              >
-                <MoreVerticalIcon />
+              <DropdownMenuTrigger asChild>
+                <IconButton
+                  variant="ghost"
+                  color="neutral"
+                  size="32"
+                  aria-label={`Actions for ${type.name}`}
+                >
+                  <MoreVerticalIcon />
+                </IconButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => onEdit(type)}>
@@ -105,7 +103,7 @@ export function createTdsTypeColumns({
                     Activate
                   </DropdownMenuItem>
                 )}
-                <DropdownMenuSeparator />
+                <DropdownMenuDivider />
                 <DropdownMenuItem
                   variant="destructive"
                   onClick={() => onDelete(type)}

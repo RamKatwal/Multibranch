@@ -90,17 +90,15 @@ export function DataTableToolbar<TData>({
         <DropdownMenu>
           <Tooltip>
             <TooltipTrigger asChild>
-              <DropdownMenuTrigger
-                render={
-                  <IconButton
-                    variant="outline"
-                    color="neutral"
-                    size="32"
-                    aria-label="Row size"
-                  />
-                }
-              >
-                <Rows3Icon />
+              <DropdownMenuTrigger asChild>
+                <IconButton
+                  variant="outline"
+                  color="neutral"
+                  size="32"
+                  aria-label="Row size"
+                >
+                  <Rows3Icon />
+                </IconButton>
               </DropdownMenuTrigger>
             </TooltipTrigger>
             <TooltipContent>Row size</TooltipContent>
@@ -146,20 +144,18 @@ export function DataTableToolbar<TData>({
         {showFilter ? (
           filters ? (
             <DropdownMenu>
-              <DropdownMenuTrigger
-                render={
-                  <Button
-                    variant="outline"
-                    color="neutral"
-                    size="32"
-                    aria-label="Filter"
-                    aria-pressed={isFiltered}
-                    className={cn(isFiltered && "border-foreground/20 bg-muted")}
-                  />
-                }
-              >
-                <FilterIcon />
-                Filter
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  color="neutral"
+                  size="32"
+                  aria-label="Filter"
+                  aria-pressed={isFiltered}
+                  className={cn(isFiltered && "border-foreground/20 bg-muted")}
+                >
+                  <FilterIcon />
+                  Filter
+                </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="min-w-44">
                 <DropdownMenuGroup>

@@ -22,7 +22,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
+  DropdownMenuDivider,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import type { Group } from "@/types/group"
@@ -133,17 +133,15 @@ export function createUserColumns({
         return (
           <div className="flex items-center justify-end">
             <DropdownMenu>
-              <DropdownMenuTrigger
-                render={
-                  <IconButton
-                    variant="ghost"
-                    color="neutral"
-                    size="32"
-                    aria-label={`Actions for ${user.name}`}
-                  />
-                }
-              >
-                <MoreVerticalIcon />
+              <DropdownMenuTrigger asChild>
+                <IconButton
+                  variant="ghost"
+                  color="neutral"
+                  size="32"
+                  aria-label={`Actions for ${user.name}`}
+                >
+                  <MoreVerticalIcon />
+                </IconButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => onView(user)}>
@@ -158,7 +156,7 @@ export function createUserColumns({
                   <MailIcon />
                   Resend Email
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
+                <DropdownMenuDivider />
                 {user.status === "active" ? (
                   <DropdownMenuItem onClick={() => onDeactivate(user)}>
                     <UserRoundXIcon />

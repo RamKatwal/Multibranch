@@ -16,7 +16,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
+  DropdownMenuDivider,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { formatCurrency, formatDate } from "@/lib/format"
@@ -122,17 +122,15 @@ export function createDeliveryNoteReturnColumns({
               Preview
             </Button>
             <DropdownMenu>
-              <DropdownMenuTrigger
-                render={
-                  <IconButton
-                    variant="ghost"
-                    color="neutral"
-                    size="32"
-                    aria-label={`Actions for ${entry.id}`}
-                  />
-                }
-              >
-                <MoreVerticalIcon />
+              <DropdownMenuTrigger asChild>
+                <IconButton
+                  variant="ghost"
+                  color="neutral"
+                  size="32"
+                  aria-label={`Actions for ${entry.id}`}
+                >
+                  <MoreVerticalIcon />
+                </IconButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => onView(entry)}>
@@ -147,7 +145,7 @@ export function createDeliveryNoteReturnColumns({
                   <CopyIcon />
                   Duplicate
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
+                <DropdownMenuDivider />
                 <DropdownMenuItem
                   variant="destructive"
                   onClick={() => onDelete(entry)}
