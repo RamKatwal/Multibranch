@@ -134,7 +134,7 @@ function SectionCard({
   children: React.ReactNode
 }) {
   return (
-    <Card size="sm" className="ring-foreground/10">
+    <Card size="sm">
       <CardHeader className="border-b pb-3">
         <CardTitle>{title}</CardTitle>
         {action ? <CardAction>{action}</CardAction> : null}
@@ -792,7 +792,7 @@ export function ProductDetailPage({ productId }: { productId: string }) {
             <div className="grid items-start gap-4 lg:grid-cols-3">
               <Card
                 size="sm"
-                className="gap-0 divide-y py-0 ring-foreground/10"
+                className="gap-0 divide-y py-0"
               >
                 <DetailGroup title="Identification">
                   <Row label="ID">{product.id}</Row>

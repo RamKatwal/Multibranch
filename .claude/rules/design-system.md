@@ -94,7 +94,8 @@ re-add with the CLI) · ⏳ shadcn on Base UI (migrate) · ➖ no Radian equival
 | `sidebar` | ⏳ | `sidebar` | Its mobile view uses `sheet`; decide before migrating |
 | `separator` | ⏳ | `divider` | |
 | `command` (69%) | ⏳ | same name | Still uses the legacy `input-group` |
-| `card`, `chart`, `divider`, `otp-field` | 🟡 | same name | 87–98% the same |
+| `card` | ✅ | `card` | Local `size="sm"` (the app's compact card, §9). Default is Radian's 24px |
+| `chart`, `divider`, `otp-field` | 🟡 | same name | 87–98% the same |
 | `button-group` | ➖ | `ButtonGroup` in `button` | Used by 44 report pages + data-table toolbar; see §9 before migrating |
 | `input-group` | ➖ | Radian `InputWrapper`/`InputGroup` in `input` | Legacy; only `command` uses it. Delete it when `command` migrates |
 | `form-dialog` | ➖ | — | Local composite on Radian `dialog` (width presets, scrolling body); belongs in tier 2 |
@@ -263,6 +264,20 @@ slider, stepper, table, toggle, toggle-group.
   `TextArea` has no `min-h-16` floor. Follow-ups: 8 search inputs still use `pl-*` plus an absolutely positioned icon
   (move to `InputWrapper`), and five files hand-roll a native `<select>` (data-table pagination, settings section-nav,
   settings-modal, users-permissions-nav, create-supplier-dialog): move them to Radian `Select`.
+- 2026-10-07: **Card migrated to Radian**, with a local `size="sm"` (owner's decision). Radian's card has 24px
+  spacing and a 20px `heading-6` title, which made the dense detail pages (stock transfer, product) too loose, and all
+  40 cards already passed `size="sm"`. In `components/ui/card.tsx` the spacing classes (`gap-6`, `py-6`, `px-6`,
+  `pb-6`, `pt-6`) go through `--card-spacing` (24px by default = Radian, 12px for `sm`), and `sm` also sets a 14px
+  medium title, 12px description and 12px base text, as before. Reapply after a CLI re-add. Use the default size for
+  pages built from the Figma kit. What changed visually: cards have Radian's border and `shadow-sm` instead of a ring,
+  and 12px corners (was 8px). At call sites only the ring classes changed: `ring-foreground/10` removed (33),
+  `ring-primary/15` → `border-primary/15`, `ring-destructive/20` → `border-error/20`. The `sm` parts to reapply: header
+  `gap-1` and a second grid row only when there is a description; title `text-sm leading-5 font-medium
+  tracking-normal`; description and base text `text-xs/relaxed`. They are `group-data-[size=sm]/card:` variants, so a
+  plain className (`text-base`, `gap-0`) on a title, description or header doesn't override them in a `sm` card: prefix
+  the override the same way, or use the default size. Don't nest a default card inside a `sm` one. Gone with the
+  shadcn file, unused here: image-first/last rounding, `group/card-header`. The border takes 1px per side (the ring
+  took none), so each card's content is 2px narrower.
 - 2026-10-07: **Tabs migrated to Radian** (Radix). The app keeps its one tab look (`ui-tabs.mdc`: active = primary
   button, inactive = outline button), which Radian doesn't have, as local additions to `components/ui/tabs.tsx`:
   `variant="button"` on `TabsList` (joined size-32 outline buttons built from `buttonVariants`), the `items` shortcut on
