@@ -248,7 +248,7 @@ export function StockTransferDetailPage({
         <div className="flex flex-col gap-4">
           <Card
             size="sm"
-            className="overflow-hidden ring-primary/15 bg-gradient-to-br from-primary/5 via-card to-card"
+            className="overflow-hidden border-primary/15 bg-gradient-to-br from-primary/5 via-elevation-level1 to-elevation-level1"
           >
             <CardContent className="pt-(--card-spacing)">
               <div className="grid gap-4 sm:grid-cols-[1fr_auto_1fr] sm:items-center">
@@ -277,7 +277,7 @@ export function StockTransferDetailPage({
             </CardContent>
           </Card>
 
-          <Card size="sm" className="ring-foreground/10">
+          <Card size="sm">
             <CardHeader className="border-b pb-3">
               <div className="flex items-center gap-2">
                 <span className="flex size-7 items-center justify-center rounded-md bg-muted text-muted-foreground">
@@ -348,7 +348,7 @@ export function StockTransferDetailPage({
           </Card>
 
           {transfer.remarks.trim() ? (
-            <Card size="sm" className="ring-foreground/10">
+            <Card size="sm">
               <CardHeader className="border-b pb-3">
                 <CardTitle>Remarks</CardTitle>
               </CardHeader>
@@ -362,7 +362,7 @@ export function StockTransferDetailPage({
 
           {transfer.status === "rejected" &&
           transfer.rejectionReason?.trim() ? (
-            <Card size="sm" className="ring-destructive/20">
+            <Card size="sm" className="border-error/20">
               <CardHeader className="border-b pb-3">
                 <CardTitle className="text-destructive">
                   Rejection reason
@@ -378,7 +378,7 @@ export function StockTransferDetailPage({
         </div>
 
         <aside className="lg:sticky lg:top-4 lg:self-start">
-          <Card size="sm" className="ring-foreground/10">
+          <Card size="sm">
             <CardHeader className="border-b pb-3">
               <CardTitle>Details</CardTitle>
               <CardDescription>Transfer metadata</CardDescription>

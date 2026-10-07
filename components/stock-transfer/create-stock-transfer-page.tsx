@@ -100,7 +100,7 @@ export function CreateStockTransferPage() {
     return (
       <div className="flex flex-col gap-4">
         <PageHeader title="New Stock Out" breadcrumb={backButton} />
-        <Card size="sm" className="ring-foreground/10">
+        <Card size="sm">
           <CardContent className="pt-(--card-spacing) text-sm text-muted-foreground">
             Stock Out is raised by the other location asking for your stock. Use
             Stock In to request stock into this location.
@@ -114,7 +114,7 @@ export function CreateStockTransferPage() {
     return (
       <div className="flex flex-col gap-4">
         <PageHeader title="New Stock In" breadcrumb={backButton} />
-        <Card size="sm" className="ring-foreground/10">
+        <Card size="sm">
           <CardContent className="pt-(--card-spacing) text-sm text-muted-foreground">
             Select a branch to create a stock request.
           </CardContent>
@@ -131,7 +131,7 @@ export function CreateStockTransferPage() {
     return (
       <div className="flex flex-col gap-4">
         <PageHeader title="New Stock In" breadcrumb={backButton} />
-        <Card size="sm" className="ring-foreground/10">
+        <Card size="sm">
           <CardContent className="pt-(--card-spacing) text-sm text-muted-foreground">
             No source branch is available. Add another active branch to request
             stock from.

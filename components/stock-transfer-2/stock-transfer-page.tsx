@@ -171,7 +171,7 @@ export function StockTransferPage() {
         }
       />
 
-      <Card size="sm" className="ring-foreground/10">
+      <Card size="sm">
         <CardContent className="flex items-start gap-3 pt-(--card-spacing) text-sm">
           <InfoIcon className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
           <div className="text-muted-foreground">

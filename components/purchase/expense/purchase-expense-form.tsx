@@ -275,7 +275,7 @@ export function PurchaseExpenseForm({
           }}
         />
 
-        <Card size="sm" className="ring-foreground/10">
+        <Card size="sm">
           <CardContent className="flex flex-col gap-5 pt-(--card-spacing)">
             {isWithBill ? (
               <>
