@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { CalendarIcon, ChevronDownIcon, PlusIcon, Trash2Icon } from "lucide-react"
+import { CalendarIcon, PlusIcon, Trash2Icon } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
@@ -19,8 +19,14 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { NativeSelect } from "@/components/ui/native-select"
-import { Textarea } from "@/components/ui/textarea"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { TextArea } from "@/components/ui/text-area"
 import { todayIsoDate } from "@/lib/branches/storage"
 import { formatCurrency } from "@/lib/format"
 import { mockPaymentTerms } from "@/lib/mock/payment-terms"
@@ -291,23 +297,33 @@ export function PurchaseOrderForm({
                     <FormLabel>
                       Supplier <span className="text-destructive">*</span>
                     </FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <NativeSelect
+                    <Select
+                      name={field.name}
+                      value={field.value}
+                      onValueChange={(value) => {
+                        field.onChange(value)
+                        // requisitions are per supplier: a stale one would leave the trigger blank
+                        form.setValue("referenceId", "")
+                      }}
+                      disabled={field.disabled}
+                    >
+                      <FormControl>
+                        <SelectTrigger
+                          ref={field.ref}
+                          onBlur={field.onBlur}
                           aria-label="Supplier"
-                          className="pr-8"
-                          {...field}
                         >
-                          <option value="">Select supplier…</option>
-                          {suppliers.map((supplier) => (
-                            <option key={supplier.id} value={supplier.id}>
-                              {supplier.name}
-                            </option>
-                          ))}
-                        </NativeSelect>
-                        <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 text-muted-foreground opacity-50" />
-                      </div>
-                    </FormControl>
+                          <SelectValue placeholder="Select supplier…" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {suppliers.map((supplier) => (
+                          <SelectItem key={supplier.id} value={supplier.id}>
+                            {supplier.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -319,28 +335,35 @@ export function PurchaseOrderForm({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Reference</FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <NativeSelect
+                    <Select
+                      name={field.name}
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      disabled={requisitionOptions.length === 0}
+                    >
+                      <FormControl>
+                        <SelectTrigger
+                          ref={field.ref}
+                          onBlur={field.onBlur}
                           aria-label="Reference"
-                          className="pr-8"
-                          disabled={requisitionOptions.length === 0}
-                          {...field}
                         >
-                          <option value="">
-                            {requisitionOptions.length === 0
-                              ? "No requisitions available"
-                              : "Select requisition…"}
-                          </option>
-                          {requisitionOptions.map((ref) => (
-                            <option key={ref.id} value={ref.id}>
-                              {ref.id}
-                            </option>
-                          ))}
-                        </NativeSelect>
-                        <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 text-muted-foreground opacity-50" />
-                      </div>
-                    </FormControl>
+                          <SelectValue
+                            placeholder={
+                              requisitionOptions.length === 0
+                                ? "No requisitions available"
+                                : "Select requisition…"
+                            }
+                          />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {requisitionOptions.map((ref) => (
+                          <SelectItem key={ref.id} value={ref.id}>
+                            {ref.id}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -398,23 +421,29 @@ export function PurchaseOrderForm({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Payment Period</FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <NativeSelect
+                    <Select
+                      name={field.name}
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      disabled={field.disabled}
+                    >
+                      <FormControl>
+                        <SelectTrigger
+                          ref={field.ref}
+                          onBlur={field.onBlur}
                           aria-label="Payment Period"
-                          className="pr-8"
-                          {...field}
                         >
-                          <option value="">Select…</option>
-                          {paymentTerms.map((term) => (
-                            <option key={term.id} value={term.id}>
-                              {term.name}
-                            </option>
-                          ))}
-                        </NativeSelect>
-                        <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 text-muted-foreground opacity-50" />
-                      </div>
-                    </FormControl>
+                          <SelectValue placeholder="Select…" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {paymentTerms.map((term) => (
+                          <SelectItem key={term.id} value={term.id}>
+                            {term.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -472,7 +501,7 @@ export function PurchaseOrderForm({
                           onChange={(event) =>
                             updateRow(row.key, { quantity: event.target.value })
                           }
-                          className="h-9 text-right tabular-nums"
+                          className="text-right tabular-nums"
                           aria-label={`Quantity for line ${index + 1}`}
                         />
                         {row.unit ? (
@@ -491,7 +520,7 @@ export function PurchaseOrderForm({
                         onChange={(event) =>
                           updateRow(row.key, { rate: event.target.value })
                         }
-                        className="h-9 text-right tabular-nums"
+                        className="text-right tabular-nums"
                         aria-label={`Rate for line ${index + 1}`}
                       />
                       <Input
@@ -507,28 +536,28 @@ export function PurchaseOrderForm({
                             discountPercent: event.target.value,
                           })
                         }
-                        className="h-9 text-right tabular-nums"
+                        className="text-right tabular-nums"
                         aria-label={`Discount for line ${index + 1}`}
                       />
-                      <div className="relative">
-                        <NativeSelect
-                          aria-label={`VAT for line ${index + 1}`}
-                          className="h-9 pr-7 text-sm"
-                          value={row.vat}
-                          onChange={(event) =>
-                            updateRow(row.key, {
-                              vat: event.target.value as PurchaseOrderVatOption,
-                            })
-                          }
-                        >
+                      <Select
+                        value={row.vat}
+                        onValueChange={(value) =>
+                          updateRow(row.key, {
+                            vat: value as PurchaseOrderVatOption,
+                          })
+                        }
+                      >
+                        <SelectTrigger aria-label={`VAT for line ${index + 1}`}>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
                           {PURCHASE_ORDER_VAT_OPTIONS.map((option) => (
-                            <option key={option} value={option}>
+                            <SelectItem key={option} value={option}>
                               {purchaseOrderVatLabels[option]}
-                            </option>
+                            </SelectItem>
                           ))}
-                        </NativeSelect>
-                        <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-2 size-3.5 -translate-y-1/2 text-muted-foreground opacity-50" />
-                      </div>
+                        </SelectContent>
+                      </Select>
                       <div className="flex h-9 items-center justify-end font-medium tabular-nums">
                         {formatCurrency(rowAmount(row))}
                       </div>
@@ -558,7 +587,7 @@ export function PurchaseOrderForm({
                   <FormItem>
                     <FormLabel>Remarks</FormLabel>
                     <FormControl>
-                      <Textarea
+                      <TextArea
                         placeholder="Visible on the printed order"
                         rows={4}
                         className="min-h-24"
@@ -583,6 +612,7 @@ export function PurchaseOrderForm({
                     Additional Discount
                   </span>
                   <Input
+                    size="32"
                     type="number"
                     min={0}
                     step="any"
@@ -591,7 +621,7 @@ export function PurchaseOrderForm({
                     onChange={(event) =>
                       setAdditionalDiscount(Number(event.target.value) || 0)
                     }
-                    className="h-8 w-28 text-right tabular-nums"
+                    className="w-28 text-right tabular-nums"
                     aria-label="Additional discount"
                   />
                 </div>

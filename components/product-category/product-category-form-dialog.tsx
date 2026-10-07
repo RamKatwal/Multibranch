@@ -25,7 +25,13 @@ import {
   FormDialogTitle,
 } from "@/components/ui/form-dialog"
 import { Input } from "@/components/ui/input"
-import { NativeSelect } from "@/components/ui/native-select"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import type { ProductCategory } from "@/types/product-category"
 
 const productCategoryFormSchema = z
@@ -154,6 +160,7 @@ export function ProductCategoryFormDialog({
                   <FormItem className="flex flex-row items-center gap-2 space-y-0">
                     <FormControl>
                       <Checkbox
+                        size="sm"
                         id="category-is-sub"
                         checked={field.value}
                         disabled={isEdit}
@@ -192,16 +199,25 @@ export function ProductCategoryFormDialog({
                         Choose Parent Category{" "}
                         <span className="text-destructive">*</span>
                       </FormLabel>
-                      <FormControl>
-                        <NativeSelect {...field} value={field.value ?? ""}>
-                          <option value="">Category</option>
+                      <Select
+                        name={field.name}
+                        onValueChange={field.onChange}
+                        disabled={field.disabled}
+                        value={field.value ?? ""}
+                      >
+                        <FormControl>
+                          <SelectTrigger ref={field.ref} onBlur={field.onBlur}>
+                            <SelectValue placeholder="Category" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
                           {parentOptions.map((option) => (
-                            <option key={option.id} value={option.id}>
+                            <SelectItem key={option.id} value={option.id}>
                               {option.name}
-                            </option>
+                            </SelectItem>
                           ))}
-                        </NativeSelect>
-                      </FormControl>
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}

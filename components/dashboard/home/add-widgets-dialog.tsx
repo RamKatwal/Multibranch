@@ -87,6 +87,7 @@ export function AddWidgetsDialog({
                             ) : null}
                           </span>
                           <Switch
+                            size="20"
                             checked={checked}
                             onCheckedChange={(next) =>
                               onToggleWidget(widget.id, next)

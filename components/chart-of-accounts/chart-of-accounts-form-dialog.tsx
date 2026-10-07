@@ -24,7 +24,13 @@ import {
   FormDialogTitle,
 } from "@/components/ui/form-dialog"
 import { Input } from "@/components/ui/input"
-import { NativeSelect } from "@/components/ui/native-select"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import {
   ACCOUNT_CATEGORIES,
   type ChartOfAccount,
@@ -156,15 +162,25 @@ export function ChartOfAccountFormDialog({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Account Category</FormLabel>
-                    <FormControl>
-                      <NativeSelect {...field}>
+                    <Select
+                      name={field.name}
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      disabled={field.disabled}
+                    >
+                      <FormControl>
+                        <SelectTrigger ref={field.ref} onBlur={field.onBlur}>
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
                         {ACCOUNT_CATEGORIES.map((category) => (
-                          <option key={category} value={category}>
+                          <SelectItem key={category} value={category}>
                             {category}
-                          </option>
+                          </SelectItem>
                         ))}
-                      </NativeSelect>
-                    </FormControl>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}

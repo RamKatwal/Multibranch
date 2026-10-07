@@ -208,6 +208,7 @@ function ModulePermissionTable({
                 <td className="px-4 py-3 font-medium">{item.label}</td>
                 <td className="px-3 py-3 text-center">
                   <Checkbox
+                    size="sm"
                     className="mx-auto"
                     checked={hasFullAccess}
                     disabled={readOnly}
@@ -221,6 +222,7 @@ function ModulePermissionTable({
                   <td key={action} className="px-3 py-3 text-center">
                     {actions.includes(action) ? (
                       <Checkbox
+                        size="sm"
                         className="mx-auto"
                         checked={selected.includes(action)}
                         disabled={readOnly}

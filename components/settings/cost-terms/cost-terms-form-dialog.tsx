@@ -24,7 +24,7 @@ import {
   FormDialogTitle,
 } from "@/components/ui/form-dialog"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
+import { TextArea } from "@/components/ui/text-area"
 import type { CostTerm } from "@/types/cost-term"
 
 const costTermFormSchema = z.object({
@@ -125,7 +125,7 @@ export function CostTermFormDialog({
                   <FormItem>
                     <FormLabel>Description</FormLabel>
                     <FormControl>
-                      <Textarea placeholder="Optional description" {...field} />
+                      <TextArea placeholder="Optional description" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

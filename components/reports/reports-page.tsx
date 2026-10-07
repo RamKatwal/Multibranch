@@ -87,10 +87,11 @@ export function ReportsPage() {
           <div className="relative w-full sm:w-60">
             <SearchIcon className="pointer-events-none absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-muted-foreground" />
             <Input
+              size="32"
               placeholder="Search reports..."
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              className="h-8 pl-9 text-xs"
+              className="pl-9"
             />
           </div>
         }

@@ -43,9 +43,9 @@ rather than hand-rolling equivalents.
 | Checkbox | `components/ui/checkbox.tsx` | 25 |
 | Tabs | `components/ui/tabs.tsx` | 25 |
 | Spinner | `components/ui/spinner.tsx` | 18 |
-| Textarea | `components/ui/textarea.tsx` | 18 |
+| Text Area | `components/ui/text-area.tsx` | 18 |
 | Form Dialog | `components/ui/form-dialog.tsx` | 15 |
-| Native Select | `components/ui/native-select.tsx` | 15 |
+| Select | `components/ui/select.tsx` | 33 |
 | Popover | `components/ui/popover.tsx` | 13 |
 | Command | `components/ui/command.tsx` | 12 |
 | Avatar | `components/ui/avatar.tsx` | 6 |

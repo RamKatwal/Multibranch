@@ -1,45 +1,56 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { CheckIcon } from "lucide-react"
+import * as React from "react";
+import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
+import { type VariantProps, cva } from "class-variance-authority";
+import { Check, Minus } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-import { cn } from "@/lib/utils"
+type CheckboxProps = React.ComponentProps<typeof CheckboxPrimitive.Root> &
+  VariantProps<typeof checkboxVariants> & {
+    icon?: React.ReactNode;
+  };
 
-type CheckboxProps = Omit<
-  React.ComponentProps<"button">,
-  "onChange" | "checked"
-> & {
-  checked?: boolean
-  onCheckedChange?: (checked: boolean) => void
-}
+// Define the variants for the Checkbox using cva.
+const checkboxVariants = cva(
+  cn(
+    "group peer bg-bg border-border ring-offset-bg shrink-0 border focus-visible:outline-none",
+    "focus-visible:ring-primary focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+    "data-[state=checked]:bg-primary data-[state=checked]:border-primary data-[state=indeterminate]:bg-primary data-[state=indeterminate]:border-primary data-[state=checked]:text-primary-fg data-[state=indeterminate]:text-primary-fg",
+    "aria-invalid:border-error aria-invalid:ring-error",
+    "[[data-invalid=true]_&]:border-error [[data-invalid=true]_&]:ring-error",
+  ),
+  {
+    variants: {
+      size: {
+        sm: "size-4 rounded-sm [&_svg]:size-3.5",
+        md: "size-5 rounded-md [&_svg]:size-4",
+        lg: "size-6 rounded-md [&_svg]:size-4.5",
+      },
+    },
+    defaultVariants: {
+      size: "md",
+    },
+  },
+);
 
-function Checkbox({
-  className,
-  checked = false,
-  onCheckedChange,
-  disabled,
-  ...props
-}: CheckboxProps) {
+function Checkbox({ className, size, icon, ...props }: CheckboxProps) {
   return (
-    <button
-      type="button"
-      role="checkbox"
-      aria-checked={checked}
+    <CheckboxPrimitive.Root
       data-slot="checkbox"
-      disabled={disabled}
-      className={cn(
-        "inline-flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-input bg-background shadow-xs transition-colors outline-none",
-        "focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30",
-        "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
-        checked && "border-primary bg-primary text-primary-foreground",
-        className
-      )}
-      onClick={() => onCheckedChange?.(!checked)}
+      className={cn(checkboxVariants({ size }), className)}
       {...props}
     >
-      {checked ? <CheckIcon className="size-3" strokeWidth={3} /> : null}
-    </button>
-  )
+      <CheckboxPrimitive.Indicator
+        data-slot="checkbox-indicator"
+        className="flex items-center justify-center text-current"
+      >
+        <div className="group-data-[state=indeterminate]:hidden">{icon || <Check />}</div>
+        <Minus className="hidden group-data-[state=indeterminate]:block" />
+      </CheckboxPrimitive.Indicator>
+    </CheckboxPrimitive.Root>
+  );
 }
+Checkbox.displayName = CheckboxPrimitive.Root.displayName;
 
-export { Checkbox }
+export { Checkbox };

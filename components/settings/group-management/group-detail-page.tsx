@@ -11,7 +11,7 @@ import { PermissionMatrix } from "@/components/settings/group-management/permiss
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
+import { TextArea } from "@/components/ui/text-area"
 import {
   canCustomizeGroupDashboards,
   getCurrentUser,
@@ -183,7 +183,7 @@ export function GroupDetailPage({ groupId }: { groupId: string }) {
         </label>
         <label className="space-y-1.5">
           <span className="text-sm font-medium">Description</span>
-          <Textarea
+          <TextArea
             className="min-h-20"
             value={configuration.description}
             placeholder="Describe who belongs to this group."

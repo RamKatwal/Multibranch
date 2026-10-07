@@ -95,10 +95,11 @@ export function SearchAddSupplierDialog({
             <div className="relative flex items-center">
               <SearchIcon className="pointer-events-none absolute left-3 size-4 text-muted-foreground" />
               <Input
+                size="32"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search supplier by name or PAN..."
-                className="h-8.5 pr-9 pl-9 text-xs"
+                className="pr-9 pl-9"
                 autoFocus
               />
               {query ? (

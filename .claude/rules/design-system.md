@@ -83,25 +83,27 @@ re-add with the CLI) · ⏳ shadcn on Base UI (migrate) · ➖ no Radian equival
 | `spinner`, `carousel`, `tooltip`, `popover`, `badge` | ✅ | same name | |
 | `dropdown-menu` | ✅ | `dropdown-menu` | `DropdownMenuSeparator` is `DropdownMenuDivider`; local `variant="destructive"` on items (§9) |
 | `button` | ✅ | `button` (`Button`, `IconButton`, `ButtonGroup`, `CompactButton`) | `children` optional (transitional, §9) |
-| `input`, `checkbox`, `switch`, `avatar`, `breadcrumb`, `collapsible`, `label`, `skeleton` | ⏳ | same name | |
-| `textarea` | ⏳ | `text-area` | |
-| `native-select` | ⏳ | `select` | |
+| `input`, `label`, `form` | ✅ | same name | `Input` takes `size` `"28"…"48"` (default 36); `InputWrapper`/`InputGroup`/`InputAddon` for icons and addons |
+| `text-area` | ✅ | `text-area` (`TextArea`) | Replaced `textarea`; resizable unless `resizable={false}` |
+| `select` | ✅ | `select` | Replaced `native-select`; in a form, `FormControl` wraps `SelectTrigger` (§9) |
+| `checkbox`, `switch` | ✅ | same name | Local token edit for dark mode (§9). App default sizes: checkbox `sm`, switch `"20"` |
+| `avatar`, `breadcrumb`, `collapsible`, `skeleton` | ⏳ | same name | |
 | `tabs` | ⏳ | `tabs`, plus `toggle-group` for filter rows | Keep the `ui-tabs.mdc` look |
 | `dialog` | ✅ | `dialog` | Header / Body / Footer bring the padding and dividers; close button lives in `DialogTitle` |
 | `sheet`, `drawer` | ➖ | — | **Staying on Base UI by decision** (§9). Don't migrate |
 | `sidebar` | ⏳ | `sidebar` | Its mobile view uses `sheet`; decide before migrating |
 | `separator` | ⏳ | `divider` | |
-| `command` (69%), `form` (75%) | ⏳ | same name | |
+| `command` (69%) | ⏳ | same name | Still uses the legacy `input-group` |
 | `card`, `chart`, `divider`, `otp-field` | 🟡 | same name | 87–98% the same |
 | `button-group` | ➖ | `ButtonGroup` in `button`, or `toggle-group` | |
-| `input-group` | ➖ | check Radian `input` slots when migrating it | |
+| `input-group` | ➖ | Radian `InputWrapper`/`InputGroup` in `input` | Legacy; only `command` uses it. Delete it when `command` migrates |
 | `form-dialog` | ➖ | — | Local composite on Radian `dialog` (width presets, scrolling body); belongs in tier 2 |
 | `sonner` | ➖ | — | Radian has no registry item. Keep it and centralize `toast` here |
 
 **Not in the repo yet** (add with the CLI when a page needs one): accordion, alert, alert-dialog,
 aspect-ratio, banner, calendar, code-area, context-menu, currency-input, empty, file-upload,
 hover-card, menubar, navigation-menu, pagination, progress, radio-group, resizable, scroll-area,
-select, slider, stepper, table, text-area, toggle, toggle-group.
+slider, stepper, table, toggle, toggle-group.
 
 ## 5. Code ↔ Figma mapping
 - Figma component = code export; Figma variant property = prop; values in lower case.
@@ -229,3 +231,34 @@ select, slider, stepper, table, text-area, toggle, toggle-group.
   Status badges still get their colors from className maps (`statusBadgeClassName`, `STATUS_BADGE_CLASSNAME`…,
   about 15 files with default-palette classes). Next step: replace those maps with Radian
   `variant="soft" color="success|warning|error|info|neutral"`, one status → color map per module.
+- 2026-10-06: **Form controls migrated to Radian**: `input`, `label`, `form`, `checkbox`, `switch` re-added from the
+  CLI; `textarea` → `text-area` (`TextArea`, 18) and `native-select` → `select` (Radix Select, 33) replace the old
+  files, which are deleted. Mapping: Input `h-9` → default size, `h-8` → `size="32"` (9; their `text-xs` is gone, so
+  search inputs are 14px), `h-8.5` → `"32"` (1). Checkbox → `size="sm"` (16px, as before; Radian's default is 20px);
+  `onCheckedChange` now gets Radix's `CheckedState`, so table handlers pass `value === true`. Switch → `size="20"`.
+  Radian's `TextArea` is user-resizable and no longer grows with its content (`rows` now sets the height);
+  `resize-none` became `resizable={false}`. `form.tsx` uses `@radix-ui/react-slot` again (the hand-rolled Slot is gone).
+- 2026-10-06: **Select pattern.** `<NativeSelect {...field}>` + `<option>` became `<Select name value onValueChange
+  disabled>` → `<FormControl><SelectTrigger ref onBlur><SelectValue placeholder=…/></SelectTrigger></FormControl>` →
+  `<SelectContent><SelectItem>`. `FormControl` goes on the trigger, not on `Select` (the root renders no element). The
+  `relative` wrapper and its `ChevronDownIcon` are gone (the trigger has its own). Radix forbids `<SelectItem value="">`:
+  the old empty option is the `SelectValue` placeholder, so **a chosen value can't be cleared back to empty** (matters
+  for optional fields such as Purchase order → Reference). Add a clear action if a form needs it. In scripted tests use
+  a real click and `getByRole("option")`.
+- 2026-10-06: Local token edits in Radian files, for the Gray primary whose dark `primary/key` is white: `checkbox.tsx`
+  checked/indeterminate `text-white` → `text-primary-fg`; `switch.tsx` thumb gets `data-[state=checked]:bg-primary-fg`.
+  Upstream's white check mark and white thumb were invisible on the white track in dark mode. Reapply after a CLI re-add.
+- 2026-10-06: `components/ui/input-group.tsx` (shadcn) is kept only for `command.tsx`; it now wraps Radian `Input` and
+  `TextArea`. Note the name clash: Radian's own `InputGroup` is exported from `input.tsx`. Use Radian's in new code.
+- 2026-10-06: The form controls went in **one PR as a group** (an exception to "one primitive per PR" in §6): the
+  migration handoff groups them, `form` needs `label`, and the same form files use all of them.
+- 2026-10-06: Select caveats. A `value` that matches no `SelectItem` renders an empty trigger (not the placeholder), and
+  resetting a named Select to such a value fires `onValueChange("")`. Make sure the option list contains the record's
+  current value (see `delivery-note-return-form.tsx`) and clear dependent selects when their options change (Purchase
+  order: changing the supplier clears Reference).
+- 2026-10-06: Other changes that came with the form controls: the CLI bumped `react-hook-form` to `^7.89.0`; `Input`
+  has no `min-w-0` (add it when the input is a flex child) and is `px-2.5` (was `px-3`); Switch 20 is 34px wide (was
+  36); `FormDescription` is hidden while its field has an error; `Label` no longer blocks double-click text selection;
+  `TextArea` has no `min-h-16` floor. Follow-ups: 8 search inputs still use `pl-*` plus an absolutely positioned icon
+  (move to `InputWrapper`), and five files hand-roll a native `<select>` (data-table pagination, settings section-nav,
+  settings-modal, users-permissions-nav, create-supplier-dialog): move them to Radian `Select`.

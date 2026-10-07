@@ -24,8 +24,14 @@ import {
   FormDialogTitle,
 } from "@/components/ui/form-dialog"
 import { Input } from "@/components/ui/input"
-import { NativeSelect } from "@/components/ui/native-select"
-import { Textarea } from "@/components/ui/textarea"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { TextArea } from "@/components/ui/text-area"
 import type { BankAccount } from "@/types/bank-account"
 import {
   CHEQUE_DIRECTIONS,
@@ -171,15 +177,25 @@ export function ChequeFormDialog({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Direction</FormLabel>
-                    <FormControl>
-                      <NativeSelect {...field}>
+                    <Select
+                      name={field.name}
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      disabled={field.disabled}
+                    >
+                      <FormControl>
+                        <SelectTrigger ref={field.ref} onBlur={field.onBlur}>
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
                         {CHEQUE_DIRECTIONS.map((direction) => (
-                          <option key={direction} value={direction}>
+                          <SelectItem key={direction} value={direction}>
                             {chequeDirectionLabels[direction]}
-                          </option>
+                          </SelectItem>
                         ))}
-                      </NativeSelect>
-                    </FormControl>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -210,15 +226,25 @@ export function ChequeFormDialog({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Bank Account</FormLabel>
-                    <FormControl>
-                      <NativeSelect {...field}>
+                    <Select
+                      name={field.name}
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      disabled={field.disabled}
+                    >
+                      <FormControl>
+                        <SelectTrigger ref={field.ref} onBlur={field.onBlur}>
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
                         {bankAccounts.map((account) => (
-                          <option key={account.id} value={account.id}>
+                          <SelectItem key={account.id} value={account.id}>
                             {account.bankName} — {account.accountNumber.slice(-4)}
-                          </option>
+                          </SelectItem>
                         ))}
-                      </NativeSelect>
-                    </FormControl>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -270,7 +296,7 @@ export function ChequeFormDialog({
                   <FormItem className="sm:col-span-2">
                     <FormLabel>Remarks</FormLabel>
                     <FormControl>
-                      <Textarea
+                      <TextArea
                         placeholder="Optional note about this cheque"
                         rows={2}
                         {...field}

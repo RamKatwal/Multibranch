@@ -460,6 +460,7 @@ export default function PlanSelectionForm() {
                         </span>
                       </div>
                       <Switch
+                        size="20"
                         checked={selection.branchesEnabled}
                         onCheckedChange={(checked) =>
                           update({ branchesEnabled: Boolean(checked) })
@@ -510,6 +511,7 @@ export default function PlanSelectionForm() {
                               </p>
                             </div>
                             <Checkbox
+                              size="sm"
                               checked={isSelected}
                               tabIndex={-1}
                               aria-hidden

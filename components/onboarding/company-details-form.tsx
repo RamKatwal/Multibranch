@@ -20,7 +20,13 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { NativeSelect } from "@/components/ui/native-select"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Spinner } from "@/components/ui/spinner"
 import { DEMO_COMPANY } from "@/lib/demo/company"
 import {
@@ -302,6 +308,7 @@ export default function CompanyDetailsForm() {
               <FormItem className="flex flex-row items-center gap-2 space-y-0">
                 <FormControl>
                   <Checkbox
+                    size="sm"
                     id="registered-with-vat"
                     checked={field.value}
                     onCheckedChange={field.onChange}
@@ -324,24 +331,24 @@ export default function CompanyDetailsForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Industry Type</FormLabel>
-                  <FormControl>
-                    <NativeSelect
-                      value={field.value}
-                      onChange={field.onChange}
-                      onBlur={field.onBlur}
-                      name={field.name}
-                      ref={field.ref}
-                    >
-                      <option value="" disabled>
-                        Select industry type
-                      </option>
+                  <Select
+                    value={field.value}
+                    onValueChange={field.onChange}
+                    name={field.name}
+                  >
+                    <FormControl>
+                      <SelectTrigger onBlur={field.onBlur} ref={field.ref}>
+                        <SelectValue placeholder="Select industry type" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
                       {INDUSTRY_OPTIONS.map((option) => (
-                        <option key={option} value={option}>
+                        <SelectItem key={option} value={option}>
                           {option}
-                        </option>
+                        </SelectItem>
                       ))}
-                    </NativeSelect>
-                  </FormControl>
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

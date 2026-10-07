@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { CalendarIcon, ChevronDownIcon, PlusIcon, Trash2Icon } from "lucide-react"
+import { CalendarIcon, PlusIcon, Trash2Icon } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
@@ -19,8 +19,14 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { NativeSelect } from "@/components/ui/native-select"
-import { Textarea } from "@/components/ui/textarea"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { TextArea } from "@/components/ui/text-area"
 import { todayIsoDate } from "@/lib/branches/storage"
 import { formatCurrency } from "@/lib/format"
 import { mockCustomers } from "@/lib/mock/customers"
@@ -263,23 +269,29 @@ export function SalesOrderForm({
                     <FormLabel>
                       Customer <span className="text-destructive">*</span>
                     </FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <NativeSelect
+                    <Select
+                      name={field.name}
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      disabled={field.disabled}
+                    >
+                      <FormControl>
+                        <SelectTrigger
+                          ref={field.ref}
+                          onBlur={field.onBlur}
                           aria-label="Customer"
-                          className="pr-8"
-                          {...field}
                         >
-                          <option value="">Select customer…</option>
-                          {customers.map((customer) => (
-                            <option key={customer.id} value={customer.id}>
-                              {customer.name}
-                            </option>
-                          ))}
-                        </NativeSelect>
-                        <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 text-muted-foreground opacity-50" />
-                      </div>
-                    </FormControl>
+                          <SelectValue placeholder="Select customer…" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {customers.map((customer) => (
+                          <SelectItem key={customer.id} value={customer.id}>
+                            {customer.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -381,7 +393,7 @@ export function SalesOrderForm({
                           onChange={(event) =>
                             updateRow(row.key, { quantity: event.target.value })
                           }
-                          className="h-9 text-right tabular-nums"
+                          className="text-right tabular-nums"
                           aria-label={`Quantity for line ${index + 1}`}
                         />
                         {row.unit ? (
@@ -400,7 +412,7 @@ export function SalesOrderForm({
                         onChange={(event) =>
                           updateRow(row.key, { rate: event.target.value })
                         }
-                        className="h-9 text-right tabular-nums"
+                        className="text-right tabular-nums"
                         aria-label={`Rate for line ${index + 1}`}
                       />
                       <Input
@@ -416,28 +428,28 @@ export function SalesOrderForm({
                             discountPercent: event.target.value,
                           })
                         }
-                        className="h-9 text-right tabular-nums"
+                        className="text-right tabular-nums"
                         aria-label={`Discount for line ${index + 1}`}
                       />
-                      <div className="relative">
-                        <NativeSelect
-                          aria-label={`VAT for line ${index + 1}`}
-                          className="h-9 pr-7 text-sm"
-                          value={row.vat}
-                          onChange={(event) =>
-                            updateRow(row.key, {
-                              vat: event.target.value as SalesOrderVatOption,
-                            })
-                          }
-                        >
+                      <Select
+                        value={row.vat}
+                        onValueChange={(value) =>
+                          updateRow(row.key, {
+                            vat: value as SalesOrderVatOption,
+                          })
+                        }
+                      >
+                        <SelectTrigger aria-label={`VAT for line ${index + 1}`}>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
                           {SALES_ORDER_VAT_OPTIONS.map((option) => (
-                            <option key={option} value={option}>
+                            <SelectItem key={option} value={option}>
                               {salesOrderVatLabels[option]}
-                            </option>
+                            </SelectItem>
                           ))}
-                        </NativeSelect>
-                        <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-2 size-3.5 -translate-y-1/2 text-muted-foreground opacity-50" />
-                      </div>
+                        </SelectContent>
+                      </Select>
                       <div className="flex h-9 items-center justify-end font-medium tabular-nums">
                         {formatCurrency(rowAmount(row))}
                       </div>
@@ -467,7 +479,7 @@ export function SalesOrderForm({
                   <FormItem>
                     <FormLabel>Remarks</FormLabel>
                     <FormControl>
-                      <Textarea
+                      <TextArea
                         placeholder="Visible on the printed order"
                         rows={4}
                         className="min-h-24"
@@ -492,6 +504,7 @@ export function SalesOrderForm({
                     Additional Discount
                   </span>
                   <Input
+                    size="32"
                     type="number"
                     min={0}
                     step="any"
@@ -500,7 +513,7 @@ export function SalesOrderForm({
                     onChange={(event) =>
                       setAdditionalDiscount(Number(event.target.value) || 0)
                     }
-                    className="h-8 w-28 text-right tabular-nums"
+                    className="w-28 text-right tabular-nums"
                     aria-label="Additional discount"
                   />
                 </div>
