@@ -88,7 +88,7 @@ re-add with the CLI) · ⏳ shadcn on Base UI (migrate) · ➖ no Radian equival
 | `select` | ✅ | `select` | Replaced `native-select`; in a form, `FormControl` wraps `SelectTrigger` (§9) |
 | `checkbox`, `switch` | ✅ | same name | Local token edit for dark mode (§9). App default sizes: checkbox `sm`, switch `"20"` |
 | `avatar`, `breadcrumb`, `collapsible`, `skeleton` | ⏳ | same name | |
-| `tabs` | ⏳ | `tabs`, plus `toggle-group` for filter rows | Keep the `ui-tabs.mdc` look |
+| `tabs` | ✅ | `tabs` | Local additions (§9): `variant="button"` (the `ui-tabs.mdc` look), `items` shortcut, `count` on triggers |
 | `dialog` | ✅ | `dialog` | Header / Body / Footer bring the padding and dividers; close button lives in `DialogTitle` |
 | `sheet`, `drawer` | ➖ | — | **Staying on Base UI by decision** (§9). Don't migrate |
 | `sidebar` | ⏳ | `sidebar` | Its mobile view uses `sheet`; decide before migrating |
@@ -96,7 +96,7 @@ re-add with the CLI) · ⏳ shadcn on Base UI (migrate) · ➖ no Radian equival
 | `command` (69%) | ⏳ | same name | Still uses the legacy `input-group` |
 | `card` | ✅ | `card` | Local `size="sm"` (the app's compact card, §9). Default is Radian's 24px |
 | `chart`, `divider`, `otp-field` | 🟡 | same name | 87–98% the same |
-| `button-group` | ➖ | `ButtonGroup` in `button`, or `toggle-group` | |
+| `button-group` | ➖ | `ButtonGroup` in `button` | Used by 44 report pages + data-table toolbar; see §9 before migrating |
 | `input-group` | ➖ | Radian `InputWrapper`/`InputGroup` in `input` | Legacy; only `command` uses it. Delete it when `command` migrates |
 | `form-dialog` | ➖ | — | Local composite on Radian `dialog` (width presets, scrolling body); belongs in tier 2 |
 | `sonner` | ➖ | — | Radian has no registry item. Keep it and centralize `toast` here |
@@ -122,8 +122,9 @@ slider, stepper, table, toggle, toggle-group.
   sites, verify, screenshot, then update §4 and the decisions log.
 - Don't `npx radianui@latest add` a primitive that exists here unless that PR migrates it: it
   overwrites the shadcn file and breaks its callers. Primitives the repo doesn't have yet: add freely.
-- Radian files stay identical to the CLI output. Allowed edits: a new variant or a token
-  adjustment, logged in §9. Transitional edits are listed in §9 too.
+- Radian files stay identical to the CLI output. Allowed edits: a new variant, a token adjustment, or
+  a small additive prop that call sites already depend on (`items`/`count` on tabs), each logged in §9
+  with "reapply after a CLI re-add". Transitional edits are listed in §9 too.
 - Until the overlays migrate, Base UI triggers (`render={<Button/>}`) and Radix triggers (`asChild`)
   coexist. Follow whatever the trigger's own primitive uses.
 
@@ -277,3 +278,19 @@ slider, stepper, table, toggle, toggle-group.
   the override the same way, or use the default size. Don't nest a default card inside a `sm` one. Gone with the
   shadcn file, unused here: image-first/last rounding, `group/card-header`. The border takes 1px per side (the ring
   took none), so each card's content is 2px narrower.
+- 2026-10-07: **Tabs migrated to Radian** (Radix). The app keeps its one tab look (`ui-tabs.mdc`: active = primary
+  button, inactive = outline button), which Radian doesn't have, as local additions to `components/ui/tabs.tsx`:
+  `variant="button"` on `TabsList` (joined size-32 outline buttons built from `buttonVariants`), the `items` shortcut on
+  `Tabs` for filter and status rows (26 of the 29 uses; it renders a `button` list), and `count` on `TabsTrigger`.
+  Reapply them after a CLI re-add. Radian's own variants (`default`, `open`, `ghost`) are untouched and are still the
+  `TabsList` default, so the 3 compound lists pass `variant="button"`. Filter rows did not move to `toggle-group`:
+  the rule asks for one tabs component and call sites didn't need to change. A `button` list wraps when it is too long,
+  as before (Radian's lists scroll). `items` rows use `activationMode="manual"` (arrow keys move focus, Enter/Space
+  selects, as before); compound tabs use Radix's default and select on arrow keys. The `button` variant is horizontal
+  only. Differences: `Tabs` gap is 12px (was 8px); disabled tabs are dimmed; `onValueChange` gets a string (Radix), state attributes
+  are `data-[state=active]` (was `data-active`). `tabs.tsx` no longer imports `button-group`. Radix tabs select on
+  mousedown: scripted tests need a real click, not `element.click()`.
+- 2026-10-07: **`button-group` is not a drop-in for Radian's `ButtonGroup`.** Radian's clones its direct children and
+  expects `Button`s (or one `asChild` wrapper); the 44 report toolbars put `DropdownMenu` and `Tooltip` roots inside the
+  group, with the button two or three levels down, and rely on the old file's CSS sibling selectors. Those toolbars are
+  the same code in every report page: extract one shared toolbar component first, then migrate it.
