@@ -96,7 +96,7 @@ export function PermissionMatrix({
   return (
     <Tabs defaultValue={GROUP_PERMISSION_MODULES[0]?.id ?? "inventory"}>
       <div className="border-b px-3 py-2.5">
-        <TabsList>
+        <TabsList variant="button">
           {GROUP_PERMISSION_MODULES.map((module) => (
             <TabsTrigger key={module.id} value={module.id}>
               {module.label}

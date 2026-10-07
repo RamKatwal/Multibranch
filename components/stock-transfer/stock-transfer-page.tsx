@@ -207,7 +207,7 @@ export function StockTransferPage() {
           table.setPageIndex(0)
         }}
       >
-        <TabsList>
+        <TabsList variant="button">
           <TabsTrigger value="out" count={stockOutTransfers.length}>
             {stockTransferDirectionLabels.out}
           </TabsTrigger>

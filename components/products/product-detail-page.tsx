@@ -776,7 +776,7 @@ export function ProductDetailPage({ productId }: { productId: string }) {
           }
           onValueChange={(value) => setActiveTab(String(value))}
         >
-          <TabsList>
+          <TabsList variant="button">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             {isHeadOffice ? (
               <TabsTrigger value="branches">Branches</TabsTrigger>

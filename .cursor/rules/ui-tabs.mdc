@@ -11,6 +11,8 @@ Use only `@/components/ui/tabs`. Do not add new tab bars, `FilterTabs`, segmente
 ## Visual pattern
 
 Active = primary button. Inactive = outline button. Same look as Purchase Return status tabs.
+In code this is the local `variant="button"` on Radian's `TabsList`; the `items` shortcut uses it for you.
+`onValueChange` receives a `string`; narrow it when the state is a union type.
 
 ## Filter / status bar (no panels)
 
@@ -31,7 +33,7 @@ const items: TabItem[] = [
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 
 <Tabs value={value} onValueChange={setValue}>
-  <TabsList>
+  <TabsList variant="button">
     <TabsTrigger value="inventory">Inventory</TabsTrigger>
     <TabsTrigger value="purchase">Purchase</TabsTrigger>
   </TabsList>
@@ -43,5 +45,5 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 ## Do not
 
 - Import or recreate `filter-tabs`
-- Use `components/ui/tabs` line/pill variants from shadcn as a second style
+- Use Radian's other `TabsList` variants (`default`, `open`, `ghost`) as a second style
 - Build ad-hoc `ButtonGroup` + `Button` tablists for navigation/filtering
