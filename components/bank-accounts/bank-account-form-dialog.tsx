@@ -24,7 +24,13 @@ import {
   FormDialogTitle,
 } from "@/components/ui/form-dialog"
 import { Input } from "@/components/ui/input"
-import { NativeSelect } from "@/components/ui/native-select"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { mockChartOfAccounts } from "@/lib/mock/chart-of-accounts"
 import {
   BANK_ACCOUNT_TYPES,
@@ -221,15 +227,25 @@ export function BankAccountFormDialog({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Account Type</FormLabel>
-                    <FormControl>
-                      <NativeSelect {...field}>
+                    <Select
+                      name={field.name}
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      disabled={field.disabled}
+                    >
+                      <FormControl>
+                        <SelectTrigger ref={field.ref} onBlur={field.onBlur}>
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
                         {BANK_ACCOUNT_TYPES.map((type) => (
-                          <option key={type} value={type}>
+                          <SelectItem key={type} value={type}>
                             {bankAccountTypeLabels[type]}
-                          </option>
+                          </SelectItem>
                         ))}
-                      </NativeSelect>
-                    </FormControl>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -241,15 +257,25 @@ export function BankAccountFormDialog({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Linked Ledger Account</FormLabel>
-                    <FormControl>
-                      <NativeSelect {...field}>
+                    <Select
+                      name={field.name}
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      disabled={field.disabled}
+                    >
+                      <FormControl>
+                        <SelectTrigger ref={field.ref} onBlur={field.onBlur}>
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
                         {bankGlOptions.map((option) => (
-                          <option key={option.code} value={option.code}>
+                          <SelectItem key={option.code} value={option.code}>
                             {option.name}
-                          </option>
+                          </SelectItem>
                         ))}
-                      </NativeSelect>
-                    </FormControl>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}

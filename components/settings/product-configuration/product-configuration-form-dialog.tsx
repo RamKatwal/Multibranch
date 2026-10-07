@@ -25,7 +25,13 @@ import {
   FormDialogTitle,
 } from "@/components/ui/form-dialog"
 import { Input } from "@/components/ui/input"
-import { NativeSelect } from "@/components/ui/native-select"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import {
   BARCODE_FORMATS,
   barcodeFormatLabels,
@@ -128,15 +134,25 @@ export function ProductConfigurationFormDialog({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Costing Method</FormLabel>
-                      <FormControl>
-                        <NativeSelect {...field}>
+                      <Select
+                        name={field.name}
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        disabled={field.disabled}
+                      >
+                        <FormControl>
+                          <SelectTrigger ref={field.ref} onBlur={field.onBlur}>
+                            <SelectValue />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
                           {COSTING_METHODS.map((method) => (
-                            <option key={method} value={method}>
+                            <SelectItem key={method} value={method}>
                               {costingMethodLabels[method]}
-                            </option>
+                            </SelectItem>
                           ))}
-                        </NativeSelect>
-                      </FormControl>
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -150,6 +166,7 @@ export function ProductConfigurationFormDialog({
                   <FormItem className="flex flex-row items-center gap-2 space-y-0">
                     <FormControl>
                       <Checkbox
+                        size="sm"
                         id="product-config-auto-sku"
                         checked={field.value}
                         onCheckedChange={field.onChange}
@@ -206,15 +223,25 @@ export function ProductConfigurationFormDialog({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Barcode Format</FormLabel>
-                    <FormControl>
-                      <NativeSelect {...field}>
+                    <Select
+                      name={field.name}
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      disabled={field.disabled}
+                    >
+                      <FormControl>
+                        <SelectTrigger ref={field.ref} onBlur={field.onBlur}>
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
                         {BARCODE_FORMATS.map((format) => (
-                          <option key={format} value={format}>
+                          <SelectItem key={format} value={format}>
                             {barcodeFormatLabels[format]}
-                          </option>
+                          </SelectItem>
                         ))}
-                      </NativeSelect>
-                    </FormControl>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}

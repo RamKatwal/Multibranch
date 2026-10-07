@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { CalendarIcon, ChevronDownIcon, PlusIcon, Trash2Icon } from "lucide-react"
+import { CalendarIcon, PlusIcon, Trash2Icon } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
@@ -18,10 +18,16 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { NativeSelect } from "@/components/ui/native-select"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import { Tabs } from "@/components/ui/tabs"
-import { Textarea } from "@/components/ui/textarea"
+import { TextArea } from "@/components/ui/text-area"
 import { todayIsoDate } from "@/lib/branches/storage"
 import { formatCurrency } from "@/lib/format"
 import {
@@ -282,23 +288,29 @@ export function PurchaseExpenseForm({
                         <FormLabel>
                           Supplier <span className="text-destructive">*</span>
                         </FormLabel>
-                        <FormControl>
-                          <div className="relative">
-                            <NativeSelect
+                        <Select
+                          name={field.name}
+                          value={field.value}
+                          onValueChange={field.onChange}
+                          disabled={field.disabled}
+                        >
+                          <FormControl>
+                            <SelectTrigger
+                              ref={field.ref}
+                              onBlur={field.onBlur}
                               aria-label="Supplier"
-                              className="pr-8"
-                              {...field}
                             >
-                              <option value="">Select supplier…</option>
-                              {suppliers.map((supplier) => (
-                                <option key={supplier.id} value={supplier.id}>
-                                  {supplier.name}
-                                </option>
-                              ))}
-                            </NativeSelect>
-                            <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 text-muted-foreground opacity-50" />
-                          </div>
-                        </FormControl>
+                              <SelectValue placeholder="Select supplier…" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {suppliers.map((supplier) => (
+                              <SelectItem key={supplier.id} value={supplier.id}>
+                                {supplier.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -374,23 +386,29 @@ export function PurchaseExpenseForm({
                         <FormLabel>
                           Payment Period <span className="text-destructive">*</span>
                         </FormLabel>
-                        <FormControl>
-                          <div className="relative">
-                            <NativeSelect
+                        <Select
+                          name={field.name}
+                          value={field.value}
+                          onValueChange={field.onChange}
+                          disabled={field.disabled}
+                        >
+                          <FormControl>
+                            <SelectTrigger
+                              ref={field.ref}
+                              onBlur={field.onBlur}
                               aria-label="Payment Period"
-                              className="pr-8"
-                              {...field}
                             >
-                              <option value="">Select…</option>
-                              {mockExpensePaymentPeriods.map((term) => (
-                                <option key={term.id} value={term.id}>
-                                  {term.name}
-                                </option>
-                              ))}
-                            </NativeSelect>
-                            <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 text-muted-foreground opacity-50" />
-                          </div>
-                        </FormControl>
+                              <SelectValue placeholder="Select…" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {mockExpensePaymentPeriods.map((term) => (
+                              <SelectItem key={term.id} value={term.id}>
+                                {term.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -430,23 +448,29 @@ export function PurchaseExpenseForm({
                       <FormLabel>
                         Paid From <span className="text-destructive">*</span>
                       </FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <NativeSelect
+                      <Select
+                        name={field.name}
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        disabled={field.disabled}
+                      >
+                        <FormControl>
+                          <SelectTrigger
+                            ref={field.ref}
+                            onBlur={field.onBlur}
                             aria-label="Paid From"
-                            className="pr-8"
-                            {...field}
                           >
-                            <option value="">Select…</option>
-                            {mockPaidFromAccounts.map((account) => (
-                              <option key={account.id} value={account.id}>
-                                {account.name}
-                              </option>
-                            ))}
-                          </NativeSelect>
-                          <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 text-muted-foreground opacity-50" />
-                        </div>
-                      </FormControl>
+                            <SelectValue placeholder="Select…" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {mockPaidFromAccounts.map((account) => (
+                            <SelectItem key={account.id} value={account.id}>
+                              {account.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -470,7 +494,7 @@ export function PurchaseExpenseForm({
                   <div
                     className={`grid gap-2 px-1 text-[11px] font-medium tracking-wide text-muted-foreground uppercase ${
                       isWithBill
-                        ? "grid-cols-[minmax(0,1.2fr)_5.5rem_7rem_minmax(0,1.2fr)_2.25rem]"
+                        ? "grid-cols-[minmax(0,1.2fr)_6.5rem_7rem_minmax(0,1.2fr)_2.25rem]"
                         : "grid-cols-[minmax(0,1.2fr)_7rem_minmax(0,1.2fr)_2.25rem]"
                     }`}
                   >
@@ -486,49 +510,52 @@ export function PurchaseExpenseForm({
                       key={row.key}
                       className={`grid items-center gap-2 ${
                         isWithBill
-                          ? "grid-cols-[minmax(0,1.2fr)_5.5rem_7rem_minmax(0,1.2fr)_2.25rem]"
+                          ? "grid-cols-[minmax(0,1.2fr)_6.5rem_7rem_minmax(0,1.2fr)_2.25rem]"
                           : "grid-cols-[minmax(0,1.2fr)_7rem_minmax(0,1.2fr)_2.25rem]"
                       }`}
                     >
-                      <div className="relative">
-                        <NativeSelect
+                      <Select
+                        value={row.accountId}
+                        onValueChange={(value) =>
+                          selectAccount(row.key, value)
+                        }
+                      >
+                        <SelectTrigger
                           aria-label={`Account for line ${index + 1}`}
-                          className="h-9 pr-7 text-sm"
-                          value={row.accountId}
-                          onChange={(event) =>
-                            selectAccount(row.key, event.target.value)
-                          }
                         >
-                          <option value="">Select account…</option>
+                          <SelectValue placeholder="Select account…" />
+                        </SelectTrigger>
+                        <SelectContent>
                           {mockExpenseAccounts.map((account) => (
-                            <option key={account.id} value={account.id}>
+                            <SelectItem key={account.id} value={account.id}>
                               {account.name}
-                            </option>
+                            </SelectItem>
                           ))}
-                        </NativeSelect>
-                        <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-2 size-3.5 -translate-y-1/2 text-muted-foreground opacity-50" />
-                      </div>
+                        </SelectContent>
+                      </Select>
 
                       {isWithBill ? (
-                        <div className="relative">
-                          <NativeSelect
+                        <Select
+                          value={row.vat}
+                          onValueChange={(value) =>
+                            updateRow(row.key, {
+                              vat: value as PurchaseExpenseVatOption,
+                            })
+                          }
+                        >
+                          <SelectTrigger
                             aria-label={`VAT for line ${index + 1}`}
-                            className="h-9 pr-7 text-sm"
-                            value={row.vat}
-                            onChange={(event) =>
-                              updateRow(row.key, {
-                                vat: event.target.value as PurchaseExpenseVatOption,
-                              })
-                            }
                           >
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
                             {PURCHASE_EXPENSE_VAT_OPTIONS.map((option) => (
-                              <option key={option} value={option}>
+                              <SelectItem key={option} value={option}>
                                 {purchaseExpenseVatLabels[option]}
-                              </option>
+                              </SelectItem>
                             ))}
-                          </NativeSelect>
-                          <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-2 size-3.5 -translate-y-1/2 text-muted-foreground opacity-50" />
-                        </div>
+                          </SelectContent>
+                        </Select>
                       ) : null}
 
                       <Input
@@ -541,7 +568,7 @@ export function PurchaseExpenseForm({
                         onChange={(event) =>
                           updateRow(row.key, { amount: event.target.value })
                         }
-                        className="h-9 text-right tabular-nums"
+                        className="text-right tabular-nums"
                         aria-label={`Amount for line ${index + 1}`}
                       />
 
@@ -551,7 +578,6 @@ export function PurchaseExpenseForm({
                         onChange={(event) =>
                           updateRow(row.key, { description: event.target.value })
                         }
-                        className="h-9"
                         aria-label={`Description for line ${index + 1}`}
                       />
 
@@ -582,7 +608,7 @@ export function PurchaseExpenseForm({
                     <FormItem>
                       <FormLabel>Remarks</FormLabel>
                       <FormControl>
-                        <Textarea
+                        <TextArea
                           placeholder="Enter references if any or any remarks"
                           rows={4}
                           className="min-h-24"
@@ -597,12 +623,12 @@ export function PurchaseExpenseForm({
 
                 {isWithBill ? (
                   <label className="flex items-center gap-2 text-sm">
-                    <Switch checked={tds} onCheckedChange={setTds} />
+                    <Switch size="20" checked={tds} onCheckedChange={setTds} />
                     Tax Deducted at Source (TDS)
                   </label>
                 ) : (
                   <label className="flex items-center gap-2 text-sm">
-                    <Switch checked={quickPayment} onCheckedChange={setQuickPayment} />
+                    <Switch size="20" checked={quickPayment} onCheckedChange={setQuickPayment} />
                     Quick Payment
                   </label>
                 )}

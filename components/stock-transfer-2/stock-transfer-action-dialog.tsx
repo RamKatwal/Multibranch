@@ -14,7 +14,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
+import { TextArea } from "@/components/ui/text-area"
 import type {
   StockTransfer,
   StockTransferAction,
@@ -147,7 +147,7 @@ export function StockTransferActionDialog({
             <Label htmlFor="stock-transfer-2-rejection-reason">
               Rejection reason <span className="text-destructive">*</span>
             </Label>
-            <Textarea
+            <TextArea
               id="stock-transfer-2-rejection-reason"
               value={rejectionReason}
               onChange={(event) => {

@@ -102,6 +102,7 @@ export function NotificationsSettingsPanel({
             </div>
             <div className="flex justify-center">
               <Switch
+                size="20"
                 checked={item.email}
                 onCheckedChange={(checked) =>
                   togglePreference(item.id, "email", checked)
@@ -111,6 +112,7 @@ export function NotificationsSettingsPanel({
             </div>
             <div className="flex justify-center">
               <Switch
+                size="20"
                 checked={item.inApp}
                 onCheckedChange={(checked) =>
                   togglePreference(item.id, "inApp", checked)
@@ -153,7 +155,7 @@ function SettingsToggleRow({
         <p className="text-sm font-medium">{label}</p>
         <p className="mt-0.5 text-xs text-muted-foreground">{description}</p>
       </div>
-      <Switch checked={checked} onCheckedChange={setChecked} />
+      <Switch size="20" checked={checked} onCheckedChange={setChecked} />
     </div>
   )
 }

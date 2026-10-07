@@ -19,7 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
+import { TextArea } from "@/components/ui/text-area"
 import { todayIsoDate } from "@/lib/branches/storage"
 import { getPurchasableProducts } from "@/lib/mock/purchase-orders"
 import { createPurchaseRequisitionItemId } from "@/lib/purchase-requisitions/storage"
@@ -273,7 +273,7 @@ export function PurchaseRequisitionForm({
                               requestedQuantity: event.target.value,
                             })
                           }
-                          className="h-9 text-right tabular-nums"
+                          className="text-right tabular-nums"
                           aria-label={`Requested quantity for line ${index + 1}`}
                         />
                         {row.unit ? (
@@ -316,7 +316,7 @@ export function PurchaseRequisitionForm({
                 <FormItem>
                   <FormLabel>Remarks</FormLabel>
                   <FormControl>
-                    <Textarea
+                    <TextArea
                       placeholder="Please enter references if any or any remarks"
                       rows={4}
                       className="min-h-24"

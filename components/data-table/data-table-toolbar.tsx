@@ -78,11 +78,12 @@ export function DataTableToolbar<TData>({
       <div className="relative w-full max-w-[220px]">
         <SearchIcon className="pointer-events-none absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-muted-foreground" />
         <Input
+          size="32"
           data-page-search="true"
           placeholder={searchPlaceholder}
           value={globalFilter}
           onChange={(event) => table.setGlobalFilter(event.target.value)}
-          className="h-8 pl-9 text-xs"
+          className="pl-9"
         />
       </div>
 

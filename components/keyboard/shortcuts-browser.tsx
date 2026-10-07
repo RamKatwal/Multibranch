@@ -123,7 +123,7 @@ export function ShortcutsBrowser({
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search shortcuts..."
-            className="h-9 pl-9"
+            className="pl-9"
             autoFocus={autoFocusSearch}
           />
         </div>

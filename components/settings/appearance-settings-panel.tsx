@@ -288,10 +288,11 @@ function ThemePicker({
           <div className="relative">
             <SearchIcon className="pointer-events-none absolute top-1/2 left-2 size-3.5 -translate-y-1/2 text-muted-foreground" />
             <Input
+              size="32"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search themes..."
-              className="h-8 pl-7"
+              className="pl-7"
               autoFocus
             />
           </div>
@@ -387,10 +388,11 @@ function FontPicker({
           <div className="relative">
             <SearchIcon className="pointer-events-none absolute top-1/2 left-2 size-3.5 -translate-y-1/2 text-muted-foreground" />
             <Input
+              size="32"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search fonts..."
-              className="h-8 pl-7"
+              className="pl-7"
               autoFocus
             />
           </div>

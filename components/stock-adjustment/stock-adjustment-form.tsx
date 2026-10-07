@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Tabs } from "@/components/ui/tabs"
-import { Textarea } from "@/components/ui/textarea"
+import { TextArea } from "@/components/ui/text-area"
 import { todayIsoDate } from "@/lib/branches/storage"
 import {
   getTransferableProducts,
@@ -314,7 +314,6 @@ export function StockAdjustmentForm({
                           updateRow(row.key, { batch: event.target.value })
                         }
                         placeholder="Batch"
-                        className="h-9"
                         aria-label={`Batch for line ${index + 1}`}
                       />
                       <div className="flex h-9 overflow-hidden rounded-md border">
@@ -330,7 +329,7 @@ export function StockAdjustmentForm({
                               quantity: event.target.value,
                             })
                           }
-                          className="h-9 rounded-none border-0 text-right tabular-nums shadow-none focus-visible:ring-0"
+                          className="min-w-0 rounded-none border-0 text-right tabular-nums shadow-none focus-visible:ring-0"
                           aria-label={`Quantity for line ${index + 1}`}
                         />
                         <div className="flex min-w-10 items-center justify-center border-l bg-muted/40 px-2 text-[11px] text-muted-foreground">
@@ -347,7 +346,7 @@ export function StockAdjustmentForm({
                         onChange={(event) =>
                           updateRow(row.key, { rate: event.target.value })
                         }
-                        className="h-9 text-right tabular-nums"
+                        className="text-right tabular-nums"
                         aria-label={`Rate for line ${index + 1}`}
                       />
                       <div className="flex h-9 items-center justify-end text-sm tabular-nums text-muted-foreground">
@@ -382,7 +381,7 @@ export function StockAdjustmentForm({
                 <FormItem>
                   <FormLabel>Remarks</FormLabel>
                   <FormControl>
-                    <Textarea
+                    <TextArea
                       placeholder="Optional remarks"
                       className="min-h-24"
                       maxLength={100}

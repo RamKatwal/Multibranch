@@ -8,8 +8,14 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { NativeSelect } from "@/components/ui/native-select"
-import { Textarea } from "@/components/ui/textarea"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { TextArea } from "@/components/ui/text-area"
 import { getCurrentUser } from "@/lib/auth/current-user"
 import { cn } from "@/lib/utils"
 
@@ -77,21 +83,31 @@ export function ProfileSettingsPanel({ className }: ProfileSettingsPanelProps) {
         </div>
 
         <SettingsField label="Role" description="Your position within the organization.">
-          <NativeSelect defaultValue="Staff Product Lead">
-            <option>Staff Product Lead</option>
-            <option>Administrator</option>
-            <option>Accountant</option>
-            <option>Sales Manager</option>
-          </NativeSelect>
+          <Select defaultValue="Staff Product Lead">
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Staff Product Lead">Staff Product Lead</SelectItem>
+              <SelectItem value="Administrator">Administrator</SelectItem>
+              <SelectItem value="Accountant">Accountant</SelectItem>
+              <SelectItem value="Sales Manager">Sales Manager</SelectItem>
+            </SelectContent>
+          </Select>
         </SettingsField>
 
         <SettingsField label="Time zone" description="Used for scheduling and timestamps.">
-          <NativeSelect defaultValue="(GMT+5:45) Kathmandu">
-            <option>(GMT-5) New York</option>
-            <option>(GMT+0) London</option>
-            <option>(GMT+5:45) Kathmandu</option>
-            <option>(GMT+8) Singapore</option>
-          </NativeSelect>
+          <Select defaultValue="(GMT+5:45) Kathmandu">
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="(GMT-5) New York">(GMT-5) New York</SelectItem>
+              <SelectItem value="(GMT+0) London">(GMT+0) London</SelectItem>
+              <SelectItem value="(GMT+5:45) Kathmandu">(GMT+5:45) Kathmandu</SelectItem>
+              <SelectItem value="(GMT+8) Singapore">(GMT+8) Singapore</SelectItem>
+            </SelectContent>
+          </Select>
         </SettingsField>
 
         <SettingsField label="Website" description="Optional link to your personal site.">
@@ -100,9 +116,10 @@ export function ProfileSettingsPanel({ className }: ProfileSettingsPanelProps) {
       </div>
 
       <SettingsField label="Bio" description="A short summary about you.">
-        <Textarea
+        <TextArea
           placeholder="Tell your team a little about yourself..."
-          className="min-h-24 resize-none"
+          className="min-h-24"
+          resizable={false}
         />
       </SettingsField>
 

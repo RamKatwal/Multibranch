@@ -25,7 +25,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
+import { TextArea } from "@/components/ui/text-area"
 import type { Branch } from "@/types/branch"
 
 const branchFormSchema = z.object({
@@ -196,7 +196,7 @@ export function BranchFormDialog({
                   <FormItem>
                     <FormLabel>Address</FormLabel>
                     <FormControl>
-                      <Textarea
+                      <TextArea
                         placeholder="Street, city, postal code"
                         {...field}
                       />

@@ -24,8 +24,14 @@ import {
   FormDialogTitle,
 } from "@/components/ui/form-dialog"
 import { Input } from "@/components/ui/input"
-import { NativeSelect } from "@/components/ui/native-select"
-import { Textarea } from "@/components/ui/textarea"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { TextArea } from "@/components/ui/text-area"
 import type { DocumentTemplate } from "@/types/document-template"
 import { DOCUMENT_TYPES, documentTypeLabels } from "@/types/document-type"
 
@@ -137,15 +143,25 @@ export function DocumentTemplateFormDialog({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Document Type</FormLabel>
-                      <FormControl>
-                        <NativeSelect {...field}>
+                      <Select
+                        name={field.name}
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        disabled={field.disabled}
+                      >
+                        <FormControl>
+                          <SelectTrigger ref={field.ref} onBlur={field.onBlur}>
+                            <SelectValue />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
                           {DOCUMENT_TYPES.map((type) => (
-                            <option key={type} value={type}>
+                            <SelectItem key={type} value={type}>
                               {documentTypeLabels[type]}
-                            </option>
+                            </SelectItem>
                           ))}
-                        </NativeSelect>
-                      </FormControl>
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -159,9 +175,9 @@ export function DocumentTemplateFormDialog({
                   <FormItem>
                     <FormLabel>Template Content</FormLabel>
                     <FormControl>
-                      <Textarea
+                      <TextArea
                         placeholder="Use placeholders like {{company.name}} and {{lineItems}}"
-                        className="min-h-40 font-mono text-xs"
+                        className="min-h-40 font-mono text-xs placeholder:text-xs"
                         {...field}
                       />
                     </FormControl>

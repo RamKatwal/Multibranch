@@ -83,13 +83,13 @@ export function ReportAsOfFilter({
         {preset === "custom" ? (
           <div className="mt-1 border-t px-2 pt-2 pb-1">
             <Input
+              size="32"
               type="date"
               value={customDate}
               max={todayIsoDate()}
               onChange={(event) =>
                 onChange({ preset: "custom", customDate: event.target.value })
               }
-              className="h-8 text-xs"
             />
           </div>
         ) : null}

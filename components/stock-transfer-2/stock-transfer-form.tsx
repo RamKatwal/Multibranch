@@ -25,7 +25,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
+import { TextArea } from "@/components/ui/text-area"
 import { todayIsoDate } from "@/lib/branches/storage"
 import { formatCurrency } from "@/lib/format"
 import { getBranchProductStock } from "@/lib/inventory/branch-stock"
@@ -342,7 +342,7 @@ export function StockTransferForm({
                     onChange={(e) =>
                       updateRow(row.key, { quantity: e.target.value })
                     }
-                    className="h-9 text-right tabular-nums"
+                    className="text-right tabular-nums"
                     aria-label={`Quantity for line ${index + 1}`}
                   />
                 </div>
@@ -359,7 +359,7 @@ export function StockTransferForm({
                     placeholder="0"
                     value={row.rate}
                     onChange={(e) => updateRow(row.key, { rate: e.target.value })}
-                    className="h-9 text-right tabular-nums"
+                    className="text-right tabular-nums"
                     aria-label={`Rate for line ${index + 1}`}
                   />
                 </div>
@@ -413,7 +413,7 @@ export function StockTransferForm({
               <FormItem>
                 <FormLabel>Notes</FormLabel>
                 <FormControl>
-                  <Textarea
+                  <TextArea
                     placeholder="Reason or context for this request"
                     rows={3}
                     {...field}

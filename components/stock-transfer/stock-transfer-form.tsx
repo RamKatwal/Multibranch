@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { ArrowRightIcon, CalendarIcon, ChevronDownIcon, PlusIcon, Trash2Icon } from "lucide-react"
+import { ArrowRightIcon, CalendarIcon, PlusIcon, Trash2Icon } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
@@ -19,8 +19,14 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { NativeSelect } from "@/components/ui/native-select"
-import { Textarea } from "@/components/ui/textarea"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { TextArea } from "@/components/ui/text-area"
 import { todayIsoDate } from "@/lib/branches/storage"
 import { getBranchStockMap } from "@/lib/inventory/branch-stock"
 import {
@@ -119,24 +125,24 @@ function BranchSelectField({
       <span className="text-sm font-medium">
         {label} <span className="text-destructive">*</span>
       </span>
-      <div className="relative">
-        <NativeSelect
-          value={value}
-          onChange={(event) => {
-            const next = options.find((option) => option.id === event.target.value)
-            if (next) onChange(next)
-          }}
-          aria-label={label}
-          className="pr-8"
-        >
+      <Select
+        value={value}
+        onValueChange={(id) => {
+          const next = options.find((option) => option.id === id)
+          if (next) onChange(next)
+        }}
+      >
+        <SelectTrigger aria-label={label}>
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
           {options.map((option) => (
-            <option key={option.id} value={option.id}>
+            <SelectItem key={option.id} value={option.id}>
               {option.name}
-            </option>
+            </SelectItem>
           ))}
-        </NativeSelect>
-        <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 text-muted-foreground opacity-50" />
-      </div>
+        </SelectContent>
+      </Select>
     </div>
   )
 }
@@ -394,7 +400,7 @@ export function StockTransferForm({
                     onChange={(e) =>
                       updateRow(row.key, { quantity: e.target.value })
                     }
-                    className="h-9 text-right tabular-nums"
+                    className="text-right tabular-nums"
                     aria-label={`Quantity for line ${index + 1}`}
                   />
                   <IconButton
@@ -429,7 +435,7 @@ export function StockTransferForm({
                 <FormItem>
                   <FormLabel>Notes</FormLabel>
                   <FormControl>
-                    <Textarea
+                    <TextArea
                       placeholder="Optional"
                       rows={2}
                       className="min-h-16"

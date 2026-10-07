@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { CalendarIcon, ChevronDownIcon } from "lucide-react"
+import { CalendarIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
@@ -18,7 +18,13 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { NativeSelect } from "@/components/ui/native-select"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { todayIsoDate } from "@/lib/branches/storage"
 import { mockCustomers } from "@/lib/mock/customers"
 import {
@@ -116,23 +122,29 @@ export function DeliveryNoteForm({
                     <FormLabel>
                       Customer <span className="text-destructive">*</span>
                     </FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <NativeSelect
+                    <Select
+                      name={field.name}
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      disabled={field.disabled}
+                    >
+                      <FormControl>
+                        <SelectTrigger
+                          ref={field.ref}
+                          onBlur={field.onBlur}
                           aria-label="Customer"
-                          className="pr-8"
-                          {...field}
                         >
-                          <option value="">Select customer…</option>
-                          {customers.map((customer) => (
-                            <option key={customer.id} value={customer.id}>
-                              {customer.name}
-                            </option>
-                          ))}
-                        </NativeSelect>
-                        <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 text-muted-foreground opacity-50" />
-                      </div>
-                    </FormControl>
+                          <SelectValue placeholder="Select customer…" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {customers.map((customer) => (
+                          <SelectItem key={customer.id} value={customer.id}>
+                            {customer.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -193,22 +205,29 @@ export function DeliveryNoteForm({
                     <FormLabel>
                       Invoice status <span className="text-destructive">*</span>
                     </FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <NativeSelect
+                    <Select
+                      name={field.name}
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      disabled={field.disabled}
+                    >
+                      <FormControl>
+                        <SelectTrigger
+                          ref={field.ref}
+                          onBlur={field.onBlur}
                           aria-label="Invoice status"
-                          className="pr-8"
-                          {...field}
                         >
-                          {DELIVERY_NOTE_INVOICE_STATUSES.map((status) => (
-                            <option key={status} value={status}>
-                              {deliveryNoteInvoiceStatusLabels[status]}
-                            </option>
-                          ))}
-                        </NativeSelect>
-                        <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 text-muted-foreground opacity-50" />
-                      </div>
-                    </FormControl>
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {DELIVERY_NOTE_INVOICE_STATUSES.map((status) => (
+                          <SelectItem key={status} value={status}>
+                            {deliveryNoteInvoiceStatusLabels[status]}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}

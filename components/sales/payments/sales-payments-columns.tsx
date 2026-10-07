@@ -43,18 +43,20 @@ export function createSalesPaymentColumns({
       id: "select",
       header: ({ table }) => (
         <Checkbox
+          size="sm"
           checked={
             table.getIsAllPageRowsSelected() ||
             (table.getIsSomePageRowsSelected() ? true : false)
           }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(value)}
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(value === true)}
           aria-label="Select all"
         />
       ),
       cell: ({ row }) => (
         <Checkbox
+          size="sm"
           checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(value)}
+          onCheckedChange={(value) => row.toggleSelected(value === true)}
           aria-label="Select row"
         />
       ),
