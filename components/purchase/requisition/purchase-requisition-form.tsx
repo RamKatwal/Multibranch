@@ -172,7 +172,7 @@ export function PurchaseRequisitionForm({
         onSubmit={form.handleSubmit(handleSubmit)}
         className="flex flex-col gap-4"
       >
-        <Card size="sm" className="ring-foreground/10">
+        <Card size="sm">
           <CardContent className="flex flex-col gap-5 pt-(--card-spacing)">
             <div className="grid gap-3 sm:grid-cols-2 sm:items-end">
               <FormField

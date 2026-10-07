@@ -92,7 +92,7 @@ export function CreatePurchaseRequisitionPage() {
     return (
       <div className="flex flex-col gap-4">
         <PageHeader title="Edit Purchase Requisition" breadcrumb={backButton} />
-        <Card size="sm" className="ring-foreground/10">
+        <Card size="sm">
           <CardContent className="pt-(--card-spacing) text-sm text-muted-foreground">
             This purchase requisition could not be found.
           </CardContent>

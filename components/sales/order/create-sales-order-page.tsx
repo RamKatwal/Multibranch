@@ -84,7 +84,7 @@ export function CreateSalesOrderPage() {
     return (
       <div className="flex flex-col gap-4">
         <PageHeader title="Edit Sales Order" breadcrumb={backButton} />
-        <Card size="sm" className="ring-foreground/10">
+        <Card size="sm">
           <CardContent className="pt-(--card-spacing) text-sm text-muted-foreground">
             This sales order could not be found.
           </CardContent>

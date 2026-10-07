@@ -91,7 +91,7 @@ export function CreateDeliveryNoteReturnPage() {
           title="Edit Return Delivery Note"
           breadcrumb={backButton}
         />
-        <Card size="sm" className="ring-foreground/10">
+        <Card size="sm">
           <CardContent className="pt-(--card-spacing) text-sm text-muted-foreground">
             This return delivery note could not be found.
           </CardContent>

@@ -103,7 +103,7 @@ function FormSection({
   children: React.ReactNode
 }) {
   return (
-    <Card size="sm" className="ring-foreground/10">
+    <Card size="sm">
       <CardHeader className="border-b pb-3">
         <CardTitle>{title}</CardTitle>
         {description ? <CardDescription>{description}</CardDescription> : null}

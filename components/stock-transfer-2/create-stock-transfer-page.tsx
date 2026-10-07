@@ -72,7 +72,7 @@ export function CreateStockTransferPage() {
     return (
       <div className="flex flex-col gap-4">
         <PageHeader title="New Stock Request" breadcrumb={backButton} />
-        <Card size="sm" className="ring-foreground/10">
+        <Card size="sm">
           <CardContent className="pt-(--card-spacing) text-sm text-muted-foreground">
             Head Office cannot request stock from itself. Switch to a branch from
             the branch selector to raise a stock request.
