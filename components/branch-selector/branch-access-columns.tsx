@@ -41,9 +41,8 @@ export function getBranchAccessColumns({
               name={item.companyName}
               domain={item.companyDomain}
               logoUrl={item.companyLogoUrl}
-              size="default"
+              size="32"
               showTooltip={false}
-              className="size-8 rounded-md"
             />
             <div className="min-w-0">
               <p className="truncate font-medium">{item.companyName}</p>

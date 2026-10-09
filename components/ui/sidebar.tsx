@@ -9,7 +9,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import { Button, IconButton } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Separator } from "@/components/ui/separator"
+import { Divider } from "@/components/ui/divider"
 import {
   Sheet,
   SheetContent,
@@ -358,9 +358,9 @@ function SidebarFooter({ className, ...props }: React.ComponentProps<"div">) {
 function SidebarSeparator({
   className,
   ...props
-}: React.ComponentProps<typeof Separator>) {
+}: React.ComponentProps<typeof Divider>) {
   return (
-    <Separator
+    <Divider
       data-slot="sidebar-separator"
       data-sidebar="separator"
       className={cn("mx-2 w-auto bg-sidebar-border", className)}

@@ -87,15 +87,15 @@ re-add with the CLI) · ⏳ shadcn on Base UI (migrate) · ➖ no Radian equival
 | `text-area` | ✅ | `text-area` (`TextArea`) | Replaced `textarea`; resizable unless `resizable={false}` |
 | `select` | ✅ | `select` | Replaced `native-select`; in a form, `FormControl` wraps `SelectTrigger` (§9) |
 | `checkbox`, `switch` | ✅ | same name | Local token edit for dark mode (§9). App default sizes: checkbox `sm`, switch `"20"` |
-| `avatar`, `breadcrumb`, `collapsible`, `skeleton` | ⏳ | same name | |
+| `avatar`, `breadcrumb`, `collapsible`, `skeleton`, `otp-field` | ✅ | same name | Avatar `size` is the diameter in px (`"16"`–`"120"`, app uses 24–64, default 40); avatar groups are `components/shared/avatar-group` |
 | `tabs` | ✅ | `tabs` | Local additions (§9): `variant="button"` (the `ui-tabs.mdc` look), `items` shortcut, `count` on triggers |
 | `dialog` | ✅ | `dialog` | Header / Body / Footer bring the padding and dividers; close button lives in `DialogTitle` |
 | `sheet`, `drawer` | ➖ | — | **Staying on Base UI by decision** (§9). Don't migrate |
 | `sidebar` | ⏳ | `sidebar` | Its mobile view uses `sheet`; decide before migrating |
-| `separator` | ⏳ | `divider` | |
 | `command` (69%) | ⏳ | same name | Still uses the legacy `input-group` |
 | `card` | ✅ | `card` | Local `size="sm"` (the app's compact card, §9). Default is Radian's 24px |
-| `chart`, `divider`, `otp-field` | 🟡 | same name | 87–98% the same |
+| `divider` | ✅ | `divider` | Replaced `separator` |
+| `chart` | 🟡 | same name | 99% the same |
 | `button-group` | ➖ | `ButtonGroup` in `button` | Used by 44 report pages + data-table toolbar; see §9 before migrating |
 | `input-group` | ➖ | Radian `InputWrapper`/`InputGroup` in `input` | Legacy; only `command` uses it. Delete it when `command` migrates |
 | `form-dialog` | ➖ | — | Local composite on Radian `dialog` (width presets, scrolling body); belongs in tier 2 |
@@ -294,3 +294,23 @@ slider, stepper, table, toggle, toggle-group.
   expects `Button`s (or one `asChild` wrapper); the 44 report toolbars put `DropdownMenu` and `Tooltip` roots inside the
   group, with the button two or three levels down, and rely on the old file's CSS sibling selectors. Those toolbars are
   the same code in every report page: extract one shared toolbar component first, then migrate it.
+- 2026-10-09: **Avatar, Breadcrumb, Collapsible, Skeleton, OTP field and Divider migrated to Radian** in one PR (small
+  primitives with 1–6 users each; another exception to "one primitive per PR"). `separator.tsx` is deleted: its
+  users (navbar, company configuration, user detail sheet, and the legacy `sidebar.tsx` and `button-group.tsx`) use
+  `Divider`, which is lighter (`soft-alpha`, was `border`). Avatar: `size` is the diameter in px; old `sm` → `"24"`,
+  default → `"32"`, `lg` → `"40"`, `className="size-9"` → `"36"`, `size-12` → `"48"`. Radian's default is 40, so
+  always pass `size`; `CompanyAvatar` takes the same px sizes (it had `sm`/`default`/`lg`). Initials are semibold and the fallback is `primary-focus`/`primary-text` (was muted); the
+  old hairline border (`after:` overlay) is gone. Radian has no avatar group: `AvatarGroup` and `AvatarGroupCount`
+  moved to `components/shared/avatar-group.tsx` (the count is now a Radian `Avatar` with a neutral fallback). The group
+  rings children with `data-slot` `avatar` or `tooltip-trigger`, because an avatar inside `TooltipTrigger asChild`
+  gets the trigger's `data-slot`. Breadcrumb: `render={<Link/>}` → `asChild`, Lucide
+  chevron, 14px text (was 12px). Collapsible: the sidebar's `CollapsibleTrigger render={<SidebarMenuButton/>}` →
+  `asChild`; the open state is `data-[state=open]` (was `data-open`); closed content unmounts and opens with
+  `tw-animate-css`'s collapsible animation (the sidebar's submenus animate with their own framer-motion panel, not
+  `CollapsibleContent`). Skeleton: `bg-fill2`, no default radius. OTP field: re-added (89% → 100%); upstream's default
+  `validationType` is `"alphanumeric"` (was `"numeric"`, the one caller passes it), 6px gap (was 8px), `rounded-lg`.
+  Divider is decorative by default (`role="none"`; the Base UI separator was `role="separator"`) and a vertical one
+  is `h-full`.
+- 2026-10-09: Radian's `TooltipContent` isn't portaled: while open, its `[data-radix-popper-content-wrapper]` is a
+  sibling of the trigger, so `*:`, `space-*` and `divide-*` utilities on the trigger's parent also style the open
+  tooltip. Scope them with `*:data-[slot=…]:`.

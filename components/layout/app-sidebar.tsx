@@ -208,18 +208,16 @@ function NavMenuItem({ item, pathname }: { item: NavItem; pathname: string }) {
       className="group/collapsible"
     >
       <SidebarMenuItem>
-        <CollapsibleTrigger
-          render={
-            <SidebarMenuButton
-              tooltip={navTooltip(item.title, item.href)}
-              isActive={isGroupActive}
-              className="w-full"
-            />
-          }
-        >
-          <Icon />
-          <span>{item.title}</span>
-          <ChevronRight className="ml-auto size-3.5! text-sidebar-foreground/40 transition-transform group-data-[open]/collapsible:rotate-90" />
+        <CollapsibleTrigger asChild>
+          <SidebarMenuButton
+            tooltip={navTooltip(item.title, item.href)}
+            isActive={isGroupActive}
+            className="w-full"
+          >
+            <Icon />
+            <span>{item.title}</span>
+            <ChevronRight className="ml-auto size-3.5! text-sidebar-foreground/40 transition-transform group-data-[state=open]/collapsible:rotate-90" />
+          </SidebarMenuButton>
         </CollapsibleTrigger>
 
         <SidebarSubmenuPanel open={expanded} panelKey={`${item.href}-submenu`}>

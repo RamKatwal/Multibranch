@@ -9,7 +9,7 @@ import {
 } from "@/components/settings/users-permissions/grouped-branch-chips"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
+import { Divider } from "@/components/ui/divider"
 import {
   Sheet,
   SheetContent,
@@ -87,7 +87,7 @@ export function UserDetailSheet({
                 </Badge>
               </div>
 
-              <Separator className="my-4" />
+              <Divider className="my-4" />
 
               <dl className="grid grid-cols-1">
                 <DetailItem label="Address">

@@ -34,7 +34,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Separator } from "@/components/ui/separator"
+import { Divider } from "@/components/ui/divider"
 import { useIsMac } from "@/hooks/use-is-mac"
 import { getCurrentUser, isMainAdmin } from "@/lib/auth/current-user"
 import { formatShortcutParts } from "@/lib/keyboard/utils"
@@ -78,7 +78,7 @@ export function AppNavbar() {
       <div className="ml-auto flex shrink-0 items-center gap-2 px-4">
         <CreateDialog />
 
-        <Separator orientation="vertical" className="mx-1 hidden self-stretch sm:block" />
+        <Divider orientation="vertical" className="mx-1 hidden self-stretch sm:block" />
 
         <CommandSearch />
 
@@ -113,7 +113,7 @@ export function AppNavbar() {
               className="inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring/30 relative group [&_*]:cursor-pointer"
               aria-label="User menu"
             >
-              <Avatar className="size-9 cursor-pointer">
+              <Avatar size="36" className="cursor-pointer">
                 <AvatarFallback className="cursor-pointer text-xs">
                   {currentUser.initials}
                 </AvatarFallback>
@@ -130,7 +130,7 @@ export function AppNavbar() {
                 onClick={() => openSettings("profile")}
               >
                 <div className="flex w-full items-center gap-2 px-1.5 py-1.5">
-                  <Avatar size="sm">
+                  <Avatar size="24">
                     <AvatarFallback>{currentUser.initials}</AvatarFallback>
                   </Avatar>
                   <div className="flex min-w-0 flex-col">
