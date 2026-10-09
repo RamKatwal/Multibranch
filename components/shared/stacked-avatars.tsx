@@ -3,9 +3,8 @@
 import {
   Avatar,
   AvatarFallback,
-  AvatarGroup,
-  AvatarGroupCount,
 } from "@/components/ui/avatar"
+import { AvatarGroup, AvatarGroupCount } from "@/components/shared/avatar-group"
 import {
   Tooltip,
   TooltipContent,
@@ -64,8 +63,8 @@ export function StackedAvatars({
           <Tooltip key={item.key}>
             <TooltipTrigger asChild>
               <Avatar
-                size="sm"
-                className="cursor-default after:border-border"
+                size="24"
+                className="cursor-default"
                 aria-label={item.title}
               >
                 <AvatarFallback className={avatarFallbackClass}>
@@ -80,7 +79,7 @@ export function StackedAvatars({
           <Tooltip>
             <TooltipTrigger asChild>
               <AvatarGroupCount
-                className="size-6 cursor-default border border-border bg-muted text-[10px] font-medium text-muted-foreground"
+                className="cursor-default"
                 aria-label={remainingLabel}
               >
                 +{remaining}

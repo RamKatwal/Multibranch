@@ -10,7 +10,8 @@ import {
   UsersIcon,
 } from "lucide-react"
 
-import { Avatar, AvatarFallback, AvatarGroup } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { AvatarGroup } from "@/components/shared/avatar-group"
 import { Badge } from "@/components/ui/badge"
 import { Button, IconButton } from "@/components/ui/button"
 import {
@@ -111,10 +112,10 @@ function NotificationLeading({
 
 function PersonAvatar({
   person,
-  size = "default",
+  size = "32",
 }: {
   person: NotificationActor
-  size?: "default" | "sm"
+  size?: "32" | "24"
 }) {
   return (
     <Avatar size={size}>
@@ -149,7 +150,7 @@ function NotificationRich({ content }: { content: NotificationRichContent }) {
     return (
       <AvatarGroup className="mt-2">
         {content.people.map((person) => (
-          <PersonAvatar key={person.name} person={person} size="sm" />
+          <PersonAvatar key={person.name} person={person} size="24" />
         ))}
       </AvatarGroup>
     )

@@ -144,7 +144,7 @@ export function SearchAddSupplierDialog({
                       className="flex items-center justify-between gap-2.5 rounded-lg border border-border/70 bg-card px-3 py-1.5 transition-colors hover:bg-muted/30"
                     >
                       <div className="flex min-w-0 flex-1 items-center gap-2.5">
-                        <Avatar className="size-9 shrink-0">
+                        <Avatar size="36">
                           <AvatarFallback className="bg-primary/10 text-xs font-semibold text-primary">
                             {getInitials(supplier.name)}
                           </AvatarFallback>

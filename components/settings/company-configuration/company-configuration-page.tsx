@@ -10,7 +10,7 @@ import { CompanyDetailField } from "@/components/settings/company-configuration/
 import { CompanyConfigurationFormDialog } from "@/components/settings/company-configuration/company-configuration-form-dialog"
 import { PageHeader } from "@/components/layout/page-header"
 import { Button, IconButton } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
+import { Divider } from "@/components/ui/divider"
 import { appBrand } from "@/config/navigation"
 import {
   getDefaultCompanyId,
@@ -157,9 +157,8 @@ export function CompanyConfigurationPage({
                   <CompanyAvatar
                     name={profile.companyName}
                     domain={avatarDomain}
-                    size="lg"
+                    size="64"
                     showTooltip={false}
-                    avatarClassName="size-16"
                     fallbackClassName="text-base"
                   />
                 )}
@@ -206,7 +205,7 @@ export function CompanyConfigurationPage({
           </div>
         </div>
 
-        <Separator />
+        <Divider />
 
         <div className="flex flex-col gap-6 p-4 sm:p-5">
           <div>

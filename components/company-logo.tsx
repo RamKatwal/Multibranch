@@ -4,6 +4,7 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
+  type AvatarProps,
 } from "@/components/ui/avatar"
 import {
   Tooltip,
@@ -24,14 +25,10 @@ type CompanyLogoBaseProps = {
   className?: string
 }
 
-const avatarDisplayPx = {
-  sm: 24,
-  default: 32,
-  lg: 40,
-} as const
 
 type CompanyAvatarProps = CompanyLogoBaseProps & {
-  size?: "sm" | "default" | "lg"
+  /** Diameter in px, as on Radian's `Avatar`. */
+  size?: NonNullable<AvatarProps["size"]>
   showTooltip?: boolean
   avatarClassName?: string
   fallbackClassName?: string
@@ -42,7 +39,7 @@ export function CompanyAvatar({
   name,
   domain,
   logoUrl,
-  size = "sm",
+  size = "24",
   showTooltip = true,
   className,
   avatarClassName,
@@ -51,14 +48,14 @@ export function CompanyAvatar({
   const avatar = (
     <Avatar
       size={size}
-      className={cn("after:border-border/60", avatarClassName, className)}
+      className={cn(avatarClassName, className)}
       aria-label={name}
     >
       {logoUrl || domain ? (
         <AvatarImage
           src={
             logoUrl ??
-            getFaviconUrl(domain!, logoImageSize(avatarDisplayPx[size]))
+            getFaviconUrl(domain!, logoImageSize(Number(size)))
           }
           alt=""
         />

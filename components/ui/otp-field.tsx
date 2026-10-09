@@ -1,33 +1,26 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import * as OneTimePasswordFieldPrimitive from "@radix-ui/react-one-time-password-field"
-import { type VariantProps, cva } from "class-variance-authority"
+import * as React from "react";
+import * as OneTimePasswordFieldPrimitive from "@radix-ui/react-one-time-password-field";
+import { type VariantProps, cva } from "class-variance-authority";
+import { cn } from "@/lib/utils";
 
-import { cn } from "@/lib/utils"
-
-type SlotSize = NonNullable<VariantProps<typeof otpInputVariants>["size"]>
+type SlotSize = NonNullable<VariantProps<typeof otpInputVariants>["size"]>;
 type OTPContextType = {
-  size?: SlotSize
-}
-type OTPFieldProps = React.ComponentPropsWithoutRef<
-  typeof OneTimePasswordFieldPrimitive.Root
-> &
-  OTPContextType
-type OTPInputProps = React.ComponentPropsWithoutRef<
-  typeof OneTimePasswordFieldPrimitive.Input
->
+  size?: SlotSize;
+};
+type OTPFieldProps = React.ComponentPropsWithoutRef<typeof OneTimePasswordFieldPrimitive.Root> &
+  OTPContextType;
+type OTPInputProps = React.ComponentPropsWithoutRef<typeof OneTimePasswordFieldPrimitive.Input>;
 type OTPHiddenInputProps = React.ComponentPropsWithoutRef<
   typeof OneTimePasswordFieldPrimitive.HiddenInput
->
+>;
 
 const otpInputVariants = cva(
   cn(
-    "inline-flex appearance-none items-center justify-center rounded-md border border-input bg-background p-0 text-center font-semibold text-foreground shadow-xs outline-none",
-    "placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30",
-    "group-has-disabled:cursor-not-allowed group-has-disabled:opacity-50",
-    "group-aria-invalid:border-destructive group-aria-invalid:ring-2 group-aria-invalid:ring-destructive/20",
-    "[[data-invalid=true]_&]:border-destructive [[data-invalid=true]_&]:ring-2 [[data-invalid=true]_&]:ring-destructive/20"
+    "group-has-disabled:text-fg-disabled group-has-disabled:bg-fill2-alpha group-has-disabled:placeholder:text-fg-disabled placeholder:text-fg-tertiary bg-bg text-fg border-alpha focus-visible:ring-primary-focus focus-visible:border-primary-hover inline-flex appearance-none items-center justify-center rounded-lg border p-0 text-center leading-none font-semibold shadow-2xs outline-hidden outline-none group-has-disabled:cursor-not-allowed focus-visible:ring-3",
+    "group-aria-invalid:border-error group-aria-invalid:ring-error group-aria-invalid:focus-visible:ring-error-focus group-aria-invalid:focus-visible:border-error-hover",
+    "[[data-invalid=true]_&]:border-error [[data-invalid=true]_&]:ring-error [[data-invalid=true]_&]:focus-visible:ring-error-focus [[data-invalid=true]_&]:focus-visible:border-error-hover",
   ),
   {
     variants: {
@@ -43,52 +36,52 @@ const otpInputVariants = cva(
     defaultVariants: {
       size: "40",
     },
-  }
-)
+  },
+);
 
-const OTPContext = React.createContext<OTPContextType | null>(null)
+const OTPContext = React.createContext<OTPContextType | null>(null);
 
 function useOTPContext() {
-  const context = React.useContext(OTPContext)
-  if (!context) throw new Error("OTPInput must be used within an OTPField")
-  return context
+  const context = React.useContext(OTPContext);
+  if (!context) throw new Error("OTPInput must be used within an OTPField");
+  return context;
 }
 
 function OTPField({
   className,
   children,
-  validationType = "numeric",
-  size = "40",
+  validationType = "alphanumeric",
   ...props
 }: OTPFieldProps) {
-  const ctx = React.useMemo(() => ({ size }), [size])
+  const { size = "40" } = props as OTPContextType;
+  const ctx = React.useMemo(() => ({ size }), [size]);
   return (
     <OneTimePasswordFieldPrimitive.Root
       data-slot="otp-field"
       validationType={validationType}
       className={cn(
-        "group peer flex flex-nowrap gap-2 has-disabled:cursor-not-allowed",
-        className
+        "group peer flex flex-nowrap gap-1.5 has-disabled:cursor-not-allowed",
+        className,
       )}
       {...props}
     >
       <OTPContext.Provider value={ctx}>{children}</OTPContext.Provider>
     </OneTimePasswordFieldPrimitive.Root>
-  )
+  );
 }
-OTPField.displayName = "OTPField"
+OTPField.displayName = "OTPField";
 
 function OTPInput({ className, ...props }: OTPInputProps) {
-  const { size } = useOTPContext()
+  const { size } = useOTPContext();
   return (
     <OneTimePasswordFieldPrimitive.Input
       data-slot="otp-input"
       className={cn(otpInputVariants({ size }), className)}
       {...props}
     />
-  )
+  );
 }
-OTPInput.displayName = "OTPInput"
+OTPInput.displayName = "OTPInput";
 
 function OTPHiddenInput({ className, ...props }: OTPHiddenInputProps) {
   return (
@@ -97,8 +90,8 @@ function OTPHiddenInput({ className, ...props }: OTPHiddenInputProps) {
       className={className}
       {...props}
     />
-  )
+  );
 }
-OTPHiddenInput.displayName = "OTPHiddenInput"
+OTPHiddenInput.displayName = "OTPHiddenInput";
 
-export { OTPField, OTPInput, OTPHiddenInput }
+export { OTPField, OTPInput, OTPHiddenInput };

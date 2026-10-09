@@ -35,7 +35,7 @@ export function ProfileSettingsPanel({ className }: ProfileSettingsPanelProps) {
         description="A photo helps your teammates recognize you."
       >
         <div className="flex items-center gap-3">
-          <Avatar className="size-12">
+          <Avatar size="48">
             <AvatarFallback className="text-sm">
               {currentUser.initials}
             </AvatarFallback>

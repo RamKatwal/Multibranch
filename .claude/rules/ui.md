@@ -24,8 +24,8 @@ yet). Otherwise compose a pattern. Build something custom only if neither fits, 
   hooks are `use-x.ts` exporting `useX`.
 - Import primitives from `@/components/ui/<name>`. Never import a headless library (`@base-ui/react`,
   `@radix-ui/*`, `cmdk`, `vaul`) outside `components/ui` (lint error).
-- Edit a Radian file in `components/ui` only to add a variant or adjust tokens, and log it in
-  design-system.md §9.
+- Edit a Radian file in `components/ui` only to add a variant, adjust tokens, or add a small prop that
+  call sites already depend on, and log it in design-system.md §9.
 
 ## Styling
 - Radian tokens and Tailwind scale values only (design-system.md §3). No hex, no default palette
