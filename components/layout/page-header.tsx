@@ -4,12 +4,9 @@ import { cn } from "@/lib/utils"
 
 type PageHeaderProps = {
   title: React.ReactNode
-  /** Muted chip rendered next to the title, e.g. "41 reviews". */
   count?: string | number
-  /** Free-form node rendered next to the title, e.g. a status badge. */
   badge?: React.ReactNode
   actions?: React.ReactNode
-  /** Rendered above the title, e.g. a back link. */
   breadcrumb?: React.ReactNode
   className?: string
 }
