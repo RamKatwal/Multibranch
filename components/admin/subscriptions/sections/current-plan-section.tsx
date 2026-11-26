@@ -175,7 +175,7 @@ export function CurrentPlanSection({
             used={subscription.branchesUsed}
             limit={subscription.branchesLimit}
             unit="branches"
-            manageHref="/admin/organizations/branch-management"
+            manageHref="/admin/branches"
             manageLabel="Manage branches"
             updateButtonLabel="Update branches"
             onUpdate={onUpdateBranchLimits}

@@ -1,5 +1,5 @@
-import { BranchManagementPage } from "@/components/settings/branch-management/branch-management-page"
+import { redirect } from "next/navigation"
 
 export default function AdminOrganizationBranchManagementPage() {
-  return <BranchManagementPage />
+  redirect("/admin/branches")
 }

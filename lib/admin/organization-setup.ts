@@ -95,7 +95,7 @@ function setupHref(stepId: SetupStepId, org: HomeOrganization): string {
     case "company_profile":
       return `/admin/companies/${org.companyId}/configuration`
     case "branch_setup":
-      return "/admin/organizations/branch-management"
+      return "/admin/branches"
     case "user_roles":
       return "/admin/settings/users-permissions/groups"
     case "permissions":
