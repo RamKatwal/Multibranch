@@ -71,7 +71,7 @@ export function BranchesOverviewPage() {
               <CardTitle className="flex items-center gap-2">
                 <Link
                   href={href}
-                  className="rounded-sm hover:underline focus-visible:ring-2 focus-visible:ring-primary-focus focus-visible:outline-none"
+                  className="rounded-md hover:underline focus-visible:ring-2 focus-visible:ring-primary-focus focus-visible:outline-none"
                 >
                   {org.name}
                 </Link>
@@ -123,9 +123,6 @@ export function BranchesOverviewPage() {
                         <Badge
                           variant={
                             branch.status === "active" ? "soft" : "outline"
-                          }
-                          color={
-                            branch.status === "active" ? "success" : "neutral"
                           }
                           size="20"
                         >

@@ -179,7 +179,7 @@ function BranchManagementNavItem({
           >
             <Icon />
             <span>{item.title}</span>
-            <ChevronRight className="ml-auto size-3.5! text-sidebar-foreground/40 transition-transform group-data-[open]/collapsible:rotate-90" />
+            <ChevronRight className="ml-auto size-3.5! text-fg-tertiary transition-transform group-data-[state=open]/collapsible:rotate-90" />
           </SidebarMenuButton>
         </CollapsibleTrigger>
 
