@@ -132,5 +132,6 @@ export const config = {
     "/sales/:path*",
     "/accounting/:path*",
     "/settings/:path*",
+    "/admin/:path*",
   ],
 }

@@ -163,6 +163,7 @@ export function isOnboardingPath(pathname: string): boolean {
 export function isAppShellPath(pathname: string): boolean {
   return (
     pathname === "/" ||
+    pathname.startsWith("/admin") ||
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/inventory") ||
     pathname.startsWith("/purchase") ||
