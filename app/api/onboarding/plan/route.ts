@@ -60,8 +60,10 @@ export async function POST(request: Request) {
       entitlement,
       payment: null,
       paymentSubStatus: "active",
-      // Company is already done; free plan finishes onboarding
-      status: "complete",
+      // Payment step done; company setup is next
+      status: "plan_active",
+      // Adding another organization: the company step creates a new one
+      ...(existing.status === "complete" ? { companyId: null } : {}),
     })
 
     return NextResponse.json({ session, checkoutRequired: false })

@@ -39,6 +39,11 @@ import {
   saveCompanyDraft,
 } from "@/lib/onboarding/company-storage"
 import type { OnboardingSessionData } from "@/lib/onboarding/session-types"
+import {
+  isOnboardingComplete,
+  resumePathForStatus,
+} from "@/lib/onboarding/status"
+import { homeAfterOrgCreated } from "@/lib/organizations/home-after-created"
 const INDUSTRY_OPTIONS = [
   "Automobiles",
   "Retail",
@@ -169,10 +174,6 @@ export default function CompanyDetailsForm() {
     }
     saveCompanyDraft(draft)
 
-    const emailQuery = data.email.trim()
-      ? `?email=${encodeURIComponent(data.email.trim())}`
-      : ""
-
     try {
       const res = await apiJson<{ session: OnboardingSessionData }>(
         "/api/onboarding/company",
@@ -182,7 +183,12 @@ export default function CompanyDetailsForm() {
         }
       )
       saveOnboardingSessionClient(res.session)
-      router.push(`/onboarding/plan${emailQuery}`)
+      // Company is the last setup step (after payment)
+      router.push(
+        isOnboardingComplete(res.session.status)
+          ? homeAfterOrgCreated(res.session.companyId)
+          : resumePathForStatus(res.session.status, res.session.email)
+      )
     } catch (e) {
       form.setError("companyName", {
         message:

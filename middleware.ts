@@ -56,7 +56,7 @@ export function middleware(req: NextRequest) {
         return NextResponse.next()
       }
       const url = req.nextUrl.clone()
-      url.pathname = "/onboarding/company"
+      url.pathname = "/onboarding/plan"
       url.search = req.nextUrl.search
       return NextResponse.redirect(url)
     }
@@ -83,7 +83,7 @@ export function middleware(req: NextRequest) {
       )
     }
 
-    // Plan/payment only after company step
+    // Plan/payment is step 1: always open
     if (isPlanOrPaymentPath(pathname)) {
       if (!canAccessPlanFlow(session.status)) {
         return NextResponse.redirect(

@@ -36,7 +36,7 @@ import {
   type PaymentPeriod,
   type PlanId,
 } from "@/lib/onboarding/plans"
-import { homeAfterOrgCreated } from "@/lib/organizations/home-after-created"
+import { resumePathForStatus } from "@/lib/onboarding/status"
 import {
   apiJson,
   restoreOnboardingSessionFromClient,
@@ -249,7 +249,10 @@ export default function PlanSelectionForm() {
 
       if (!planRes.checkoutRequired) {
         setPaymentSubStatus("active")
-        router.push(homeAfterOrgCreated(planRes.session.companyId))
+        // Company setup is next
+        router.push(
+          resumePathForStatus(planRes.session.status, planRes.session.email)
+        )
         return
       }
 
@@ -265,7 +268,9 @@ export default function PlanSelectionForm() {
 
       if (payRes.alreadyActive) {
         setPaymentSubStatus("active")
-        router.push(homeAfterOrgCreated(payRes.session.companyId))
+        router.push(
+          resumePathForStatus(payRes.session.status, payRes.session.email)
+        )
         return
       }
 

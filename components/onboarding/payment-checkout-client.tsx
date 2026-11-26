@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/ui/spinner"
-import { homeAfterOrgCreated } from "@/lib/organizations/home-after-created"
+import { resumePathForStatus } from "@/lib/onboarding/status"
 import {
   apiJson,
   saveOnboardingSessionClient,
@@ -76,7 +76,10 @@ export default function PaymentCheckoutClient() {
       saveOnboardingSessionClient(confirmed.session)
 
       if (outcome === "success") {
-        router.replace(homeAfterOrgCreated(confirmed.session.companyId))
+        // Company setup is next
+        router.replace(
+          resumePathForStatus(confirmed.session.status, confirmed.session.email)
+        )
       } else {
         const email = confirmed.session.email
         const failQ = email

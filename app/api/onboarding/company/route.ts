@@ -54,20 +54,16 @@ export async function POST(request: Request) {
       : existing.companyId ??
         `comp_${body.company.pan.replace(/\W/g, "").toLowerCase() || Date.now().toString(36)}`
 
+  // Company is step 2: finalizing after payment finishes onboarding
   const nextStatus =
-    existing.status === "complete"
+    existing.status === "complete" || existing.status === "users_pending"
       ? "complete"
-      : existing.status === "users_pending"
-        ? "complete"
-        : existing.status === "branches_pending"
-          ? "branches_pending"
-          : existing.status === "plan_pending" ||
-              existing.status === "payment_pending" ||
-              existing.status === "plan_active"
-            ? existing.status
-            : body?.finalize === false
-              ? "company_pending"
-              : "plan_pending"
+      : existing.status === "plan_active" ||
+          existing.status === "company_pending"
+        ? body?.finalize === false
+          ? "company_pending"
+          : "complete"
+        : existing.status
 
   const session = await patchOnboardingSession({
     company: body.company,
