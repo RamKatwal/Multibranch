@@ -139,6 +139,13 @@ export const keyboardShortcuts: KeyboardShortcutDef[] = [
     availability: "available",
   },
   {
+    id: "switch-portal",
+    keys: ["Mod", "Shift", "A"],
+    description: "Switch between Head Office and Admin portal",
+    category: "Global",
+    availability: "available",
+  },
+  {
     id: "sign-out",
     keys: ["Mod", "Shift", "Q"],
     description: "Sign out of the current session",

@@ -1,17 +1,19 @@
 "use client"
 
 import * as React from "react"
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import {
   Activity,
   BellIcon,
   Bot,
+  Building2,
   KeyRound,
   LogOut,
   Monitor,
   Moon,
   Palette,
   Settings,
+  Shield,
   Sun,
   User,
 } from "lucide-react"
@@ -19,6 +21,7 @@ import { useTheme } from "next-themes"
 
 import { AppBreadcrumb } from "@/components/layout/app-breadcrumb"
 import { CommandSearch } from "@/components/layout/command-search"
+import { AdminGoToCompany } from "@/components/layout/admin-go-to-company"
 import { CreateDialog } from "@/components/layout/create-dialog"
 import { NotificationsPanel } from "@/components/layout/notifications-panel"
 import { useSettingsModal } from "@/components/settings/settings-modal-provider"
@@ -47,6 +50,8 @@ import { cn } from "@/lib/utils"
 export function AppNavbar() {
   const router = useRouter()
   const isMac = useIsMac()
+  const pathname = usePathname()
+  const onAdminPortal = pathname.startsWith("/admin")
   const { setTheme, theme } = useTheme()
   const [mounted, setMounted] = React.useState(false)
   const [notificationsOpen, setNotificationsOpen] = React.useState(false)
@@ -76,7 +81,7 @@ export function AppNavbar() {
       </div>
 
       <div className="ml-auto flex shrink-0 items-center gap-2 px-4">
-        <CreateDialog />
+        {onAdminPortal ? <AdminGoToCompany /> : <CreateDialog />}
 
         <Divider orientation="vertical" className="mx-1 hidden self-stretch sm:block" />
 
@@ -210,6 +215,17 @@ export function AppNavbar() {
                 </div>
               </div>
               <DropdownMenuDivider />
+              {isMainAdmin(currentUser) ? (
+                <DropdownMenuItem
+                  onClick={() => router.push(onAdminPortal ? "/" : "/admin")}
+                >
+                  {onAdminPortal ? <Building2 /> : <Shield />}
+                  {onAdminPortal ? "Switch to Head Office" : "Switch to Admin"}
+                  <DropdownMenuShortcut>
+                    {formatShortcutParts(["Mod", "Shift", "A"], isMac)}
+                  </DropdownMenuShortcut>
+                </DropdownMenuItem>
+              ) : null}
               <DropdownMenuItem onClick={() => router.push("/signup")}>
                 <LogOut />
                 Sign Out
