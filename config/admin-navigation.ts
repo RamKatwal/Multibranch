@@ -12,12 +12,6 @@ import type { NavItem } from "@/types/navigation"
 
 export const organizationNavigation: NavItem[] = [
   {
-    title: "Company Profile",
-    href: "/admin/companies/comp_10294/configuration",
-    icon: DuoCompanyListsIcon,
-    description: "View and update company profile information.",
-  },
-  {
     title: "Branch Management",
     href: "/admin/organizations/branch-management",
     icon: DuoBranchIcon,
@@ -29,6 +23,11 @@ export const adminNavigation: NavItem[] = [
   {
     title: "Home",
     href: "/admin",
+    icon: DuoHomeIcon,
+  },
+  {
+    title: "Home v2",
+    href: "/admin/home-v2",
     icon: DuoHomeIcon,
   },
   {
