@@ -131,11 +131,7 @@ function OrganizationGridCard({
         <p className="text-sm text-fg-secondary">{org.location}</p>
       </div>
 
-      <div className="mt-4 grid grid-cols-4 gap-2">
-        <div className="min-w-0 space-y-1">
-          <p className="text-xs text-fg-secondary">Days remaining</p>
-          <p className="text-sm font-medium tabular-nums">{org.remainingDays}</p>
-        </div>
+      <div className="mt-4 grid grid-cols-3 gap-2">
         <div className="min-w-0 space-y-1">
           <p className="text-xs text-fg-secondary">Status</p>
           <Badge variant="outline" size="20"
