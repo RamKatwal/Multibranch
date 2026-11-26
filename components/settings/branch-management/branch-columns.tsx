@@ -29,13 +29,30 @@ type BranchColumnActions = {
   onEdit: (branch: Branch) => void
   onDeactivate: (branch: Branch) => void
   onActivate: (branch: Branch) => void
+  /** Adds a Location column (from `address`) after the code. */
+  showLocation?: boolean
 }
 
 export function createBranchColumns({
   onEdit,
   onDeactivate,
   onActivate,
+  showLocation = false,
 }: BranchColumnActions): ColumnDef<Branch>[] {
+  const locationColumn: ColumnDef<Branch>[] = showLocation
+    ? [
+        {
+          accessorKey: "address",
+          header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Location" />
+          ),
+          cell: ({ row }) => (
+            <span className="text-fg-secondary">{row.original.address}</span>
+          ),
+        },
+      ]
+    : []
+
   return [
     {
       accessorKey: "name",
@@ -67,6 +84,7 @@ export function createBranchColumns({
         </span>
       ),
     },
+    ...locationColumn,
     {
       accessorKey: "status",
       header: ({ column }) => (
