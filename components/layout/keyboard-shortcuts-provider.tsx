@@ -1,13 +1,14 @@
 "use client"
 
 import * as React from "react"
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 
 import {
   goToShortcuts,
   quickCreateShortcuts,
 } from "@/lib/keyboard/shortcuts"
 import { focusPageSearch, isTypingTarget } from "@/lib/keyboard/utils"
+import { isMainAdmin } from "@/lib/auth/current-user"
 
 type KeyboardShortcutsContextValue = {
   commandOpen: boolean
@@ -42,6 +43,7 @@ export function KeyboardShortcutsProvider({
   children: React.ReactNode
 }) {
   const router = useRouter()
+  const pathname = usePathname()
   const [commandOpen, setCommandOpen] = React.useState(false)
   const [createOpen, setCreateOpen] = React.useState(false)
   const [helpOpen, setHelpOpen] = React.useState(false)
@@ -143,6 +145,15 @@ export function KeyboardShortcutsProvider({
         return
       }
 
+      // Mod+Shift+A → switch Head Office ↔ Admin (main admin only)
+      if (mod && event.shiftKey && lower === "a") {
+        if (!isMainAdmin()) return
+        event.preventDefault()
+        clearSequence()
+        router.push(pathname.startsWith("/admin") ? "/" : "/admin")
+        return
+      }
+
       // Alt+Shift+B → branch switcher (works for any number of branches)
       if (event.altKey && event.shiftKey && !mod && lower === "b") {
         if (branchSwitcherOpen) {
@@ -224,6 +235,7 @@ export function KeyboardShortcutsProvider({
     openBranchSwitcher,
     branchSwitcherOpen,
     router,
+    pathname,
   ])
 
   const value = React.useMemo(

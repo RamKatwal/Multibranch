@@ -152,7 +152,7 @@ export async function apiJson<T>(
 
 export function ensureClientSession(
   email: string,
-  status: OnboardingSessionData["status"] = "company_pending"
+  status: OnboardingSessionData["status"] = "plan_pending"
 ): OnboardingSessionData {
   const existing = loadOnboardingSessionClient()
   if (existing && existing.email === email.trim().toLowerCase()) {

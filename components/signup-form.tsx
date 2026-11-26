@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { EyeIcon, ViewOffSlashIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useForm } from "react-hook-form"
+import { toast } from "sonner"
 import { z } from "zod"
 
 import { AppBrand } from "@/components/app-brand"
@@ -23,6 +24,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Spinner } from "@/components/ui/spinner"
 import { DEMO_SIGNUP } from "@/lib/demo/signup"
+import { skipToPayment } from "@/lib/demo/skip-to-payment"
 import { cn } from "@/lib/utils"
 
 const FormSchema = z
@@ -86,6 +88,18 @@ export default function SignupForm() {
 
   function fillDemoSignup() {
     form.reset({ ...DEMO_SIGNUP })
+  }
+
+  async function handleSkipToPayment() {
+    if (isLoading) return
+    form.reset({ ...DEMO_SIGNUP })
+    setIsLoading(true)
+    try {
+      router.push(await skipToPayment())
+    } catch {
+      toast.error("Could not skip to payment")
+      setIsLoading(false)
+    }
   }
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
@@ -314,7 +328,16 @@ export default function SignupForm() {
         </form>
       </Form>
 
-      <DemoFillFab label="Fill demo account" onFill={fillDemoSignup} />
+      <DemoFillFab
+        actions={[
+          { label: "Fill demo account", onFill: fillDemoSignup, shortcutKey: "d" },
+          {
+            label: "Skip to payment",
+            onFill: () => void handleSkipToPayment(),
+            shortcutKey: "g",
+          },
+        ]}
+      />
     </div>
   )
 }

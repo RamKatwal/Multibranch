@@ -23,7 +23,7 @@ export async function PUT(request: Request) {
     return NextResponse.json({ error: "email is required" }, { status: 400 })
   }
 
-  const status = parseOnboardingStatus(body?.status) ?? "company_pending"
+  const status = parseOnboardingStatus(body?.status) ?? "plan_pending"
   const existing = await readOnboardingSession()
   const session =
     existing && existing.email === email

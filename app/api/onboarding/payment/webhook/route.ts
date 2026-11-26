@@ -60,7 +60,9 @@ export async function POST(request: Request) {
     payment: { ...existing.payment, status: "confirmed" },
     paymentSubStatus: "active",
     entitlement,
-    status: "complete",
+    // Payment step done; company setup is next
+    status: "plan_active",
+    ...(existing.status === "complete" ? { companyId: null } : {}),
   })
 
   return NextResponse.json({ ok: true, success: true })

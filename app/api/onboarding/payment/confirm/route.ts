@@ -58,8 +58,9 @@ async function confirmPayment(body: ConfirmBody) {
     payment: { ...existing.payment, status: "confirmed" },
     paymentSubStatus: "active",
     entitlement,
-    // Company is already done; paid plan finishes onboarding
-    status: "complete",
+    // Payment step done; company setup is next
+    status: "plan_active",
+    ...(existing.status === "complete" ? { companyId: null } : {}),
   })
 
   return NextResponse.json({
