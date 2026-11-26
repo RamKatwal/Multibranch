@@ -1,6 +1,5 @@
 import {
   DuoBranchIcon,
-  DuoCompanyListsIcon,
   DuoHomeIcon,
   DuoPaymentsIcon,
   DuoPermissionsIcon,
@@ -9,15 +8,6 @@ import {
 } from "@/components/icons/duo"
 
 import type { NavItem } from "@/types/navigation"
-
-export const organizationNavigation: NavItem[] = [
-  {
-    title: "Branch Management",
-    href: "/admin/organizations/branch-management",
-    icon: DuoBranchIcon,
-    description: "Create and manage company branches.",
-  },
-]
 
 export const adminNavigation: NavItem[] = [
   {
@@ -29,6 +19,12 @@ export const adminNavigation: NavItem[] = [
     title: "Home v2",
     href: "/admin/home-v2",
     icon: DuoHomeIcon,
+  },
+  {
+    title: "Branch Management",
+    href: "/admin/branches",
+    icon: DuoBranchIcon,
+    description: "Create and manage each company's branches.",
   },
   {
     title: "User Roles",
@@ -54,12 +50,6 @@ export const adminNavigation: NavItem[] = [
     icon: DuoPaymentsIcon,
     description:
       "Manage software licensing and branch entitlement usage across companies.",
-  },
-  {
-    title: "Organizations",
-    href: "/admin/organizations",
-    icon: DuoCompanyListsIcon,
-    children: organizationNavigation,
   },
 ]
 

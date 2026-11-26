@@ -1,3 +1,4 @@
+import { organizations } from "@/config/organizations"
 import {
   DuoAccountingIcon,
   DuoBankAccountsIcon,
@@ -254,6 +255,14 @@ function formatSegmentTitle(segment: string) {
     .join(" ")
 }
 
+/** Admin › Branch Management › {Company name} */
+function getAdminBranchCrumbTitle(path: string): string | undefined {
+  if (path === "/admin/branches") return "Branch Management"
+  const match = /^\/admin\/branches\/([^/]+)$/.exec(path)
+  if (!match) return undefined
+  return organizations.find((org) => org.id === match[1])?.name
+}
+
 export function getBreadcrumbs(pathname: string): BreadcrumbEntry[] {
   if (pathname === "/") {
     return [{ title: "Home" }]
@@ -270,6 +279,7 @@ export function getBreadcrumbs(pathname: string): BreadcrumbEntry[] {
 
     crumbs.push({
       title:
+        getAdminBranchCrumbTitle(currentPath) ??
         navItem?.title ??
         getConfigurationsItemByHref(currentPath)?.title ??
         getUsersPermissionsItemByHref(currentPath)?.title ??
