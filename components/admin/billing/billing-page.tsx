@@ -16,12 +16,14 @@ import { RenewPlanDialog } from "@/components/admin/subscriptions/renew-plan-dia
 import { UpdatePlanLimitsDialog } from "@/components/admin/subscriptions/update-plan-limits-dialog"
 import { PageHeader } from "@/components/layout/page-header"
 import {
-  Banner,
-  BannerContent,
-  BannerDescription,
-  BannerIcon,
-  BannerTitle,
-} from "@/components/ui/banner"
+  Alert,
+  AlertContent,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
+  AlertToolbar,
+} from "@/components/ui/alert"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { formatLongDate } from "@/lib/format"
 import { ADDITIONAL_MODULES } from "@/lib/onboarding/plans"
@@ -38,9 +40,28 @@ export function BillingPage() {
   }
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-4">
       <PageHeader
         title="Billing"
+        badge={
+          <Badge
+            size="20"
+            variant="soft"
+            color={
+              renewalState === "expired"
+                ? "error"
+                : renewalState === "expiring"
+                  ? "warning"
+                  : "success"
+            }
+          >
+            {renewalState === "expired"
+              ? "Expired"
+              : renewalState === "expiring"
+                ? `${daysLeft} days left`
+                : "Active"}
+          </Badge>
+        }
         actions={
           <BillingSandboxPanel
             onRenewalChange={billing.setRenewalScenario}
@@ -50,43 +71,40 @@ export function BillingPage() {
         }
       />
 
-      {renewalState === "expiring" ? (
-        <Banner color="warning" variant="soft">
-          <BannerIcon>
-            <TriangleAlertIcon />
-          </BannerIcon>
-          <BannerContent>
-            <BannerTitle>Your plan expires in {daysLeft} days</BannerTitle>
-            <BannerDescription>
-              Renew before {formatLongDate(subscription.periodEnd)} to keep every
-              company running without interruption.
-            </BannerDescription>
-          </BannerContent>
-          <Button size="32" variant="outline" color="neutral" onClick={() => setDialog("renew")}>
-            Renew
-          </Button>
-        </Banner>
+      {renewalState !== "active" ? (
+        <Alert
+          color={renewalState === "expired" ? "error" : "warning"}
+          variant="soft-outline"
+        >
+          <AlertIcon>
+            {renewalState === "expired" ? <CircleAlertIcon /> : <TriangleAlertIcon />}
+          </AlertIcon>
+          <AlertContent>
+            <AlertTitle>
+              {renewalState === "expired"
+                ? "Your plan has expired"
+                : `Your plan expires in ${daysLeft} days`}
+            </AlertTitle>
+            <AlertDescription>
+              {renewalState === "expired"
+                ? `It ended on ${formatLongDate(subscription.periodEnd)}. Renew now to restore access for your companies.`
+                : `Renew before ${formatLongDate(subscription.periodEnd)} to keep every company running without interruption.`}
+            </AlertDescription>
+          </AlertContent>
+          <AlertToolbar>
+            <Button
+              size="32"
+              variant={renewalState === "expired" ? "strong" : "outline"}
+              color={renewalState === "expired" ? "primary" : "neutral"}
+              onClick={() => setDialog("renew")}
+            >
+              {renewalState === "expired" ? "Renew now" : "Renew"}
+            </Button>
+          </AlertToolbar>
+        </Alert>
       ) : null}
 
-      {renewalState === "expired" ? (
-        <Banner color="error" variant="soft">
-          <BannerIcon>
-            <CircleAlertIcon />
-          </BannerIcon>
-          <BannerContent>
-            <BannerTitle>Your plan has expired</BannerTitle>
-            <BannerDescription>
-              It ended on {formatLongDate(subscription.periodEnd)}. Renew now to
-              restore access for your companies.
-            </BannerDescription>
-          </BannerContent>
-          <Button size="32" onClick={() => setDialog("renew")}>
-            Renew now
-          </Button>
-        </Banner>
-      ) : null}
-
-      <div className="grid gap-5 lg:grid-cols-3">
+      <div className="grid gap-4 lg:grid-cols-3">
         <CurrentPlanCard
           className="lg:col-span-2"
           subscription={subscription}

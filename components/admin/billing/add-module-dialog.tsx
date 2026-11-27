@@ -5,13 +5,14 @@ import * as React from "react"
 import { additionalModulesDue } from "@/components/admin/subscriptions/billing-utils"
 import { OrderPaymentPanel } from "@/components/admin/subscriptions/order-payment-panel"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Dialog } from "@/components/ui/dialog"
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
+  FormDialogBody,
+  FormDialogContent,
+  FormDialogDescription,
+  FormDialogHeader,
+  FormDialogTitle,
+} from "@/components/ui/form-dialog"
 import {
   ADDITIONAL_MODULES,
   DEFAULT_PAYMENT_METHOD_ID,
@@ -90,16 +91,17 @@ export function AddModuleDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="flex max-h-11/12 flex-col gap-0 overflow-hidden p-0 sm:max-w-4xl">
-        <DialogHeader className="border-b px-5 py-4 pr-12">
-          <DialogTitle>Add module</DialogTitle>
-          <DialogDescription>
+      <FormDialogContent size="4xl">
+        <FormDialogHeader>
+          <FormDialogTitle>Add module</FormDialogTitle>
+          <FormDialogDescription>
             New modules are available in all your companies.
-          </DialogDescription>
-        </DialogHeader>
+          </FormDialogDescription>
+        </FormDialogHeader>
 
-        <div className="flex min-h-0 flex-1 flex-col overflow-hidden sm:flex-row">
-          <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-3 overflow-y-auto p-5">
+        <FormDialogBody>
+          <div className="grid gap-5 md:grid-cols-5">
+          <div className="flex min-w-0 flex-col gap-3 md:col-span-3">
             {available.map((item) => (
               <label
                 key={item.id}
@@ -120,7 +122,7 @@ export function AddModuleDialog({
             ))}
           </div>
 
-          <div className="min-h-0 shrink-0 overflow-y-auto border-t bg-fill1 p-5 sm:w-104 sm:border-t-0 sm:border-l">
+          <div className="rounded-lg border bg-fill1 p-4 md:col-span-2">
             <OrderPaymentPanel
               lines={[
                 { label: "Plan", value: subscription.planName },
@@ -150,8 +152,9 @@ export function AddModuleDialog({
               footnote="Payment is simulated (demo) — confirm to add the modules."
             />
           </div>
-        </div>
-      </DialogContent>
+          </div>
+        </FormDialogBody>
+      </FormDialogContent>
     </Dialog>
   )
 }

@@ -1,6 +1,6 @@
 "use client"
 
-import { TriangleAlertIcon } from "lucide-react"
+import { PlusIcon, RefreshCwIcon, TriangleAlertIcon } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -95,12 +95,12 @@ export function CurrentPlanCard({
   ]
 
   return (
-    <Card className={className}>
+    <Card size="sm" className={cn("shadow-none", className)}>
       <CardHeader>
         <div className="flex flex-wrap items-center gap-2">
           <CardTitle>{subscription.planName}</CardTitle>
           <Badge size="20" variant="soft" color={expired ? "error" : "success"}>
-            {expired ? "Expired" : "Current Plan"}
+            {expired ? "Expired" : "Current plan"}
           </Badge>
         </div>
         <CardDescription>
@@ -112,9 +112,9 @@ export function CurrentPlanCard({
       <CardContent>
         <dl className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-5">
           {stats.map((stat) => (
-            <div key={stat.label} className="flex flex-col gap-1">
+            <div key={stat.label} className="flex min-w-0 flex-col gap-1">
               <dt className="text-xs text-fg-secondary">{stat.label}</dt>
-              <dd className="text-base font-semibold text-fg tabular-nums">
+              <dd className="text-sm font-semibold text-fg tabular-nums">
                 {stat.value}
               </dd>
               {stat.warning ? (
@@ -135,12 +135,15 @@ export function CurrentPlanCard({
 
       <CardFooter className="flex flex-wrap gap-2">
         <Button size="32" variant="outline" color="neutral" onClick={onAddCompany}>
+          <PlusIcon />
           Add company
         </Button>
         <Button size="32" variant="outline" color="neutral" onClick={onAddBranch}>
+          <PlusIcon />
           Add branch
         </Button>
         <Button size="32" variant="outline" color="neutral" onClick={onAddUsers}>
+          <PlusIcon />
           Add users
         </Button>
         <Button
@@ -149,6 +152,7 @@ export function CurrentPlanCard({
           color={expired ? "primary" : "neutral"}
           onClick={onRenew}
         >
+          <RefreshCwIcon />
           {expired ? "Renew now" : "Renew"}
         </Button>
       </CardFooter>

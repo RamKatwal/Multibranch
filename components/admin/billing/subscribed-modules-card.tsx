@@ -1,5 +1,7 @@
 "use client"
 
+import { PlusIcon } from "lucide-react"
+
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -12,6 +14,7 @@ import {
 } from "@/components/ui/card"
 import { BASE_MODULES } from "@/lib/mock/account-billing"
 import type { AdditionalModule } from "@/lib/onboarding/plans"
+import { cn } from "@/lib/utils"
 
 type SubscribedModulesCardProps = {
   modules: AdditionalModule[]
@@ -27,21 +30,21 @@ export function SubscribedModulesCard({
   className,
 }: SubscribedModulesCardProps) {
   return (
-    <Card className={className}>
+    <Card size="sm" className={cn("shadow-none", className)}>
       <CardHeader>
-        <CardTitle>Subscribed Modules</CardTitle>
+        <CardTitle>Subscribed modules</CardTitle>
         <CardDescription>
           These modules are available in all your companies.
         </CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-1 flex-wrap content-start gap-2">
+      <CardContent className="flex flex-1 flex-wrap content-start gap-1.5">
         {BASE_MODULES.map((name) => (
-          <Badge key={name} size="24" variant="soft" color="neutral">
+          <Badge key={name} size="20" variant="soft" color="neutral">
             {name}
           </Badge>
         ))}
         {modules.map((item) => (
-          <Badge key={item.id} size="24" variant="soft" color="info">
+          <Badge key={item.id} size="20" variant="soft" color="info">
             {item.name}
           </Badge>
         ))}
@@ -54,6 +57,7 @@ export function SubscribedModulesCard({
           disabled={!canAddModule}
           onClick={onAddModule}
         >
+          <PlusIcon />
           Add module
         </Button>
       </CardFooter>

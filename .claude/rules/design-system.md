@@ -336,4 +336,13 @@ slider, stepper, table, toggle, toggle-group.
   Additive type changes: `Subscription.companiesUsed/companiesLimit`, `addedCompanies` on invoices, charge types
   `companies` and `modules`. New dialogs (no v3 equivalent existed): Add company slots, Add module, Billing details.
   Expiring = 60 days or less. The Sandbox popover (renewal, bill-to, payments) is dev-only (`NODE_ENV`). Radian
-  `banner` added with the CLI for the expiring/expired banners.
+  `alert` added with the CLI for the expiring/expired notices (`banner` was tried first and removed: it is a
+  full-width page strip with square edges, wrong inside the content area).
+- 2026-11-27: **Billing page consistency pass.** Tables on admin pages use `DataTableCard` + `useDataTable` with
+  `ColumnDef` columns and `DataTableColumnHeader` (as Branch Management); a section title and its actions go in
+  `leading`. Never hand-build a `<table>` with its own sort buttons. Cards use `size="sm"` (the app's card) and
+  `className="shadow-none"` on admin pages, so they sit flat next to `DataTableCard` (ring, no shadow). Radian's
+  `Card` bakes in `shadow-sm`; whether to drop it in the primitive for the whole app is an open decision. Page rhythm
+  is `gap-4`; stat tiles are `text-xs text-fg-secondary` label over a `text-sm font-semibold tabular-nums` value;
+  badges and chips are size `"20"`; "Add …" buttons carry `PlusIcon`. Dialogs with an order summary use the
+  `FormDialog` parts (`size="4xl"`, a 3/2 grid in `FormDialogBody`), not header/padding overrides.
