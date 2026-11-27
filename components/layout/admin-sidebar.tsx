@@ -24,6 +24,7 @@ import {
   SidebarGroupContent,
   SidebarHeader,
   SidebarMenu,
+  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSubButton,
@@ -171,31 +172,31 @@ function BranchManagementNavItem({
       className="group/collapsible"
     >
       <SidebarMenuItem>
+        {/* The label opens the overview; the chevron only toggles the company list. */}
+        <SidebarMenuButton
+          render={
+            <Link href={BRANCHES_HREF} onClick={() => setExpanded(true)} />
+          }
+          tooltip={item.title}
+          isActive={isGroupActive}
+          className="w-full pr-8"
+        >
+          <Icon />
+          <span>{item.title}</span>
+        </SidebarMenuButton>
         <CollapsibleTrigger asChild>
-          <SidebarMenuButton
-            tooltip={item.title}
-            isActive={isGroupActive}
-            className="w-full"
+          <SidebarMenuAction
+            aria-label={expanded ? "Hide companies" : "Show companies"}
           >
-            <Icon />
-            <span>{item.title}</span>
-            <ChevronRight className="ml-auto size-3.5! text-fg-tertiary transition-transform group-data-[state=open]/collapsible:rotate-90" />
-          </SidebarMenuButton>
+            <ChevronRight className="size-3.5! text-fg-tertiary transition-transform group-data-[state=open]/collapsible:rotate-90" />
+          </SidebarMenuAction>
         </CollapsibleTrigger>
 
         <SidebarSubmenuPanel open={expanded} panelKey={`${BRANCHES_HREF}-submenu`}>
-          <SidebarSubmenuItem index={0}>
-            <SidebarMenuSubButton
-              render={<Link href={BRANCHES_HREF} />}
-              isActive={pathname === BRANCHES_HREF}
-            >
-              <span>All companies</span>
-            </SidebarMenuSubButton>
-          </SidebarSubmenuItem>
           {visible.map((org, index) => {
             const href = `${BRANCHES_HREF}/${org.id}`
             return (
-              <SidebarSubmenuItem key={org.id} index={index + 1}>
+              <SidebarSubmenuItem key={org.id} index={index}>
                 <SidebarMenuSubButton
                   render={<Link href={href} />}
                   isActive={isNavItemActive(pathname, href)}
@@ -210,7 +211,7 @@ function BranchManagementNavItem({
             )
           })}
           {hasMore ? (
-            <SidebarSubmenuItem index={visible.length + 1}>
+            <SidebarSubmenuItem index={visible.length}>
               <SidebarMenuSubButton render={<Link href={BRANCHES_HREF} />}>
                 <span className="text-fg-secondary">View all</span>
               </SidebarMenuSubButton>
