@@ -28,11 +28,10 @@ export const adminNavigation: NavItem[] = [
     description: "Invite users and assign them to entities with a role.",
   },
   {
-    title: "Subscriptions",
-    href: "/admin/subscriptions",
+    title: "Billing",
+    href: "/admin/billing",
     icon: DuoPaymentsIcon,
-    description:
-      "Manage software licensing and branch entitlement usage across companies.",
+    description: "Your plan, limits, modules and payment history.",
   },
 ]
 
@@ -54,6 +53,13 @@ export const adminSecondaryNavigation: NavItem[] = [
     href: "/admin/settings/users-permissions/permissions",
     icon: DuoPermissionsIcon,
     description: "Configure module permissions per role and branch.",
+  },
+  {
+    title: "Billing v2",
+    href: "/admin/subscriptions",
+    icon: DuoPaymentsIcon,
+    description:
+      "Manage software licensing and branch entitlement usage across companies.",
   },
 ]
 
