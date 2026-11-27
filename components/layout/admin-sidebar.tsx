@@ -119,12 +119,9 @@ function NavMenuItem({ item, pathname }: { item: NavItem; pathname: string }) {
 }
 
 const BRANCHES_HREF = "/admin/branches"
-const MAX_COMPANY_LINKS = 6
-
 /**
- * Branch Management with the companies as children (branch count beside each). With one
- * company it links straight to that company's branches; past 6 companies a "View all" link
- * goes to the overview.
+ * Branch Management with every company as a child (branch count beside each). With one
+ * company it links straight to that company's branches.
  */
 function BranchManagementNavItem({
   item,
@@ -163,9 +160,6 @@ function BranchManagementNavItem({
     )
   }
 
-  const visible = organizations.slice(0, MAX_COMPANY_LINKS)
-  const hasMore = organizations.length > MAX_COMPANY_LINKS
-
   return (
     <Collapsible
       open={expanded}
@@ -194,7 +188,7 @@ function BranchManagementNavItem({
         </CollapsibleTrigger>
 
         <SidebarSubmenuPanel open={expanded} panelKey={`${BRANCHES_HREF}-submenu`}>
-          {visible.map((org, index) => {
+          {organizations.map((org, index) => {
             const href = `${BRANCHES_HREF}/${org.id}`
             return (
               <SidebarSubmenuItem key={org.id} index={index}>
@@ -211,13 +205,6 @@ function BranchManagementNavItem({
               </SidebarSubmenuItem>
             )
           })}
-          {hasMore ? (
-            <SidebarSubmenuItem index={visible.length}>
-              <SidebarMenuSubButton render={<Link href={BRANCHES_HREF} />}>
-                <span className="text-fg-secondary">View all</span>
-              </SidebarMenuSubButton>
-            </SidebarSubmenuItem>
-          ) : null}
         </SidebarSubmenuPanel>
       </SidebarMenuItem>
     </Collapsible>

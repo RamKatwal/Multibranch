@@ -108,7 +108,7 @@ export const demoScenarios: DemoScenario[] = [
   {
     id: "many",
     label: "Eight companies",
-    description: "More than 6: the sidebar shows 6 and View all",
+    description: "A long company list in the sidebar",
     companies: manyCompanies,
     branches: manyBranches,
     limit: 30,
