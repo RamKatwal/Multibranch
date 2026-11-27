@@ -91,7 +91,7 @@ export function AddCompanySlotsDialog({
             </div>
           </div>
 
-          <div className="min-h-0 shrink-0 overflow-y-auto border-t bg-fill2/20 p-5 sm:w-104 sm:border-t-0 sm:border-l">
+          <div className="min-h-0 shrink-0 overflow-y-auto border-t bg-fill1 p-5 sm:w-104 sm:border-t-0 sm:border-l">
             <OrderPaymentPanel
               lines={[
                 { label: "Plan", value: subscription.planName },

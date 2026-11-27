@@ -51,9 +51,9 @@ export function BillingPage() {
       />
 
       {renewalState === "expiring" ? (
-        <Banner color="warning" variant="soft" className="rounded-lg px-4 py-3">
+        <Banner color="warning" variant="soft">
           <BannerIcon>
-            <TriangleAlertIcon className="size-5" />
+            <TriangleAlertIcon />
           </BannerIcon>
           <BannerContent>
             <BannerTitle>Your plan expires in {daysLeft} days</BannerTitle>
@@ -69,9 +69,9 @@ export function BillingPage() {
       ) : null}
 
       {renewalState === "expired" ? (
-        <Banner color="error" variant="soft" className="rounded-lg px-4 py-3">
+        <Banner color="error" variant="soft">
           <BannerIcon>
-            <CircleAlertIcon className="size-5" />
+            <CircleAlertIcon />
           </BannerIcon>
           <BannerContent>
             <BannerTitle>Your plan has expired</BannerTitle>
