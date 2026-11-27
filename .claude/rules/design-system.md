@@ -327,3 +327,13 @@ slider, stepper, table, toggle, toggle-group.
   branch code reads companies through `useCompanies()`/`getCompanies()`, not `config/organizations` directly, so
   scenario companies appear everywhere; `/admin/branches/[companyId]` therefore validates the id on the client. "Reset
   to app data" clears all three keys. Demo-only: remove it, or gate it behind a flag, before real data arrives.
+- 2026-11-27: **Single Billing page** at `/admin/billing` (`components/admin/billing`): one account plan for every
+  company, replacing the per-company list as the main entry. The old `/admin/subscriptions` stays unchanged as
+  **Billing v2**, last in the muted bottom group of the admin sidebar. State lives in `useAccountBilling()`; branches
+  used/limit and companies used come from branch storage (`useAllBranches`, `useBranchLimit`, `useCompanies`), so
+  they agree with Branch Management, and Add branch calls `raiseBranchLimit`. Plan = `standard` from
+  `lib/onboarding/plans` (what `/settings/billing-plans` sells); the rest is mock (`lib/mock/account-billing.ts`).
+  Additive type changes: `Subscription.companiesUsed/companiesLimit`, `addedCompanies` on invoices, charge types
+  `companies` and `modules`. New dialogs (no v3 equivalent existed): Add company slots, Add module, Billing details.
+  Expiring = 60 days or less. The Sandbox popover (renewal, bill-to, payments) is dev-only (`NODE_ENV`). Radian
+  `banner` added with the CLI for the expiring/expired banners.

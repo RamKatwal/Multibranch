@@ -109,6 +109,8 @@ export function useAccountBilling() {
       branchesUsed: branches.length,
       branchesLimit: branchLimit,
       companiesUsed: companies.length,
+      // A demo scenario can list more companies than the mock limit; never show "8 / 3".
+      companiesLimit: Math.max(base.companiesLimit ?? 0, companies.length),
       remainingDays: Math.max(0, daysLeft),
       nextBillingDate: base.periodEnd,
       status: renewalState === "expired" ? "past_due" : "active",
