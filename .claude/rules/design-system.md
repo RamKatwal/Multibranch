@@ -327,3 +327,25 @@ slider, stepper, table, toggle, toggle-group.
   branch code reads companies through `useCompanies()`/`getCompanies()`, not `config/organizations` directly, so
   scenario companies appear everywhere; `/admin/branches/[companyId]` therefore validates the id on the client. "Reset
   to app data" clears all three keys. Demo-only: remove it, or gate it behind a flag, before real data arrives.
+- 2026-11-27: **Single Billing page** at `/admin/billing` (`components/admin/billing`): one account plan for every
+  company, replacing the per-company list as the main entry. The old `/admin/subscriptions` stays unchanged as
+  **Billing v2**, last in the muted bottom group of the admin sidebar. State lives in `useAccountBilling()`; branches
+  used/limit and companies used come from branch storage (`useAllBranches`, `useBranchLimit`, `useCompanies`), so
+  they agree with Branch Management, and Add branch calls `raiseBranchLimit`. Plan = `standard` from
+  `lib/onboarding/plans` (what `/settings/billing-plans` sells); the rest is mock (`lib/mock/account-billing.ts`).
+  Additive type changes: `Subscription.companiesUsed/companiesLimit`, `addedCompanies` on invoices, charge types
+  `companies` and `modules`. New dialogs (no v3 equivalent existed): Add company slots, Add module, Billing details.
+  Expiring = 60 days or less. The Sandbox popover (renewal, bill-to, payments) is dev-only (`NODE_ENV`). Radian
+  `alert` added with the CLI for the expiring/expired notices (`banner` was tried first and removed: it is a
+  full-width page strip with square edges, wrong inside the content area).
+- 2026-11-27: **Billing page consistency pass.** Tables on admin pages use `DataTableCard` + `useDataTable` with
+  `ColumnDef` columns and `DataTableColumnHeader` (as Branch Management); a section title and its actions go in
+  `leading`. Never hand-build a `<table>` with its own sort buttons. Cards use `size="sm"` (the app's card) and
+  `className="shadow-none"` on admin pages, so they sit flat next to `DataTableCard` (ring, no shadow). Radian's
+  `Card` bakes in `shadow-sm`; whether to drop it in the primitive for the whole app is an open decision. Page rhythm
+  is `gap-4`; stat tiles are `text-xs text-fg-secondary` label over a `text-sm font-semibold tabular-nums` value;
+  badges and chips are size `"20"`; "Add …" buttons carry `PlusIcon`. Dialogs with an order summary use the
+  `FormDialog` parts (`size="4xl"`, a 3/2 grid in `FormDialogBody`), not header/padding overrides.
+- 2026-11-27: Billing follow-ups (owner): bill-to **Individual is the signed-in user** (`currentUserBillTo()` from
+  `getCurrentUser()`), shown read-only; there is no individual form (no phone/PAN). No status badge next to the
+  Billing title, and no Export on Payment history. The admin sidebar item is **Branch** (was Branch Management).
