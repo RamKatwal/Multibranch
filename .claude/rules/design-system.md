@@ -346,3 +346,6 @@ slider, stepper, table, toggle, toggle-group.
   is `gap-4`; stat tiles are `text-xs text-fg-secondary` label over a `text-sm font-semibold tabular-nums` value;
   badges and chips are size `"20"`; "Add …" buttons carry `PlusIcon`. Dialogs with an order summary use the
   `FormDialog` parts (`size="4xl"`, a 3/2 grid in `FormDialogBody`), not header/padding overrides.
+- 2026-11-27: Billing follow-ups (owner): bill-to **Individual is the signed-in user** (`currentUserBillTo()` from
+  `getCurrentUser()`), shown read-only; there is no individual form (no phone/PAN). No status badge next to the
+  Billing title, and no Export on Payment history. The admin sidebar item is **Branch** (was Branch Management).

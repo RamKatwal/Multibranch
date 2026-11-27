@@ -16,7 +16,7 @@ import { raiseBranchLimit } from "@/lib/branches/subscription"
 import {
   buildAccountSubscription,
   daysUntil,
-  DEFAULT_INDIVIDUAL_BILL_TO,
+  currentUserBillTo,
   periodEndForScenario,
   renewalStateFor,
   toIsoDate,
@@ -193,7 +193,7 @@ export function useAccountBilling() {
   /** Dev sandbox: jump to a bill-to scenario. */
   function setBillToScenario(scenario: BillToScenario) {
     if (scenario === "none") return setBillTo(null)
-    if (scenario === "individual") return setBillTo(DEFAULT_INDIVIDUAL_BILL_TO)
+    if (scenario === "individual") return setBillTo(currentUserBillTo())
     const company = companies[0]
     setBillTo(
       company

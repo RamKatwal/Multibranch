@@ -44,8 +44,7 @@ export function BillingDetailsCard({ billTo, onChange }: BillingDetailsCardProps
             </span>
             {billTo.type === "individual" ? (
               <span className="text-fg-secondary">
-                {billTo.email} · {billTo.phone}
-                {billTo.pan ? ` · PAN ${billTo.pan}` : ""}
+                {billTo.email}
               </span>
             ) : null}
           </div>

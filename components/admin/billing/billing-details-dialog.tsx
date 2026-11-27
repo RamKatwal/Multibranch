@@ -1,21 +1,11 @@
 "use client"
 
 import * as React from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm, useWatch } from "react-hook-form"
 import { toast } from "sonner"
-import { z } from "zod"
 
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Dialog } from "@/components/ui/dialog"
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
 import {
   FormDialogBody,
   FormDialogContent,
@@ -24,7 +14,7 @@ import {
   FormDialogHeader,
   FormDialogTitle,
 } from "@/components/ui/form-dialog"
-import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import {
   Select,
   SelectContent,
@@ -33,39 +23,11 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Tabs } from "@/components/ui/tabs"
+import { getCurrentUser } from "@/lib/auth/current-user"
 import type { Company } from "@/lib/branches/company-branches"
-import type { BillTo } from "@/lib/mock/account-billing"
+import { currentUserBillTo, type BillTo } from "@/lib/mock/account-billing"
 
-const schema = z.discriminatedUnion("type", [
-  z.object({
-    type: z.literal("company"),
-    companyId: z.string().min(1, "Select a company"),
-  }),
-  z.object({
-    type: z.literal("individual"),
-    name: z.string().trim().min(1, "Enter a name"),
-    email: z.string().trim().email("Enter a valid email"),
-    phone: z.string().trim().min(7, "Enter a phone number"),
-    pan: z
-      .string()
-      .trim()
-      .regex(/^(\d{9})?$/, "PAN is 9 digits")
-      .optional(),
-  }),
-])
-
-type Values = z.infer<typeof schema>
-
-function defaultsFor(billTo: BillTo | null, companies: Company[]): Values {
-  if (billTo?.type === "individual") {
-    return { ...billTo, pan: billTo.pan ?? "" }
-  }
-  return {
-    type: "company",
-    companyId:
-      billTo?.type === "company" ? billTo.companyId : (companies[0]?.id ?? ""),
-  }
-}
+type BillToType = BillTo["type"]
 
 type BillingDetailsDialogProps = {
   open: boolean
@@ -82,35 +44,31 @@ export function BillingDetailsDialog({
   companies,
   onSave,
 }: BillingDetailsDialogProps) {
-  const form = useForm<Values>({
-    resolver: zodResolver(schema),
-    defaultValues: defaultsFor(billTo, companies),
-  })
+  const user = getCurrentUser()
+  const initialCompanyId =
+    billTo?.type === "company" ? billTo.companyId : (companies[0]?.id ?? "")
+  const [type, setType] = React.useState<BillToType>(billTo?.type ?? "company")
+  const [companyId, setCompanyId] = React.useState(initialCompanyId)
 
   const [prevOpen, setPrevOpen] = React.useState(open)
   if (prevOpen !== open) {
     setPrevOpen(open)
-    if (open) form.reset(defaultsFor(billTo, companies))
+    if (open) {
+      setType(billTo?.type ?? "company")
+      setCompanyId(initialCompanyId)
+    }
   }
 
-  const type = useWatch({ control: form.control, name: "type" })
+  const company = companies.find((item) => item.id === companyId)
+  const canSave = type === "individual" || Boolean(company)
 
-  function switchType(next: string) {
-    if (next === type) return
-    form.reset(
-      next === "individual"
-        ? { type: "individual", name: "", email: "", phone: "", pan: "" }
-        : { type: "company", companyId: companies[0]?.id ?? "" }
-    )
-  }
-
-  function handleSubmit(values: Values) {
-    if (values.type === "company") {
-      const company = companies.find((item) => item.id === values.companyId)
-      if (!company) return
+  function handleSave() {
+    if (type === "individual") {
+      onSave(currentUserBillTo())
+    } else if (company) {
       onSave({ type: "company", companyId: company.id, companyName: company.name })
     } else {
-      onSave({ ...values, pan: values.pan || undefined })
+      return
     }
     toast.success("Billing details saved")
     onOpenChange(false)
@@ -124,125 +82,71 @@ export function BillingDetailsDialog({
             {billTo ? "Change billing details" : "Set billing details"}
           </FormDialogTitle>
           <FormDialogDescription>
-            Invoices are issued to a company or to an individual.
+            Invoices are issued to a company or to you.
           </FormDialogDescription>
         </FormDialogHeader>
 
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className="flex min-h-0 flex-1 flex-col"
+        <FormDialogBody>
+          <Tabs
+            value={type}
+            onValueChange={(value) => setType(value as BillToType)}
+            items={[
+              { value: "company", label: "Company" },
+              { value: "individual", label: "Individual" },
+            ]}
+          />
+
+          {type === "company" ? (
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="bill-to-company">Company</Label>
+              <Select value={companyId} onValueChange={setCompanyId}>
+                <SelectTrigger id="bill-to-company">
+                  <SelectValue placeholder="Select a company" />
+                </SelectTrigger>
+                <SelectContent>
+                  {companies.map((item) => (
+                    <SelectItem key={item.id} value={item.id}>
+                      {item.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-2">
+              <p className="text-sm text-fg-secondary">
+                Invoices will be issued to your account:
+              </p>
+              <div className="flex items-center gap-3 rounded-lg border bg-fill1 p-3">
+                <Avatar size="36">
+                  <AvatarFallback>{user.initials}</AvatarFallback>
+                </Avatar>
+                <div className="flex min-w-0 flex-col">
+                  <span className="truncate text-sm font-medium text-fg">
+                    {user.name}
+                  </span>
+                  <span className="truncate text-sm text-fg-secondary">
+                    {user.email}
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+        </FormDialogBody>
+
+        <FormDialogFooter>
+          <Button
+            type="button"
+            variant="outline"
+            color="neutral"
+            onClick={() => onOpenChange(false)}
           >
-            <FormDialogBody>
-              <Tabs
-                value={type}
-                onValueChange={switchType}
-                items={[
-                  { value: "company", label: "Company" },
-                  { value: "individual", label: "Individual" },
-                ]}
-              />
-
-              {type === "company" ? (
-                <FormField
-                  control={form.control}
-                  name="companyId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Company</FormLabel>
-                      <Select
-                        name={field.name}
-                        value={field.value}
-                        onValueChange={field.onChange}
-                      >
-                        <FormControl>
-                          <SelectTrigger ref={field.ref} onBlur={field.onBlur}>
-                            <SelectValue placeholder="Select a company" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {companies.map((company) => (
-                            <SelectItem key={company.id} value={company.id}>
-                              {company.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              ) : (
-                <>
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Full name</FormLabel>
-                        <FormControl>
-                          <Input {...field} value={field.value ?? ""} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email</FormLabel>
-                        <FormControl>
-                          <Input type="email" {...field} value={field.value ?? ""} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="phone"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Phone</FormLabel>
-                        <FormControl>
-                          <Input type="tel" {...field} value={field.value ?? ""} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="pan"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>PAN (optional)</FormLabel>
-                        <FormControl>
-                          <Input inputMode="numeric" {...field} value={field.value ?? ""} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </>
-              )}
-            </FormDialogBody>
-
-            <FormDialogFooter>
-              <Button
-                type="button"
-                variant="outline"
-                color="neutral"
-                onClick={() => onOpenChange(false)}
-              >
-                Cancel
-              </Button>
-              <Button type="submit">Save</Button>
-            </FormDialogFooter>
-          </form>
-        </Form>
+            Cancel
+          </Button>
+          <Button type="button" disabled={!canSave} onClick={handleSave}>
+            Save
+          </Button>
+        </FormDialogFooter>
       </FormDialogContent>
     </Dialog>
   )

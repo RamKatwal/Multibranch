@@ -16,7 +16,7 @@ export const adminNavigation: NavItem[] = [
     icon: DuoHomeIcon,
   },
   {
-    title: "Branch Management",
+    title: "Branch",
     href: "/admin/branches",
     icon: DuoBranchIcon,
     description: "Create and manage each company's branches.",

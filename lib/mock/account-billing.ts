@@ -1,3 +1,4 @@
+import { getCurrentUser } from "@/lib/auth/current-user"
 import { mockSubscriptions } from "@/lib/mock/subscriptions"
 import { getPlan, type PlanId } from "@/lib/onboarding/plans"
 import type { Subscription } from "@/types/subscription"
@@ -26,13 +27,8 @@ export const EXPIRING_SOON_DAYS = 60
 
 export type BillTo =
   | { type: "company"; companyId: string; companyName: string }
-  | {
-      type: "individual"
-      name: string
-      email: string
-      phone: string
-      pan?: string
-    }
+  /** The signed-in user, billed as a person. */
+  | { type: "individual"; userId: string; name: string; email: string }
 
 export type RenewalScenario = "default" | "expiring" | "expired"
 
@@ -50,11 +46,10 @@ export const billToScenarioLabels: Record<BillToScenario, string> = {
   none: "None",
 }
 
-export const DEFAULT_INDIVIDUAL_BILL_TO: BillTo = {
-  type: "individual",
-  name: "Ram Bahadur Shrestha",
-  email: "ram.shrestha@example.com",
-  phone: "+977 9801234567",
+/** Bill to the signed-in user (no separate form: their account details are used as-is). */
+export function currentUserBillTo(): BillTo {
+  const user = getCurrentUser()
+  return { type: "individual", userId: user.id, name: user.name, email: user.email }
 }
 
 export function toIsoDate(date: Date) {

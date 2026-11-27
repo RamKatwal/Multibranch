@@ -23,7 +23,6 @@ import {
   AlertTitle,
   AlertToolbar,
 } from "@/components/ui/alert"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { formatLongDate } from "@/lib/format"
 import { ADDITIONAL_MODULES } from "@/lib/onboarding/plans"
@@ -43,25 +42,6 @@ export function BillingPage() {
     <div className="flex flex-col gap-4">
       <PageHeader
         title="Billing"
-        badge={
-          <Badge
-            size="20"
-            variant="soft"
-            color={
-              renewalState === "expired"
-                ? "error"
-                : renewalState === "expiring"
-                  ? "warning"
-                  : "success"
-            }
-          >
-            {renewalState === "expired"
-              ? "Expired"
-              : renewalState === "expiring"
-                ? `${daysLeft} days left`
-                : "Active"}
-          </Badge>
-        }
         actions={
           <BillingSandboxPanel
             onRenewalChange={billing.setRenewalScenario}
