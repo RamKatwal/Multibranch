@@ -116,3 +116,31 @@ export function shiftPeriodEnd(
   }
   return date
 }
+
+/** Price of `count` extra company slots for the rest of the billing period's length. */
+export function additionalCompaniesDue(
+  subscription: Subscription,
+  count: number,
+  monthlyPrice: number
+): MoneyBreakdown {
+  if (count <= 0) return { taxable: 0, tax: 0, total: 0 }
+  const multiplier =
+    PERIOD_MONTH_MULTIPLIER[subscriptionPeriod(subscription)] ?? 1
+  const taxable = roundMoney(monthlyPrice * count * multiplier)
+  const tax = roundMoney(taxable * VAT_RATE)
+  return { taxable, tax, total: roundMoney(taxable + tax) }
+}
+
+/** Price of add-on modules (each billed at its monthly price) for one billing period. */
+export function additionalModulesDue(
+  subscription: Subscription,
+  monthlyPrices: number[]
+): MoneyBreakdown {
+  if (monthlyPrices.length === 0) return { taxable: 0, tax: 0, total: 0 }
+  const multiplier =
+    PERIOD_MONTH_MULTIPLIER[subscriptionPeriod(subscription)] ?? 1
+  const monthly = monthlyPrices.reduce((sum, price) => sum + price, 0)
+  const taxable = roundMoney(monthly * multiplier)
+  const tax = roundMoney(taxable * VAT_RATE)
+  return { taxable, tax, total: roundMoney(taxable + tax) }
+}

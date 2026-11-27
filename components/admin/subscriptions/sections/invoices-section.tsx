@@ -84,7 +84,7 @@ function invoiceInterval(
 
 function paidUsersCount(invoice: SubscriptionInvoice) {
   const chargeType = invoiceChargeType(invoice)
-  if (chargeType === "branches") return null
+  if (chargeType === "branches" || chargeType === "companies" || chargeType === "modules") return null
   if (chargeType === "users" || chargeType === "branches_and_users") {
     return invoice.addedUsers ?? 0
   }
@@ -93,7 +93,7 @@ function paidUsersCount(invoice: SubscriptionInvoice) {
 
 function paidBranchesCount(invoice: SubscriptionInvoice) {
   const chargeType = invoiceChargeType(invoice)
-  if (chargeType === "users") return null
+  if (chargeType === "users" || chargeType === "companies" || chargeType === "modules") return null
   if (chargeType === "branches" || chargeType === "branches_and_users") {
     return invoice.addedBranches ?? 0
   }
@@ -136,7 +136,7 @@ function DetailRow({
   )
 }
 
-function InvoiceDetailSheet({
+export function InvoiceDetailSheet({
   invoice,
   subscription,
   open,

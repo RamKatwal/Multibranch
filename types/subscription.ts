@@ -21,6 +21,8 @@ export const INVOICE_CHARGE_TYPES = [
   "branches",
   "users",
   "branches_and_users",
+  "companies",
+  "modules",
 ] as const
 
 export type InvoiceChargeType = (typeof INVOICE_CHARGE_TYPES)[number]
@@ -30,6 +32,8 @@ export const invoiceChargeTypeLabels: Record<InvoiceChargeType, string> = {
   branches: "Branches",
   users: "User seats",
   branches_and_users: "Branches + users",
+  companies: "Company slots",
+  modules: "Modules",
 }
 
 export function invoiceBilledForLabel(invoice: {
@@ -40,6 +44,8 @@ export function invoiceBilledForLabel(invoice: {
   if (chargeType === "plan") return invoice.planName
   if (chargeType === "branches") return `Branch add-on · ${invoice.planName}`
   if (chargeType === "users") return `User seats · ${invoice.planName}`
+  if (chargeType === "companies") return `Company slots · ${invoice.planName}`
+  if (chargeType === "modules") return `Modules · ${invoice.planName}`
   return `Branches + users · ${invoice.planName}`
 }
 
@@ -85,6 +91,8 @@ export type SubscriptionInvoice = {
   addedUsers?: number
   /** Extra branches purchased on this invoice (add-on payments). */
   addedBranches?: number
+  /** Extra company slots purchased on this invoice (add-on payments). */
+  addedCompanies?: number
   /** Billing interval this invoice covers. Falls back to the subscription interval. */
   interval?: BillingInterval
   paymentMethod: SubscriptionPaymentMethod | null
@@ -112,6 +120,9 @@ export type Subscription = {
   branchesLimit: number
   usersUsed: number
   usersLimit: number
+  /** Account-level company slots (single billing page only). */
+  companiesUsed?: number
+  companiesLimit?: number
   amount: number
   currency: string
   interval: BillingInterval

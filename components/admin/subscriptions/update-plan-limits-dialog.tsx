@@ -44,7 +44,7 @@ type UpdatePlanLimitsDialogProps = {
   onConfirm: (result: UpdatePlanLimitsResult) => void
 }
 
-function NumberStepper({
+export function NumberStepper({
   label,
   value,
   min = 1,
