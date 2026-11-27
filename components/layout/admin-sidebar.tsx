@@ -5,7 +5,10 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
-import { adminNavigation } from "@/config/admin-navigation"
+import {
+  adminNavigation,
+  adminSecondaryNavigation,
+} from "@/config/admin-navigation"
 import { AppBrand } from "@/components/app-brand"
 import {
   SidebarSubmenuItem,
@@ -50,7 +53,15 @@ function isNavItemActive(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`)
 }
 
-function NavMenuItem({ item, pathname }: { item: NavItem; pathname: string }) {
+function NavMenuItem({
+  item,
+  pathname,
+  muted = false,
+}: {
+  item: NavItem
+  pathname: string
+  muted?: boolean
+}) {
   const Icon = item.icon
   const isActive = isNavItemActive(pathname, item.href)
   const hasChildren = Boolean(item.children?.length)
@@ -70,6 +81,7 @@ function NavMenuItem({ item, pathname }: { item: NavItem; pathname: string }) {
           render={<Link href={item.href} />}
           tooltip={item.title}
           isActive={isActive}
+          className={cn(muted && !isActive && "text-fg-tertiary")}
         >
           <Icon />
           <span>{item.title}</span>
@@ -268,6 +280,20 @@ export function AdminSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
+        <SidebarGroup className="mt-auto py-1">
+          <SidebarGroupContent>
+            <SidebarMenu className="gap-0.5">
+              {adminSecondaryNavigation.map((item) => (
+                <NavMenuItem
+                  key={item.title}
+                  item={item}
+                  pathname={pathname}
+                  muted
+                />
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
 
       <SidebarRail />
