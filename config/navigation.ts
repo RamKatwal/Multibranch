@@ -285,7 +285,8 @@ export function getBreadcrumbs(pathname: string): BreadcrumbEntry[] {
         getUsersPermissionsItemByHref(currentPath)?.title ??
         getSettingsItemByHref(currentPath)?.title ??
         formatSegmentTitle(segment),
-      href: isLast ? undefined : currentPath,
+      // /admin/branches has no page of its own (it redirects), so its crumb isn't a link.
+      href: isLast || currentPath === "/admin/branches" ? undefined : currentPath,
     })
   }
 

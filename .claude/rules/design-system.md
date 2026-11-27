@@ -318,7 +318,7 @@ slider, stepper, table, toggle, toggle-group.
   belongs to the default company (`organizations[0]`, "abc"). Storage holds every company's branches: the admin
   console uses `readAllBranches`/`saveAllBranches` (and `useAllBranches`/`useBranchLimit` in
   `lib/branches/company-branches.ts`), while the ERP keeps `readBranches`/`saveBranches`, which only see and write the
-  default company's branches. Head Office stays code `HQ`. Routes: `/admin/branches` (overview) and
+  default company's branches. Head Office stays code `HQ`. Routes: `/admin/branches` (redirects to the first company; there is no all-companies overview) and
   `/admin/branches/[companyId]`; the old `/admin/organizations/branch-management` redirects. The sidebar's
   Organizations section is gone: companies are listed once, under Branch Management. The branch limit is account-wide.
 - 2026-11-27: **Admin demo-scenario switcher** (`components/admin/demo/demo-scenario-switcher.tsx`, bottom right of

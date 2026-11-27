@@ -14,11 +14,13 @@ import {
 } from "@/components/data-table/data-table"
 import { PageHeader } from "@/components/layout/page-header"
 import { createBranchColumns } from "@/components/settings/branch-management/branch-columns"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
   getCompanyBranches,
   getCompanyById,
   useAllBranches,
+  useBranchLimit,
   useCompanies,
 } from "@/lib/branches/company-branches"
 import { canDeactivateBranch } from "@/lib/branches/head-office"
@@ -35,6 +37,7 @@ export function CompanyBranchesPage({ companyId }: { companyId: string }) {
     () => false
   )
   const allBranches = useAllBranches()
+  const branchLimit = useBranchLimit()
   const branches = React.useMemo(
     () => getCompanyBranches(allBranches, companyId),
     [allBranches, companyId]
@@ -98,7 +101,7 @@ export function CompanyBranchesPage({ companyId }: { companyId: string }) {
           It may have been removed, or you don&apos;t have access to it.
         </p>
         <Button asChild size="32" variant="outline" color="neutral">
-          <Link href="/admin/branches">Back to Branch Management</Link>
+          <Link href="/admin/branches">Back to branches</Link>
         </Button>
       </div>
     )
@@ -109,6 +112,16 @@ export function CompanyBranchesPage({ companyId }: { companyId: string }) {
       <PageHeader
         title={company.name}
         count={branches.length}
+        badge={
+          <Badge
+            variant="soft"
+            color={allBranches.length >= branchLimit ? "warning" : "neutral"}
+            size="20"
+            className="tabular-nums"
+          >
+            {allBranches.length} of {branchLimit} branches used
+          </Badge>
+        }
         actions={
           <Button size="32" onClick={openCreate}>
             <PlusIcon />

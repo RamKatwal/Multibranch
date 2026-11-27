@@ -1,5 +1,8 @@
-import { BranchesOverviewPage } from "@/components/admin/branches/branches-overview-page"
+import { redirect } from "next/navigation"
 
+import { organizations } from "@/config/organizations"
+
+// No all-companies overview: Branch Management opens the first company's branches.
 export default function AdminBranchesPage() {
-  return <BranchesOverviewPage />
+  redirect(`/admin/branches/${organizations[0].id}`)
 }

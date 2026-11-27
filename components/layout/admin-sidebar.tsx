@@ -23,7 +23,6 @@ import {
   SidebarGroupContent,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSubButton,
@@ -167,24 +166,16 @@ function BranchManagementNavItem({
       className="group/collapsible"
     >
       <SidebarMenuItem>
-        {/* The label opens the overview; the chevron only toggles the company list. */}
-        <SidebarMenuButton
-          render={
-            <Link href={BRANCHES_HREF} onClick={() => setExpanded(true)} />
-          }
-          tooltip={item.title}
-          isActive={isGroupActive}
-          className="w-full pr-8"
-        >
-          <Icon />
-          <span>{item.title}</span>
-        </SidebarMenuButton>
         <CollapsibleTrigger asChild>
-          <SidebarMenuAction
-            aria-label={expanded ? "Hide companies" : "Show companies"}
+          <SidebarMenuButton
+            tooltip={item.title}
+            isActive={isGroupActive}
+            className="w-full"
           >
-            <ChevronRight className="size-3.5! text-fg-tertiary transition-transform group-data-[state=open]/collapsible:rotate-90" />
-          </SidebarMenuAction>
+            <Icon />
+            <span>{item.title}</span>
+            <ChevronRight className="ml-auto size-3.5! text-fg-tertiary transition-transform group-data-[state=open]/collapsible:rotate-90" />
+          </SidebarMenuButton>
         </CollapsibleTrigger>
 
         <SidebarSubmenuPanel open={expanded} panelKey={`${BRANCHES_HREF}-submenu`}>
