@@ -41,12 +41,39 @@ function branchLimitFromPlan(): number | null {
   return Math.max(1, plan.branchCount)
 }
 
+/** Set by the admin demo-scenario switcher; overrides the plan while a scenario is active. */
+export const DEMO_BRANCH_LIMIT_STORAGE_KEY = "ibmerp-demo-branch-limit"
+
+function readDemoBranchLimit(): number | null {
+  if (typeof window === "undefined") return null
+  try {
+    const raw = window.localStorage.getItem(DEMO_BRANCH_LIMIT_STORAGE_KEY)
+    if (!raw) return null
+    const parsed = Number.parseInt(raw, 10)
+    return Number.isFinite(parsed) && parsed >= 1 ? parsed : null
+  } catch {
+    return null
+  }
+}
+
 export function getBranchLimit(): number {
   return (
+    readDemoBranchLimit() ??
     branchLimitFromPlan() ?? readPersistedBranchLimit() ?? DEFAULT_BRANCH_LIMIT
   )
 }
 
 export function isBranchLimitReached(branchCount: number): boolean {
   return branchCount >= getBranchLimit()
+}
+
+/** Mock "buy more branches": raises the limit by `by` (the demo limit while a scenario is active). */
+export function raiseBranchLimit(by = 1): void {
+  if (typeof window === "undefined") return
+  const demo = readDemoBranchLimit()
+  if (demo !== null) {
+    window.localStorage.setItem(DEMO_BRANCH_LIMIT_STORAGE_KEY, String(demo + by))
+    return
+  }
+  persistBranchLimit(getBranchLimit() + by)
 }

@@ -4,6 +4,8 @@ export type BranchStatus = (typeof BRANCH_STATUSES)[number]
 
 export type Branch = {
   id: string
+  /** Owning company (`config/organizations.ts` id). Missing = the default (first) company. */
+  companyId?: string
   name: string
   code: string
   address: string

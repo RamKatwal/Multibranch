@@ -314,3 +314,16 @@ slider, stepper, table, toggle, toggle-group.
 - 2026-10-09: Radian's `TooltipContent` isn't portaled: while open, its `[data-radix-popper-content-wrapper]` is a
   sibling of the trigger, so `*:`, `space-*` and `divide-*` utilities on the trigger's parent also style the open
   tooltip. Scope them with `*:data-[slot=…]:`.
+- 2026-11-26: **Admin branch management is per company.** `Branch.companyId` is optional; a branch without it
+  belongs to the default company (`organizations[0]`, "abc"). Storage holds every company's branches: the admin
+  console uses `readAllBranches`/`saveAllBranches` (and `useAllBranches`/`useBranchLimit` in
+  `lib/branches/company-branches.ts`), while the ERP keeps `readBranches`/`saveBranches`, which only see and write the
+  default company's branches. Head Office stays code `HQ`. Routes: `/admin/branches` (redirects to the first company; there is no all-companies overview) and
+  `/admin/branches/[companyId]`; the old `/admin/organizations/branch-management` redirects. The sidebar's
+  Organizations section is gone: companies are listed once, under Branch Management. The branch limit is account-wide.
+- 2026-11-27: **Admin demo-scenario switcher** (`components/admin/demo/demo-scenario-switcher.tsx`, bottom right of
+  `AdminShell`; data in `lib/admin/demo-scenarios.ts`). Each scenario writes companies, branches and a branch limit to
+  localStorage (`ibmerp-demo-scenario`, `ibmerp-demo-branch-limit`, which `getBranchLimit` reads first). Admin
+  branch code reads companies through `useCompanies()`/`getCompanies()`, not `config/organizations` directly, so
+  scenario companies appear everywhere; `/admin/branches/[companyId]` therefore validates the id on the client. "Reset
+  to app data" clears all three keys. Demo-only: remove it, or gate it behind a flag, before real data arrives.

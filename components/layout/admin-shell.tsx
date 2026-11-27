@@ -1,5 +1,6 @@
 "use client"
 
+import { DemoScenarioSwitcher } from "@/components/admin/demo/demo-scenario-switcher"
 import { AppNavbar } from "@/components/layout/app-navbar"
 import { AdminSidebar } from "@/components/layout/admin-sidebar"
 import { KeyboardShortcutsDialog } from "@/components/layout/keyboard-shortcuts-dialog"
@@ -35,6 +36,7 @@ export function AdminShell({ children }: AdminShellProps) {
         </SidebarProvider>
         <KeyboardShortcutsDialog />
         <SettingsModal />
+        <DemoScenarioSwitcher />
       </SettingsModalProvider>
     </KeyboardShortcutsProvider>
   )

@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { ChevronLeft, ChevronRight, Plus } from "lucide-react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 
 import { adminNavigation } from "@/config/admin-navigation"
 import { AppBrand } from "@/components/app-brand"
@@ -11,7 +11,7 @@ import {
   SidebarSubmenuItem,
   SidebarSubmenuPanel,
 } from "@/components/motion/sidebar-submenu"
-import { OrganizationsNavList } from "@/components/layout/organization-switcher"
+import { CompanyLogo } from "@/components/company-logo"
 import {
   Collapsible,
   CollapsibleTrigger,
@@ -20,9 +20,7 @@ import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
-  SidebarGroupAction,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -36,6 +34,11 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import {
+  getBranchCountsByCompany,
+  useAllBranches,
+  useCompanies,
+} from "@/lib/branches/company-branches"
 import { cn } from "@/lib/utils"
 import type { NavItem } from "@/types/navigation"
 
@@ -114,33 +117,88 @@ function NavMenuItem({ item, pathname }: { item: NavItem; pathname: string }) {
   )
 }
 
-function OrganizationsNavSection({
+const BRANCHES_HREF = "/admin/branches"
+/**
+ * Branch Management with every company as a child (branch count beside each). With one
+ * company it links straight to that company's branches.
+ */
+function BranchManagementNavItem({
   item,
   pathname,
 }: {
   item: NavItem
   pathname: string
 }) {
+  const Icon = item.icon
+  const organizations = useCompanies()
+  const counts = getBranchCountsByCompany(useAllBranches(), organizations)
+  const isGroupActive = isNavItemActive(pathname, BRANCHES_HREF)
+  const [expanded, setExpanded] = React.useState(isGroupActive)
+
+  const [prevGroupActive, setPrevGroupActive] = React.useState(isGroupActive)
+  if (prevGroupActive !== isGroupActive) {
+    setPrevGroupActive(isGroupActive)
+    if (isGroupActive) setExpanded(true)
+  }
+
+  if (organizations.length <= 1) {
+    const href = organizations[0]
+      ? `${BRANCHES_HREF}/${organizations[0].id}`
+      : BRANCHES_HREF
+    return (
+      <SidebarMenuItem>
+        <SidebarMenuButton
+          render={<Link href={href} />}
+          tooltip={item.title}
+          isActive={isGroupActive}
+        >
+          <Icon />
+          <span>{item.title}</span>
+        </SidebarMenuButton>
+      </SidebarMenuItem>
+    )
+  }
+
   return (
-    <SidebarGroup className="mt-1 border-t border-sidebar-border pt-2">
-      <SidebarGroupLabel className="px-2 text-xs font-medium text-sidebar-foreground/50">
-        Organizations
-      </SidebarGroupLabel>
-      <SidebarGroupAction
-        title="Add organization"
-        aria-label="Add organization"
-        className="top-3.5 right-2 text-sidebar-foreground/50 hover:text-sidebar-foreground"
-        render={<Link href="/onboarding/company" />}
-      >
-        <Plus className="size-3.5!" />
-      </SidebarGroupAction>
-      <SidebarGroupContent>
-        <OrganizationsNavList
-          navItems={item.children ?? []}
-          pathname={pathname}
-        />
-      </SidebarGroupContent>
-    </SidebarGroup>
+    <Collapsible
+      open={expanded}
+      onOpenChange={setExpanded}
+      className="group/collapsible"
+    >
+      <SidebarMenuItem>
+        <CollapsibleTrigger asChild>
+          <SidebarMenuButton
+            tooltip={item.title}
+            isActive={isGroupActive}
+            className="w-full"
+          >
+            <Icon />
+            <span>{item.title}</span>
+            <ChevronRight className="ml-auto size-3.5! text-fg-tertiary transition-transform group-data-[state=open]/collapsible:rotate-90" />
+          </SidebarMenuButton>
+        </CollapsibleTrigger>
+
+        <SidebarSubmenuPanel open={expanded} panelKey={`${BRANCHES_HREF}-submenu`}>
+          {organizations.map((org, index) => {
+            const href = `${BRANCHES_HREF}/${org.id}`
+            return (
+              <SidebarSubmenuItem key={org.id} index={index}>
+                <SidebarMenuSubButton
+                  render={<Link href={href} />}
+                  isActive={isNavItemActive(pathname, href)}
+                >
+                  <CompanyLogo name={org.name} domain={org.domain} size={16} className="size-4" />
+                  <span className="truncate">{org.name}</span>
+                  <span className="ml-auto text-xs text-fg-tertiary tabular-nums">
+                    {counts[org.id] ?? 0}
+                  </span>
+                </SidebarMenuSubButton>
+              </SidebarSubmenuItem>
+            )
+          })}
+        </SidebarSubmenuPanel>
+      </SidebarMenuItem>
+    </Collapsible>
   )
 }
 
@@ -149,12 +207,6 @@ export function AdminSidebar() {
   const { state, isMobile, toggleSidebar } = useSidebar()
   const isCollapsed = state === "collapsed" && !isMobile
 
-  const organizationsItem = adminNavigation.find(
-    (item) => item.href === "/admin/organizations"
-  )
-  const primaryNavItems = adminNavigation.filter(
-    (item) => item.href !== "/admin/organizations"
-  )
 
   return (
     <Sidebar collapsible="icon" className="relative">
@@ -197,23 +249,25 @@ export function AdminSidebar() {
         <SidebarGroup className="py-1">
           <SidebarGroupContent>
             <SidebarMenu className="gap-0.5">
-              {primaryNavItems.map((item) => (
-                <NavMenuItem
-                  key={item.title}
-                  item={item}
-                  pathname={pathname}
-                />
-              ))}
+              {adminNavigation.map((item) =>
+                item.href === BRANCHES_HREF ? (
+                  <BranchManagementNavItem
+                    key={item.title}
+                    item={item}
+                    pathname={pathname}
+                  />
+                ) : (
+                  <NavMenuItem
+                    key={item.title}
+                    item={item}
+                    pathname={pathname}
+                  />
+                )
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {organizationsItem ? (
-          <OrganizationsNavSection
-            item={organizationsItem}
-            pathname={pathname}
-          />
-        ) : null}
       </SidebarContent>
 
       <SidebarRail />

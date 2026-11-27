@@ -1,10 +1,21 @@
 import { ensureHeadOfficeActive } from "@/lib/branches/head-office"
 import { getBranchLocation } from "@/lib/branches/location"
-import { mockBranches } from "@/lib/mock/branches"
+import { organizations } from "@/config/organizations"
+import { mockBranches, mockOtherCompanyBranches } from "@/lib/mock/branches"
 import type { Branch } from "@/types/branch"
 
-const BRANCHES_STORAGE_KEY = "ibmerp-branches-v2"
+export const BRANCHES_STORAGE_KEY = "ibmerp-branches-v2"
 const ACTIVE_BRANCH_STORAGE_KEY = "ibmerp-active-branch-v2"
+
+/** Fired on `window` whenever the stored branches change. */
+export const BRANCHES_CHANGE_EVENT = "branches-change"
+
+/** The company the ERP works in; branches without a `companyId` belong to it. */
+export const DEFAULT_BRANCH_COMPANY_ID: string = organizations[0].id
+
+export function getBranchCompanyId(branch: Branch): string {
+  return branch.companyId ?? DEFAULT_BRANCH_COMPANY_ID
+}
 
 function normalizeBranchAddresses(branches: Branch[]): Branch[] {
   return branches.map((b) => ({
@@ -13,24 +24,61 @@ function normalizeBranchAddresses(branches: Branch[]): Branch[] {
   }))
 }
 
-export function readBranches(): Branch[] {
+function isDefaultCompanyBranch(branch: Branch) {
+  return getBranchCompanyId(branch) === DEFAULT_BRANCH_COMPANY_ID
+}
+
+/** Seed companies that have no stored branches yet (e.g. data saved before companies existed). */
+function withSeededCompanies(branches: Branch[]): Branch[] {
+  const seeded = new Set(branches.map(getBranchCompanyId))
+  const missing = mockOtherCompanyBranches.filter(
+    (branch) => !seeded.has(getBranchCompanyId(branch))
+  )
+  return [...branches, ...missing.map((branch) => ({ ...branch }))]
+}
+
+/** Every company's branches. Used by the admin console. */
+export function readAllBranches(): Branch[] {
   try {
     const saved = window.localStorage.getItem(BRANCHES_STORAGE_KEY)
     if (saved) {
       const parsed = JSON.parse(saved) as Branch[]
-      return normalizeBranchAddresses(ensureHeadOfficeActive(parsed))
+      return normalizeBranchAddresses(
+        ensureHeadOfficeActive(withSeededCompanies(parsed))
+      )
     }
   } catch {
     // Fall back to mock seed data.
   }
 
-  return normalizeBranchAddresses(mockBranches.map((branch) => ({ ...branch })))
+  return normalizeBranchAddresses(
+    [...mockBranches, ...mockOtherCompanyBranches].map((branch) => ({
+      ...branch,
+    }))
+  )
 }
 
-export function saveBranches(branches: Branch[]) {
+/** Replace every company's branches. Used by the admin console. */
+export function saveAllBranches(branches: Branch[]) {
   const normalized = normalizeBranchAddresses(ensureHeadOfficeActive(branches))
   window.localStorage.setItem(BRANCHES_STORAGE_KEY, JSON.stringify(normalized))
+  window.dispatchEvent(new Event(BRANCHES_CHANGE_EVENT))
   return normalized
+}
+
+/** The default company's branches (what the ERP works with). */
+export function readBranches(): Branch[] {
+  return readAllBranches().filter(isDefaultCompanyBranch)
+}
+
+/** Save the default company's branches, keeping the other companies' branches. */
+export function saveBranches(branches: Branch[]) {
+  const others = readAllBranches().filter(
+    (branch) => !isDefaultCompanyBranch(branch)
+  )
+  return saveAllBranches([...branches, ...others]).filter(
+    isDefaultCompanyBranch
+  )
 }
 
 export function readActiveBranchId(): string | null {

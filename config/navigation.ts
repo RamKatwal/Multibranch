@@ -1,3 +1,4 @@
+import { getCompanies } from "@/lib/admin/demo-scenarios"
 import {
   DuoAccountingIcon,
   DuoBankAccountsIcon,
@@ -254,6 +255,14 @@ function formatSegmentTitle(segment: string) {
     .join(" ")
 }
 
+/** Admin › Branch Management › {Company name} */
+function getAdminBranchCrumbTitle(path: string): string | undefined {
+  if (path === "/admin/branches") return "Branch Management"
+  const match = /^\/admin\/branches\/([^/]+)$/.exec(path)
+  if (!match) return undefined
+  return getCompanies().find((company) => company.id === match[1])?.name
+}
+
 export function getBreadcrumbs(pathname: string): BreadcrumbEntry[] {
   if (pathname === "/") {
     return [{ title: "Home" }]
@@ -270,12 +279,14 @@ export function getBreadcrumbs(pathname: string): BreadcrumbEntry[] {
 
     crumbs.push({
       title:
+        getAdminBranchCrumbTitle(currentPath) ??
         navItem?.title ??
         getConfigurationsItemByHref(currentPath)?.title ??
         getUsersPermissionsItemByHref(currentPath)?.title ??
         getSettingsItemByHref(currentPath)?.title ??
         formatSegmentTitle(segment),
-      href: isLast ? undefined : currentPath,
+      // /admin/branches has no page of its own (it redirects), so its crumb isn't a link.
+      href: isLast || currentPath === "/admin/branches" ? undefined : currentPath,
     })
   }
 
