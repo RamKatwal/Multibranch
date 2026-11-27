@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { PlusIcon } from "lucide-react"
 import { toast } from "sonner"
 
@@ -18,13 +19,21 @@ import {
   getCompanyBranches,
   getCompanyById,
   useAllBranches,
+  useCompanies,
 } from "@/lib/branches/company-branches"
 import { canDeactivateBranch } from "@/lib/branches/head-office"
 import { saveAllBranches } from "@/lib/branches/storage"
 import type { Branch } from "@/types/branch"
 
+const noopSubscribe = () => () => {}
+
 export function CompanyBranchesPage({ companyId }: { companyId: string }) {
-  const company = getCompanyById(companyId)
+  const company = getCompanyById(useCompanies(), companyId)
+  const hydrated = React.useSyncExternalStore(
+    noopSubscribe,
+    () => true,
+    () => false
+  )
   const allBranches = useAllBranches()
   const branches = React.useMemo(
     () => getCompanyBranches(allBranches, companyId),
@@ -79,10 +88,26 @@ export function CompanyBranchesPage({ companyId }: { companyId: string }) {
     setDialogOpen(true)
   }
 
+  if (!company) {
+    // Demo companies only exist on the client; don't flash "not found" during hydration.
+    if (!hydrated) return null
+    return (
+      <div className="flex flex-col items-center gap-3 py-16 text-center">
+        <p className="text-sm font-medium text-fg">Company not found</p>
+        <p className="text-sm text-fg-secondary">
+          It may have been removed, or you don&apos;t have access to it.
+        </p>
+        <Button asChild size="32" variant="outline" color="neutral">
+          <Link href="/admin/branches">Back to Branch Management</Link>
+        </Button>
+      </div>
+    )
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <PageHeader
-        title={company?.name ?? "Branches"}
+        title={company.name}
         count={branches.length}
         actions={
           <Button size="32" onClick={openCreate}>

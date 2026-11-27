@@ -2,7 +2,11 @@
 
 import * as React from "react"
 
-import { organizations } from "@/config/organizations"
+import {
+  DEFAULT_COMPANIES,
+  getCompanies,
+  type DemoCompany,
+} from "@/lib/admin/demo-scenarios"
 import {
   BRANCHES_CHANGE_EVENT,
   BRANCHES_STORAGE_KEY,
@@ -13,17 +17,22 @@ import { DEFAULT_BRANCH_LIMIT, getBranchLimit } from "@/lib/branches/subscriptio
 import { mockBranches, mockOtherCompanyBranches } from "@/lib/mock/branches"
 import type { Branch } from "@/types/branch"
 
-export function getCompanyById(companyId: string) {
-  return organizations.find((org) => org.id === companyId)
+export type Company = DemoCompany
+
+export function getCompanyById(companies: Company[], companyId: string) {
+  return companies.find((company) => company.id === companyId)
 }
 
 export function getCompanyBranches(branches: Branch[], companyId: string) {
   return branches.filter((branch) => getBranchCompanyId(branch) === companyId)
 }
 
-export function getBranchCountsByCompany(branches: Branch[]) {
+export function getBranchCountsByCompany(
+  branches: Branch[],
+  companies: Company[]
+) {
   const counts: Record<string, number> = {}
-  for (const org of organizations) counts[org.id] = 0
+  for (const company of companies) counts[company.id] = 0
   for (const branch of branches) {
     const id = getBranchCompanyId(branch)
     counts[id] = (counts[id] ?? 0) + 1
@@ -107,13 +116,27 @@ function getBranchesSnapshot(): Branch[] {
   return cache.value
 }
 
-/** Every company's branches, kept in sync with storage. */
-export function useAllBranches(): Branch[] {
+/** The companies the account has (the demo scenario's while one is active). */
+export function useCompanies(): Company[] {
   return React.useSyncExternalStore(
+    subscribe,
+    getCompanies,
+    () => DEFAULT_COMPANIES
+  )
+}
+
+/** Every listed company's branches, kept in sync with storage. */
+export function useAllBranches(): Branch[] {
+  const companies = useCompanies()
+  const branches = React.useSyncExternalStore(
     subscribe,
     getBranchesSnapshot,
     () => SERVER_BRANCHES
   )
+  return React.useMemo(() => {
+    const ids = new Set(companies.map((company) => company.id))
+    return branches.filter((branch) => ids.has(getBranchCompanyId(branch)))
+  }, [branches, companies])
 }
 
 /** The account-wide branch limit, kept in sync with storage. */

@@ -321,3 +321,9 @@ slider, stepper, table, toggle, toggle-group.
   default company's branches. Head Office stays code `HQ`. Routes: `/admin/branches` (overview) and
   `/admin/branches/[companyId]`; the old `/admin/organizations/branch-management` redirects. The sidebar's
   Organizations section is gone: companies are listed once, under Branch Management. The branch limit is account-wide.
+- 2026-11-27: **Admin demo-scenario switcher** (`components/admin/demo/demo-scenario-switcher.tsx`, bottom right of
+  `AdminShell`; data in `lib/admin/demo-scenarios.ts`). Each scenario writes companies, branches and a branch limit to
+  localStorage (`ibmerp-demo-scenario`, `ibmerp-demo-branch-limit`, which `getBranchLimit` reads first). Admin
+  branch code reads companies through `useCompanies()`/`getCompanies()`, not `config/organizations` directly, so
+  scenario companies appear everywhere; `/admin/branches/[companyId]` therefore validates the id on the client. "Reset
+  to app data" clears all three keys. Demo-only: remove it, or gate it behind a flag, before real data arrives.

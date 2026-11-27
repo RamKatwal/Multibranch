@@ -35,13 +35,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { organizations } from "@/config/organizations"
 import {
   getCompanyBranches,
   isBranchCodeTaken,
   suggestBranchCode,
   useAllBranches,
   useBranchLimit,
+  useCompanies,
 } from "@/lib/branches/company-branches"
 import {
   BRANCHES_CHANGE_EVENT,
@@ -49,7 +49,7 @@ import {
   saveAllBranches,
   todayIsoDate,
 } from "@/lib/branches/storage"
-import { persistBranchLimit } from "@/lib/branches/subscription"
+import { raiseBranchLimit } from "@/lib/branches/subscription"
 import type { Branch } from "@/types/branch"
 
 const USER_MANAGEMENT_HREF = "/admin/settings/users-permissions/users"
@@ -130,7 +130,7 @@ function BranchDialogInner({
         limit={branchLimit}
         onCancel={onClose}
         onContinue={() => {
-          persistBranchLimit(branchLimit + 1)
+          raiseBranchLimit()
           window.dispatchEvent(new Event(BRANCHES_CHANGE_EVENT))
           setStep("form")
         }}
@@ -209,6 +209,7 @@ function BranchForm({
   onClose: () => void
 }) {
   const router = useRouter()
+  const organizations = useCompanies()
   const isEdit = Boolean(branch)
   const showCompanySelect = !isEdit && !companyId
   const [codeEdited, setCodeEdited] = React.useState(isEdit)

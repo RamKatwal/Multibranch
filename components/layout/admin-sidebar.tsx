@@ -6,13 +6,12 @@ import { usePathname } from "next/navigation"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
 import { adminNavigation } from "@/config/admin-navigation"
-import { organizations } from "@/config/organizations"
 import { AppBrand } from "@/components/app-brand"
 import {
   SidebarSubmenuItem,
   SidebarSubmenuPanel,
 } from "@/components/motion/sidebar-submenu"
-import { OrganizationLogo } from "@/components/layout/organization-switcher"
+import { CompanyLogo } from "@/components/company-logo"
 import {
   Collapsible,
   CollapsibleTrigger,
@@ -39,6 +38,7 @@ import {
 import {
   getBranchCountsByCompany,
   useAllBranches,
+  useCompanies,
 } from "@/lib/branches/company-branches"
 import { cn } from "@/lib/utils"
 import type { NavItem } from "@/types/navigation"
@@ -134,7 +134,8 @@ function BranchManagementNavItem({
   pathname: string
 }) {
   const Icon = item.icon
-  const counts = getBranchCountsByCompany(useAllBranches())
+  const organizations = useCompanies()
+  const counts = getBranchCountsByCompany(useAllBranches(), organizations)
   const isGroupActive = isNavItemActive(pathname, BRANCHES_HREF)
   const [expanded, setExpanded] = React.useState(isGroupActive)
 
@@ -201,7 +202,7 @@ function BranchManagementNavItem({
                   render={<Link href={href} />}
                   isActive={isNavItemActive(pathname, href)}
                 >
-                  <OrganizationLogo org={org} />
+                  <CompanyLogo name={org.name} domain={org.domain} size={16} className="size-4" />
                   <span className="truncate">{org.name}</span>
                   <span className="ml-auto text-xs text-fg-tertiary tabular-nums">
                     {counts[org.id] ?? 0}

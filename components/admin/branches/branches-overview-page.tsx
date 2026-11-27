@@ -15,16 +15,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { organizations } from "@/config/organizations"
 import {
   getCompanyBranches,
   useAllBranches,
+  useCompanies,
   useBranchLimit,
 } from "@/lib/branches/company-branches"
 import { isHeadOfficeBranch } from "@/lib/branches/head-office"
 import { branchStatusLabels } from "@/types/branch"
 
 export function BranchesOverviewPage() {
+  const organizations = useCompanies()
   const allBranches = useAllBranches()
   const branchLimit = useBranchLimit()
   const [dialogCompanyId, setDialogCompanyId] = React.useState<

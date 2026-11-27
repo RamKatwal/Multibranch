@@ -1,4 +1,4 @@
-import { organizations } from "@/config/organizations"
+import { getCompanies } from "@/lib/admin/demo-scenarios"
 import {
   DuoAccountingIcon,
   DuoBankAccountsIcon,
@@ -260,7 +260,7 @@ function getAdminBranchCrumbTitle(path: string): string | undefined {
   if (path === "/admin/branches") return "Branch Management"
   const match = /^\/admin\/branches\/([^/]+)$/.exec(path)
   if (!match) return undefined
-  return organizations.find((org) => org.id === match[1])?.name
+  return getCompanies().find((company) => company.id === match[1])?.name
 }
 
 export function getBreadcrumbs(pathname: string): BreadcrumbEntry[] {
